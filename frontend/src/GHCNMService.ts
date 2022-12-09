@@ -9,7 +9,7 @@ const rejectOrJson = (res: Response) => {
 }
 
 export async function getAllStationMetadata(): Promise<any> {
-  return fetch('http://localhost:9999/ghcnmv2/station', {
+  return fetch('http://localhost:9999/api/ghcnmv2/station', {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
