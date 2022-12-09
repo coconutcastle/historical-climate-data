@@ -5,7 +5,7 @@ const rejectOrJson = (res: Response) => {
     return Promise.reject(res.statusText);
   } else {
     return res.json();
-  }
+  };
 }
 
 export async function getAllStationMetadata(): Promise<any> {
