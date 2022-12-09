@@ -11,7 +11,7 @@ To run the backend, first navigate from the root folder to /api.
 cd api
 ```
 
-Then run the following commands. The application will start running on [https://localhost:8080](https://localhost:8080).
+Then run the following commands. The application will start running on [https://localhost:9999](https://localhost:9999).
 
  ```
  npm install
