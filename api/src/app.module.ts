@@ -2,8 +2,9 @@ import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerMiddleware } from 'src/common/logger.middleware';
-import { GHCNMController } from './ghcnmv2/ghcnm.controller';
-import { GHCNModule } from './ghcnmv2/ghcnm.module';
+import { GHCNMController } from './modules/ghcnmv2/ghcnm.controller';
+import { GHCNModule } from './modules/ghcnmv2/ghcnm.module';
+import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./modules/ghcnmv2/ghcnm.entity";
 
 @Module({
   imports: [
@@ -26,8 +27,10 @@ import { GHCNModule } from './ghcnmv2/ghcnm.module';
       username: 'postgres',
       password: 'data126',
       database: 'climatedata',
-      entities: [__dirname + '/**/*.entity.ts'],
-      synchronize: true
+      entities: [GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode],
+      // entities: [__dirname + '/**/**/*.entity.ts'],
+      // entities: [__dirname + '/modules/ghcnmv2/*.entity.ts'],
+      synchronize: false
     }),
     // TypeOrmModule.forRootAsync({
     //   imports: [ConfigModule],      

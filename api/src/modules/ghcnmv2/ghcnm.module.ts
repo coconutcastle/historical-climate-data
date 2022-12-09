@@ -1,15 +1,21 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { GHCNM } from "./ghcnm.entity";
+import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./ghcnm.entity";
 import { GHCNMService } from "./ghcnm.service";
 import { GHCNMController } from "./ghcnm.controller";
 
 @Module({
-    imports: [
-        TypeOrmModule.forFeature([GHCNM])
-    ],
-    controllers: [GHCNMController],
-    providers: [GHCNMService]
+  imports: [
+    TypeOrmModule.forFeature([
+      GHCNMStationMetadata,
+      GHCNMAnomalyData,
+      GHCNMPrecipitationData,
+      GHCNMAnnualCycleData,
+      GHCNMCountryCode])
+  ],
+  controllers: [GHCNMController],
+  providers: [GHCNMService],
+  exports: [GHCNMService]
 })
 
-export class GHCNModule {}
+export class GHCNModule { }

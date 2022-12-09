@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity({ schema: 'public', name: 'stationmetadata' })
 export class GHCNMStationMetadata {
   @Column('character varying', { nullable: false })
   station: string;
@@ -27,7 +27,7 @@ export class GHCNMStationMetadata {
   elevation: number | null;
 }
 
-@Entity()
+@Entity({ schema: 'anomalies' })
 export class GHCNMAnomalyData {
   @PrimaryColumn('character varying', { nullable: false })
   station: string;
@@ -72,13 +72,13 @@ export class GHCNMAnomalyData {
   december: number | null;
 }
 
-@Entity()
+@Entity({ schema: 'prcp' })
 export class GHCNMPrecipitationData extends GHCNMAnomalyData {
   @Column('bigint', { nullable: false, width: 16 })
   identifier: string;
 }
 
-@Entity()
+@Entity({ schema: 'annualcycles' })
 export class GHCNMAnnualCycleData {
   @PrimaryColumn('character varying', { nullable: false })
   station: string;
@@ -108,7 +108,7 @@ export class GHCNMAnnualCycleData {
   9.5: number | null;
 }
 
-@Entity()
+@Entity({ schema: 'countrycodes' })
 export class GHCNMCountryCode {
   @PrimaryColumn('integer', { nullable: false, width: 3 })
   code: number;
