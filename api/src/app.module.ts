@@ -22,40 +22,23 @@ dotenv.config({ path: `${process.cwd()}\\.env.dev` });
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      // entities: [__dirname + '/**/*.entity.ts'],
-      // type: 'postgres',
-      // host: 'localhost',
-      // port: 5432,
-      // username: 'postgres',
-      // password: 'data126',
-      // database: 'climatedata',
       entities: [GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode],
-      synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
-      // entities: [__dirname + '/**/**/*.entity.ts'],
-      // entities: [__dirname + '/modules/ghcnmv2/*.entity.ts'],
-      // synchronize: false
+      synchronize: process.env.DATABASE_SYNCHRONIZE === 'true'
     }),
-    // TypeOrmModule.forRootAsync({
-    //   imports: [ConfigModule],      
-    //   useFactory: (configService: ConfigService) => ({
-    //     type: 'postgres' as 'postgres',
-    //     host: configService.get<string>('DATABASE_HOST'),
-    //     port: parseInt(configService.get<string>('DATABASE_PORT') ?? '5432'),
-    //     username: configService.get<string>('DATABASE_USER'),
-    //     password: configService.get<string>('DATABASE_PASSWORD'),
-    //     database: configService.get<string>('DATABASE_NAME'),
-    //     entities: [__dirname + '/**/*.entity{.ts,.js}'],
-    //     synchronize: true,
-    //   }),
-    //   inject: [ConfigService],
-    // }),
     GHCNModule,
   ]
 })
 
 export class AppModule implements NestModule {
 
-  constructor(private configService: ConfigService) {}
+  constructor(private readonly configService: ConfigService) {
+    // basic configuration validation
+    const port = this.configService.get<number>('NEST_APP_PORT');
+
+    if (!port) {
+      throw new Error(`App port is undefined.`);
+    };
+  }
 
   public configure(consumer: MiddlewareConsumer) {
     consumer

@@ -1,8 +1,18 @@
-import React, { useState } from 'react'
+import React, { Suspense, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import './App.scss'
+
+import { Header } from './components/Header';
+
+const Skeleton = () => {
+  return (
+    <div>
+      Loading...
+    </div>
+  );
+}
 
 const queryClient = new QueryClient();
 
@@ -23,22 +33,29 @@ const MuiTheme = createTheme({
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
 const DownloadPage = React.lazy(() => import('./routes/DownloadPage'));
 const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
+const DocumentationPage = React.lazy(() => import('./routes/DocumentationPage'));
 
 const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>
-        <div className="App">
-          <BrowserRouter>
-            <Routes>
-              <Route path='/' element={<LandingPage />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-          </BrowserRouter>
-        </div>
+        <BrowserRouter>
+          <Header />
+          <div className='main-content'>
+            <Suspense fallback={<Skeleton />}>
+              <Routes>
+                <Route path='/' element={<LandingPage />} />
+                <Route path='/download' element={<DownloadPage />} />
+                <Route path='/visualize' element={<VisualizerPage />} />
+                <Route path='/documentation' element={<DocumentationPage />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </Suspense>
+          </div>
+        </BrowserRouter>
       </QueryClientProvider>
-    </ThemeProvider>
+    </ThemeProvider >
   )
 }
 
