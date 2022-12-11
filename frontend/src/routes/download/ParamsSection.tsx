@@ -2,7 +2,6 @@ import { Field, Form, Formik, ErrorMessage } from 'formik';
 import { Months, Range, DataTypes, ParamsFields } from '../../common/download.interface';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
-import { Picker } from '../../components/Picker';
 
 interface ParamsSectionProps {
   params: ParamsFields;
@@ -12,7 +11,7 @@ interface ParamsSectionProps {
 const parseRange = (textRange: string): Range[] => {
   // const rangePattern = /(\d{0,4})(-)(\d{0,4})/g;
   ///(\d{0})(?!=\d{4})(?!<=\d{0})(\d{4})(-)(\d{0})(?!=\d{4})(?!<=\d{0})(\d{4})/g
-  const rangePattern=/(\d{4})-(\d{4})/g
+  const rangePattern = /(\d{4})-(\d{4})/g
   console.log(rangePattern.exec('1945-1958'));
   const ranges = (textRange.replace(/\s/g, '')).split(',');  //remove whitespace and then split by comma
   return ranges.map((range: string) => {
@@ -24,7 +23,7 @@ const parseRange = (textRange: string): Range[] => {
       })
     } else {
       const matches = rangePattern.exec(range)
-      return({
+      return ({
         single: 0,
         start: range[0] == '-' ? null : 0,
         end: null
@@ -41,7 +40,7 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
     if (values.dataTypes.length == 0) {
       errors['dataTypes'] = "Please select what data you'd like to download";
     };
-    
+
     //check to see if all year range strings are valid 4-digit numbers
 
     if (Object.keys(errors).length > 0) {
@@ -109,7 +108,23 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                     renderInput={(params) =>
                       <TextField {...params} label="Course" />}
                   /> */}
-                  <Picker />
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={['Canada', 'USA']}
+                    // classes={useStyles}
+                    // options={top100Films}
+                    // getOptionLabel={(option) => option.title}
+                    style={{ width: '50%' }}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          fullWidth
+                        />
+                      );
+                    }}
+                  />
 
                 </div>
                 <div className='col-6'>

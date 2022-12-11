@@ -1,7 +1,8 @@
 import React, { Suspense, useState } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
+import { MuiTheme } from './MuiTheme';
 import './App.scss'
 
 import { Header } from './components/Header';
@@ -15,48 +16,6 @@ const Skeleton = () => {
 }
 
 const queryClient = new QueryClient();
-
-const MuiTheme = createTheme({
-  palette: {
-    primary: {
-      main: '#59A1D6'
-    },
-    secondary: {
-      main: '#59A1D6'
-    }
-  },
-  typography: {
-    "fontFamily": "Montserrat"
-  },
-  components: {
-    MuiAutocomplete: {
-      styleOverrides: {
-        root: {
-          "&.Mui-focused .MuiInputLabel-outlined": {
-            color: "#59A1D6"
-          },
-          "&.MuiAutocomplete-root": {
-            backgroundColor: '#E8E8E8'
-          }
-        },
-        inputRoot: {
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: 'none',
-            borderRadius: '0px'
-          },
-          "&:hover .MuiOutlinedInput-notchedOutline": {
-            border: 'none',
-            borderRadius: '0px'
-          },
-          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-            border: 'none',
-            borderRadius: '0px'
-          }
-        }
-      }
-    }
-  }
-});
 
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
 const DownloadPage = React.lazy(() => import('./routes/download/DownloadPage'));
