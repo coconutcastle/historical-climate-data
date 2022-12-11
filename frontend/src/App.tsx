@@ -27,6 +27,34 @@ const MuiTheme = createTheme({
   },
   typography: {
     "fontFamily": "Montserrat"
+  },
+  components: {
+    MuiAutocomplete: {
+      styleOverrides: {
+        root: {
+          "&.Mui-focused .MuiInputLabel-outlined": {
+            color: "#59A1D6"
+          },
+          "&.MuiAutocomplete-root": {
+            backgroundColor: '#E8E8E8'
+          }
+        },
+        inputRoot: {
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: 'none',
+            borderRadius: '0px'
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            border: 'none',
+            borderRadius: '0px'
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: 'none',
+            borderRadius: '0px'
+          }
+        }
+      }
+    }
   }
 });
 

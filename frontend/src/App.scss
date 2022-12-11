@@ -29,7 +29,7 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 .data-content {
   width: 100%;
-  height: 100vh;
+  height: 100%;
   background-color: #F5F5F5;
   padding-top: 2rem;    //for some reason shorthand isn't working
   padding-right: 4rem;
@@ -160,4 +160,25 @@ button:hover {
   background-color: white;
   padding: 2rem;
   margin-left: 20px;
+}
+
+
+//==================== FORMS ======================//
+
+.text-field {
+  height: 35px;
+  padding: 8px;
+  // margin-top: 15px;
+  border: none;
+  background-color: #E8E8E8;
+}
+
+.text-field:focus {
+  outline: none;
+}
+
+.text-field-indicator {
+  font-family: "Roboto Condensed";
+  font-size: 20px;
+  font-weight: 200;
 }
