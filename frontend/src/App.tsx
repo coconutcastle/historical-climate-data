@@ -31,7 +31,7 @@ const MuiTheme = createTheme({
 });
 
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
-const DownloadPage = React.lazy(() => import('./routes/DownloadPage'));
+const DownloadPage = React.lazy(() => import('./routes/download/DownloadPage'));
 const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
 const DocumentationPage = React.lazy(() => import('./routes/DocumentationPage'));
 

@@ -62,6 +62,18 @@ hr {
   font-size: 50px;
 }
 
+.heading-1 {
+  font-family: "Roboto Condensed";
+  font-weight: 700;
+  font-size: 35px;
+}
+
+.heading-2 {
+  font-family: "Roboto Condensed";
+  font-weight: 700;
+  font-size: 24px;
+}
+
 
 // ================= HEADER =================
 
@@ -133,8 +145,11 @@ button:hover {
 
 //=================== DOWNLOADS PAGE =========================//
 
-.params-section {
+.params-format-wrapper {
   width: 70%;
+}
+
+.params-section {
   background-color: white;
   padding: 2rem;
   height: 100%;

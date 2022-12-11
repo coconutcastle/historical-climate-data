@@ -1,3 +1,6 @@
+import { ParamsSection } from "./ParamsSection"
+import { SelectionSection } from "./SelectionSection";
+import { FormatSection } from "./FormatSection";
 
 export default function DownloadPage() {
   return (
@@ -7,12 +10,12 @@ export default function DownloadPage() {
       </div>
       <hr style={{ width: "100%" }} />
       <div className="d-flex flex-row align-items-start">
-        <div className='params-section'>
-          hi
+        <div className='params-format-wrapper'>
+          <ParamsSection />
+          <FormatSection />
         </div>
-        <div className='selection-section'>
-          hi
-        </div>
+
+        <SelectionSection />
       </div>
     </div>
   )
