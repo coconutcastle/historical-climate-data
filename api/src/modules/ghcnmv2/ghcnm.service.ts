@@ -36,10 +36,20 @@ export class GHCNMService {
 
   public async getAllCountries(): Promise<GHCNMCountryDto[]> {
     const countries = await this.countryRepository.find();
+    const countryRegions = await this.stationMetadataRepository
+      .createQueryBuilder()
+      .select('country, region')
+      .distinct(true)
+      .where('region IS NOT null')
+      .getRawMany();
+    const regionsPerCountry: Record<string, string[]> = countryRegions.reduce((accumulator, curr) => {
+      const currArr = accumulator[curr.country] ?? [];
+      return { ...accumulator, [curr.country]: [...currArr, curr.region] };
+    }, {});
     return countries.map(country => ({
       country: country.country,
       code: country.code,
-      supportedRegions: []
+      supportedRegions: regionsPerCountry[country.country] ?? []
     }));
   }
 
