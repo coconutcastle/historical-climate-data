@@ -3,8 +3,9 @@ import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
 import { useState } from "react";
 import { useQuery } from 'react-query';
-import { getAllCountries, getAllStationMetadata } from '../../GHCNMService';
-import { ParamsFields, StationMetadata } from "../../common/download.interface";
+import { getAllCountries, getAllStationMetadata, getAllRegions } from '../../GHCNMService';
+import { ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
+import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
 
@@ -21,19 +22,21 @@ export default function DownloadPage() {
   });
 
   const { data: dataCountries, error: errorCountries, isLoading: isLoadingCountries } = useQuery({
-    queryKey: ['countries'],
-    refetchOnWindowFocus: false,
-    refetchIntervalInBackground: false,
-    staleTime: Infinity,
+    queryKey: [QueryKeys.COUNTRIES],
+    ...ReactQueryConfig,
     queryFn: () => getAllCountries()
   });
 
   const { data: dataStations, error: errorStations, isLoading: isLoadingStations } = useQuery({
-    queryKey: ['stations'],
-    refetchOnWindowFocus: false,
-    refetchIntervalInBackground: false,
-    staleTime: Infinity,
+    queryKey: [QueryKeys.STATIONS],
+    ...ReactQueryConfig,
     queryFn: () => getAllStationMetadata()
+  });
+
+  const { data: dataRegions, error: errorRegions, isLoading: isLoadingRegions } = useQuery({
+    queryKey: [QueryKeys.REGIONS],
+    ...ReactQueryConfig,
+    queryFn: () => getAllRegions()
   });
 
   return (
@@ -44,12 +47,12 @@ export default function DownloadPage() {
       <hr style={{ width: "100%" }} />
       <div className="d-flex flex-row align-items-start">
         <div className='params-format-wrapper'>
-          {(isLoadingCountries || isLoadingStations) && (
+          {(isLoadingCountries || isLoadingStations || isLoadingRegions) && (
             <div className='params-section heading-1'>
               Loading...
             </div>
           )}
-          {(dataCountries && dataStations) && (
+          {(dataCountries && dataStations && dataRegions) && (
             <>
               <ParamsSection
                 params={params}
@@ -59,12 +62,13 @@ export default function DownloadPage() {
                   code: station.code,
                   name: station.name
                 }))}
+                regions={dataRegions.map((region: RawRegions) => region.region)}
               />
               <FormatSection />
             </>
           )}
         </div>
-        <SelectionSection />
+        <SelectionSection params={params} />
       </div>
     </div>
   )

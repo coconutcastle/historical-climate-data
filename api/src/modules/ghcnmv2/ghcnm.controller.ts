@@ -17,4 +17,9 @@ export class GHCNMController {
   public async getAllCountries(): Promise<GHCNMCountryDto[]> {
     return this.ghcnmService.getAllCountries();
   }
+
+  @Get('/regions')
+  public async getAllRegions(): Promise<string[]> {
+    return this.ghcnmService.getAllUniqueRegions();
+  }
 }

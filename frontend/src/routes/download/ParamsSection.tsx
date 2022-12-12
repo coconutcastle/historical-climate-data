@@ -11,9 +11,10 @@ interface ParamsSectionProps {
   onParamsChanged: (params: ParamsFields) => void;
   countries: CountryInfo[];
   stations: StationMetadataBasic[];
+  regions: string[]
 }
 
-export const ParamsSection = ({ params, onParamsChanged, countries, stations }: ParamsSectionProps) => {
+export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
 
   const paramsChanged = (values: ParamsFields) => {
     console.log(values);
@@ -119,8 +120,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           fullWidth
                         />
                       )
-                    }}
-                  />
+                  }}/>
                 </div>
                 <div className='col-6'>
                   <div className='heading-2'>
@@ -130,7 +130,13 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                     Region specifications are not available for all countries.
                   </div>
                   <Autocomplete
-                    options={['Canada', 'USA']}
+                    multiple
+                    options={params.countries.length > 0 ?
+                    (params.countries.reduce((accumulator, currentCountry) => accumulator.concat(currentCountry.supportedRegions), [])
+                    ) : regions}
+                    onChange={(event: any, newValue) => {
+                      setFieldValue('regions', newValue);
+                    }}
                     style={{ width: '60%' }}
                     renderInput={(params) => {
                       return (
@@ -140,8 +146,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           fullWidth
                         />
                       )
-                    }}
-                  />
+                  }}/>
                 </div>
               </div>
 

@@ -42,4 +42,13 @@ export class GHCNMService {
       supportedRegions: []
     }));
   }
+
+  public async getAllUniqueRegions(): Promise<string[]> {
+    return this.stationMetadataRepository
+    .createQueryBuilder()
+    .select('region')
+    .distinct(true)
+    .where('region IS NOT null')
+    .getRawMany();
+  }
 }

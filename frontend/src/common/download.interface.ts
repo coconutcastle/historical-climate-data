@@ -25,7 +25,7 @@ export type DataTypes = 'prcp' | 'anom' | 'cycles';
 export interface ParamsFields {
   years: Range[];
   months: Months[];
-  countries: string[];
+  countries: CountryInfo[];
   regions: string[];
   latitude: Range[];
   longitude: Range[];
@@ -54,4 +54,8 @@ export interface StationMetadata {
 export interface StationMetadataBasic {
   code: string;
   name: string | null;
+}
+
+export interface RawRegions {
+  region: string;
 }
