@@ -1,5 +1,5 @@
 import { Field, Form, Formik, ErrorMessage, FieldArray } from 'formik';
-import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRow } from '../../common/download.interface';
+import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../common/download.interface';
 import { useQuery } from 'react-query';
 import { toTitleCase, mutateArray } from '../../common/helpers';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -229,15 +229,31 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                         Enter elevation range.
                       </div>
                     </div>
-                    <button type='button' className='plus-button d-flex align-self-center right-0'>
+                    <button type='button' 
+                    onClick={(e) => 
+                      setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {
+                        latitude: { single: null, start: null, end: null },
+                        longitude: { single: null, start: null, end: null },
+                        elevation: { single: null, start: null, end: null }
+                      }))}
+                    className='plus-button d-flex align-self-center right-0'>
                       <div>+</div>
                     </button>
                   </div>
-
                 </div>
-
               </div>
-              <CoordinatesInput coordinates={values.coordinates}/>
+              {(values.coordinates).map((range: CoordinateRange, index: number) => (
+                <CoordinatesInput 
+                range={range} 
+                set={index} 
+                onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
+                  const newCoordinates = {...values.coordinates[index]};
+                  (newCoordinates[parameter])[bound] = parseInt(newValue);
+                  setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
+                }}
+                deleteRow={() => setFieldValue('coordinates', mutateArray(values.coordinates, index))}
+                key={index} />
+              ))}
 
               {/* STATIONS PARAMS */}
               <div className='heading-2 mt-4'>

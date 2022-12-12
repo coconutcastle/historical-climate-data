@@ -69,9 +69,3 @@ export interface StationMetadataBasic {
 export interface RawRegions {
   region: string;
 }
-
-export interface CoordinateRow {
-  latitude: Range[];
-  longitude: Range[];
-  elevation: Range[];
-}
