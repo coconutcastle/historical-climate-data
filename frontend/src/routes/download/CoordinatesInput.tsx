@@ -1,14 +1,10 @@
-import { useState } from "react";
-import { CoordinateRange } from "../../common/download.interface";
 
 interface CoordinatesInputProps {
-  range: CoordinateRange;
-  set: number;
   onCoordinateInputChange: (parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => void;
   deleteRow: () => void;
 }
 
-export const CoordinatesInput = ({ range, set, onCoordinateInputChange, deleteRow }: CoordinatesInputProps) => {
+export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: CoordinatesInputProps) => {
 
   return (
     <div className='d-flex flex-row mt-1'>

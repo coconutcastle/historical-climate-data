@@ -1,6 +1,5 @@
-import { Field, Form, Formik, ErrorMessage, FieldArray } from 'formik';
+import { Form, Formik, FieldArray } from 'formik';
 import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../common/download.interface';
-import { useQuery } from 'react-query';
 import { toTitleCase, mutateArray } from '../../common/helpers';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
@@ -16,8 +15,6 @@ interface ParamsSectionProps {
 }
 
 export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
-
-  // const [coordinateRows, setCoordinateRows] = useState<CoordinateRow>({})
 
   const paramsChanged = (values: ParamsFields) => {
     console.log(values);
@@ -39,9 +36,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
           <Form>
             <>
               {/* YEARS PARAMS */}
-              <div className="heading-2">
-                Years
-              </div>
+              <div className="heading-2">Years</div>
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
@@ -75,9 +70,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
               {/* MONTHS PARAMS */}
-              <div className='heading-2 mt-4'>
-                Months
-              </div>
+              <div className='heading-2 mt-4'>Months</div>
               <div className="mb-1">
                 Select months for which you want data for.
               </div>
@@ -123,13 +116,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                           variant="outlined"
                           fullWidth
                         />
-                      )
-                    }} />
+                  )}} />
                 </div>
                 <div className='col-6'>
-                  <div className='heading-2'>
-                    Regions
-                  </div>
+                  <div className='heading-2'>Regions</div>
                   <div className="mb-1">
                     Region specifications are not available for all countries.
                   </div>
@@ -149,85 +139,25 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                           variant="outlined"
                           fullWidth
                         />
-                      )
-                    }} />
+                  )}} />
                 </div>
               </div>
 
               {/* COORDINATES PARAMS */}
-              {/* <div className='d-flex flex-row mt-4'>
-                <div className='col-4'>
-                  <div className='heading-2'>
-                    Latitude
-                  </div>
-                  <div className="mb-1">
-                    Enter latitude range.
-                  </div>
-                  <div className='d-flex flex-row align-items-center'>
-                    <input type='text' className="text-field w-25" />
-                    <div className='pe-2 ps-2'>-</div>
-                    <input type='text' className="text-field w-25" />
-                    <div className='text-field-emphasis ps-2'>N</div>
-                  </div>
-                </div>
-                <div className='col-4'>
-                  <div className='heading-2'>
-                    Longitude
-                  </div>
-                  <div className="mb-1">
-                    Enter longitude range.
-                  </div>
-                  <div className='d-flex flex-row align-items-center'>
-                    <input type='text' className="text-field w-25" />
-                    <div className='pe-2 ps-2'>-</div>
-                    <input type='text' className="text-field w-25" />
-                    <div className='text-field-emphasis ps-2'>E</div>
-                  </div>
-                </div>
-                <div className='col-4'>
-                  <div className='heading-2'>
-                    Elevation
-                  </div>
-                  <div className="mb-1">
-                    Enter elevation range.
-                  </div>
-                  <div className='d-flex flex-row align-items-center'>
-                    <input type='text' className="text-field w-25" />
-                    <div className='pe-2 ps-2'>-</div>
-                    <input type='text' className="text-field w-25" />
-                    <div className='text-field-emphasis ps-2'>m</div>
-                    <button type='button' className='plus-button'>
-                      <div>+</div>
-                    </button>
-                  </div>
-                </div>
-              </div> */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-4'>
-                  <div className='heading-2'>
-                    Latitude
-                  </div>
-                  <div className="mb-1">
-                    Enter latitude range.
-                  </div>
+                  <div className='heading-2'>Latitude</div>
+                  <div className="mb-1">Enter latitude range.</div>
                 </div>
                 <div className='col-4'>
-                  <div className='heading-2'>
-                    Longitude
-                  </div>
-                  <div className="mb-1">
-                    Enter longitude range.
-                  </div>
+                  <div className='heading-2'>Longitude</div>
+                  <div className="mb-1">Enter longitude range.</div>
                 </div>
                 <div className='col-4'>
                   <div className='d-flex flex-row justify-content-between'>
                     <div>
-                      <div className='heading-2'>
-                        Elevation
-                      </div>
-                      <div className="mb-1">
-                        Enter elevation range.
-                      </div>
+                      <div className='heading-2'>Elevation</div>
+                      <div className="mb-1">Enter elevation range.</div>
                     </div>
                     <button type='button' 
                     onClick={(e) => 
@@ -243,9 +173,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 </div>
               </div>
               {(values.coordinates).map((range: CoordinateRange, index: number) => (
-                <CoordinatesInput 
-                range={range} 
-                set={index} 
+                <CoordinatesInput
                 onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
                   const newCoordinates = {...values.coordinates[index]};
                   (newCoordinates[parameter])[bound] = parseInt(newValue);
@@ -256,9 +184,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               ))}
 
               {/* STATIONS PARAMS */}
-              <div className='heading-2 mt-4'>
-                Stations
-              </div>
+              <div className='heading-2 mt-4'>Stations</div>
               <div className="mb-1">
                 Search for and select stations by name.
               </div>
@@ -278,14 +204,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                       variant="outlined"
                       fullWidth
                     />
-                  )
-                }}
-              />
+              )}}/>
 
               {/* DATA TYPE PARAMS */}
-              <div className='heading-2 mt-4'>
-                Data Types
-              </div>
+              <div className='heading-2 mt-4'>Data Types</div>
               <div className="mb-1">
                 Select what type of station data to download.
               </div>

@@ -3,6 +3,7 @@ import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
 import { useState } from "react";
 import { useQuery } from 'react-query';
+import { Spinner } from 'react-bootstrap';
 import { getAllCountries, getAllStationMetadata, getAllRegions } from '../../GHCNMService';
 import { ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
@@ -51,7 +52,7 @@ export default function DownloadPage() {
         <div className='params-format-wrapper'>
           {(isLoadingCountries || isLoadingStations || isLoadingRegions) && (
             <div className='params-section heading-1'>
-              Loading...
+              <Spinner animation="border" /> Loading...
             </div>
           )}
           {(dataCountries && dataStations && dataRegions) && (
