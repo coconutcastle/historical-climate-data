@@ -1,8 +1,7 @@
-import { Field, Form, Formik, ErrorMessage } from 'formik';
+import { Field, Form, Formik, ErrorMessage, FieldArray } from 'formik';
 import { Months, Range, DataTypes, ParamsFields, CountryInfo, StationMetadataBasic } from '../../common/download.interface';
 import { useQuery } from 'react-query';
-import { getAllCountries } from '../../GHCNMService';
-import { toTitleCase } from '../../common/helpers';
+import { toTitleCase, mutateArray } from '../../common/helpers';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -40,21 +39,10 @@ const parseRange = (textRange: string): Range[] => {
 
 export const ParamsSection = ({ params, onParamsChanged, countries, stations }: ParamsSectionProps) => {
 
-  const validateFields = (values: ParamsFields) => {
-    const errors: Record<string, string> = {};
-
-    if (values.dataTypes.length == 0) {
-      errors['dataTypes'] = "Please select what data you'd like to download";
-    };
-
-    //check to see if all year range strings are valid 4-digit numbers
-
-    if (Object.keys(errors).length > 0) {
-      return errors;
-    } else {
-      onParamsChanged(values);    //if no errors in the fields, set the new parameters
-    }
-  }
+  const paramsChanged = (values: ParamsFields) => {
+    console.log(values);
+    onParamsChanged(values);
+  };
 
   return (
     <div className="params-section">
@@ -63,11 +51,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
       </div>
       <Formik
         initialValues={{ ...params }}
-        validate={validateFields}
+        validate={paramsChanged}
         onSubmit={() => {
           console.log('submitted')
-        }}
-      >
+        }}>
         {({ errors, values, setFieldValue, setErrors }) => (
           <Form>
             <>
@@ -88,11 +75,20 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                 Select months for which you want data for.
               </div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
-                {Object.values(Months).map((month: string, index: number) => (
+                <FieldArray name='months' render={(arrayHelpers) => (
+                  Object.values(Months).map((month: string, index: number) => (
                   <div className='col-3' key={index}>
-                    <Checkbox />{month}
+                    <Checkbox 
+                    value={month}
+                    onChange={(e: any) => {
+                      if (e.target.checked) {
+                        arrayHelpers.push(month)
+                      } else {
+                        arrayHelpers.remove(params.months.indexOf(month as Months));
+                      };
+                    }}/>{month}
                   </div>
-                ))}
+                )))} />
               </div>
 
               {/* LOCATION PARAMS */}
@@ -116,8 +112,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           variant="outlined"
                           fullWidth
                         />
-                      );
-                    }}
+                    )}}
                   />
                 </div>
                 <div className='col-6'>
@@ -138,8 +133,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           variant="outlined"
                           fullWidth
                         />
-                      );
-                    }}
+                    )}}
                   />
                 </div>
               </div>
@@ -212,8 +206,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                       variant="outlined"
                       fullWidth
                     />
-                  );
-                }}
+                )}}
               />
 
               {/* DATA TYPE PARAMS */}
@@ -224,9 +217,36 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                 Select what type of station data to download.
               </div>
               <div className='d-flex w-100 justify-content-start'>
-                <div className='col-4'><Checkbox />Monthly Precipitation Readings</div>
-                <div className='col-4'><Checkbox />Monthly Precipitation Anomalies</div>
-                <div className='col-4'><Checkbox />Statistics per Month</div>
+                <div className='col-4'>
+                  <Checkbox value={'prcp'} 
+                  onChange={(e: any) => {
+                    if (e.target.checked) {
+                      setFieldValue('dataTypes', [...params.dataTypes, 'prcp']);
+                    } else {
+                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('prcp')));
+                    }
+                  }}/>Monthly Precipitation Readings
+                </div>
+                <div className='col-4'>
+                  <Checkbox value={'anom'}
+                  onChange={(e: any) => {
+                    if (e.target.checked) {
+                      setFieldValue('dataTypes', [...params.dataTypes, 'anom']);
+                    } else {
+                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('anom')));
+                    }
+                  }}/>Monthly Precipitation Anomalies
+                </div>
+                <div className='col-4'>
+                  <Checkbox value={'cycles'}
+                  onChange={(e: any) => {
+                    if (e.target.checked) {
+                      setFieldValue('dataTypes', [...params.dataTypes, 'cycles']);
+                    } else {
+                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('cycles')));
+                    }
+                  }}/>Statistics per Month
+                </div>
               </div>
             </>
           </Form>

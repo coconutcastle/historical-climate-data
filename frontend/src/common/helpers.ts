@@ -6,3 +6,9 @@ export function toTitleCase(str: string) {
     }
   );
 }
+
+export function mutateArray(arr: any[], index: number, newItem?: any): any[] {
+  const newArray = [...arr];
+  newArray.splice(index, 1);
+  return newArray;
+}
