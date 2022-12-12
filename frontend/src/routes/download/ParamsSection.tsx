@@ -1,10 +1,11 @@
 import { Field, Form, Formik, ErrorMessage, FieldArray } from 'formik';
-import { Months, Range, DataTypes, ParamsFields, CountryInfo, StationMetadataBasic } from '../../common/download.interface';
+import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRow } from '../../common/download.interface';
 import { useQuery } from 'react-query';
 import { toTitleCase, mutateArray } from '../../common/helpers';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
+import { CoordinatesInput } from './CoordinatesInput';
 
 interface ParamsSectionProps {
   params: ParamsFields;
@@ -15,6 +16,8 @@ interface ParamsSectionProps {
 }
 
 export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
+
+  // const [coordinateRows, setCoordinateRows] = useState<CoordinateRow>({})
 
   const paramsChanged = (values: ParamsFields) => {
     console.log(values);
@@ -49,25 +52,26 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
                   years.forEach((year: string) => {
                     if ((year.length == 4) && (/\d{4}/.test(year))) {
-                      yearRanges.push({ single: parseInt(year), start: null, end: null});
+                      yearRanges.push({ single: parseInt(year), start: null, end: null });
                     } else if ((year.length == 5) && ((/-\d{4}/.test(year)) || (/\d{4}-/.test(year)))) {
-                      yearRanges.push({ 
-                        single: null, 
-                        start: year[0] === '-' ? null : parseInt(year.slice(0, 4)), 
+                      yearRanges.push({
+                        single: null,
+                        start: year[0] === '-' ? null : parseInt(year.slice(0, 4)),
                         end: year[4] === '-' ? null : parseInt(year.slice(1))
                       });
                     } else if ((year.length == 9) && (/\d{4}-\d{4}/.test(year))) {
-                      yearRanges.push({ single: null, start: parseInt(year.slice(0, 4)), end: parseInt(year.slice(5))});
+                      yearRanges.push({ single: null, start: parseInt(year.slice(0, 4)), end: parseInt(year.slice(5)) });
                     };
 
                     if (yearRanges.length < years.length) {
                       setErrors({ ...errors, 'years': 'Please enter valid ranges' });
                     } else {
                       const { years, ...fieldErrors } = errors;
-                      setErrors({...fieldErrors});
+                      setErrors({ ...fieldErrors });
                       setFieldValue('years', yearRanges);
                     }
-              })}} />
+                  })
+                }} />
               {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
               {/* MONTHS PARAMS */}
@@ -120,7 +124,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                           fullWidth
                         />
                       )
-                  }}/>
+                    }} />
                 </div>
                 <div className='col-6'>
                   <div className='heading-2'>
@@ -132,8 +136,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                   <Autocomplete
                     multiple
                     options={params.countries.length > 0 ?
-                    (params.countries.reduce((accumulator, currentCountry) => accumulator.concat(currentCountry.supportedRegions), [])
-                    ) : regions}
+                      (params.countries.reduce((accumulator, currentCountry) => accumulator.concat(currentCountry.supportedRegions), [])
+                      ) : regions}
                     onChange={(event: any, newValue) => {
                       setFieldValue('regions', newValue);
                     }}
@@ -146,12 +150,12 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                           fullWidth
                         />
                       )
-                  }}/>
+                    }} />
                 </div>
               </div>
 
               {/* COORDINATES PARAMS */}
-              <div className='d-flex flex-row mt-4'>
+              {/* <div className='d-flex flex-row mt-4'>
                 <div className='col-4'>
                   <div className='heading-2'>
                     Latitude
@@ -197,7 +201,43 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     </button>
                   </div>
                 </div>
+              </div> */}
+              <div className='d-flex flex-row mt-4'>
+                <div className='col-4'>
+                  <div className='heading-2'>
+                    Latitude
+                  </div>
+                  <div className="mb-1">
+                    Enter latitude range.
+                  </div>
+                </div>
+                <div className='col-4'>
+                  <div className='heading-2'>
+                    Longitude
+                  </div>
+                  <div className="mb-1">
+                    Enter longitude range.
+                  </div>
+                </div>
+                <div className='col-4'>
+                  <div className='d-flex flex-row justify-content-between'>
+                    <div>
+                      <div className='heading-2'>
+                        Elevation
+                      </div>
+                      <div className="mb-1">
+                        Enter elevation range.
+                      </div>
+                    </div>
+                    <button type='button' className='plus-button d-flex align-self-center right-0'>
+                      <div>+</div>
+                    </button>
+                  </div>
+
+                </div>
+
               </div>
+              <CoordinatesInput coordinates={values.coordinates}/>
 
               {/* STATIONS PARAMS */}
               <div className='heading-2 mt-4'>
@@ -234,42 +274,25 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 Select what type of station data to download.
               </div>
               <div className='d-flex w-100 justify-content-start'>
-                <div className='col-4'>
-                  <Checkbox value={'prcp'}
-                    onChange={(e: any) => {
-                      if (e.target.checked) {
-                        setFieldValue('dataTypes', [...params.dataTypes, 'prcp']);
-                      } else {
-                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('prcp')));
-                      }
-                    }} />Monthly Precipitation Readings
-                </div>
-                <div className='col-4'>
-                  <Checkbox value={'anom'}
-                    onChange={(e: any) => {
-                      if (e.target.checked) {
-                        setFieldValue('dataTypes', [...params.dataTypes, 'anom']);
-                      } else {
-                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('anom')));
-                      }
-                    }} />Monthly Precipitation Anomalies
-                </div>
-                <div className='col-4'>
-                  <Checkbox value={'cycles'}
-                    onChange={(e: any) => {
-                      if (e.target.checked) {
-                        setFieldValue('dataTypes', [...params.dataTypes, 'cycles']);
-                      } else {
-                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('cycles')));
-                      }
-                    }} />Statistics per Month
-                </div>
+                <FieldArray name='dataTypes' render={(arrayHelpers) => (
+                  ['prcp', 'anom', 'cycles'].map((type: string, index: number) => (
+                    <div className='col-4' key={index}>
+                      <Checkbox
+                        value={type}
+                        onChange={(e: any) => {
+                          if (e.target.checked) {
+                            arrayHelpers.push(type)
+                          } else {
+                            arrayHelpers.remove(params.dataTypes.indexOf(type as DataTypes));
+                          };
+                        }} />{DataTypeText[type]}
+                    </div>
+                  )))} />
               </div>
             </>
           </Form>
         )}
       </Formik>
-
     </div >
   )
 }

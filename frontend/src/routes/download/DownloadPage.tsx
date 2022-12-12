@@ -14,9 +14,11 @@ export default function DownloadPage() {
     months: [],
     countries: [],
     regions: [],
-    latitude: [],
-    longitude: [],
-    elevation: [],
+    coordinates: [{
+      latitude: { single: null, start: null, end: null },
+      longitude: { single: null, start: null, end: null },
+      elevation: { single: null, start: null, end: null },
+    }],
     station: [],
     dataTypes: []
   });

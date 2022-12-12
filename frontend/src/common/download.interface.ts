@@ -20,6 +20,18 @@ export interface Range {
   end: number | null;
 }
 
+export interface CoordinateRange {
+  latitude: Range;
+  longitude: Range;
+  elevation: Range;
+}
+
+export const DataTypeText: Record<string, string> = {
+  'prcp': 'Monthly Precipitation Readings',
+  'anom': 'Monthly Precipitation Anomalies',
+  'cycles': 'Statistics per Month'
+}
+
 export type DataTypes = 'prcp' | 'anom' | 'cycles';
 
 export interface ParamsFields {
@@ -27,9 +39,7 @@ export interface ParamsFields {
   months: Months[];
   countries: CountryInfo[];
   regions: string[];
-  latitude: Range[];
-  longitude: Range[];
-  elevation: Range[];
+  coordinates: CoordinateRange[];
   station: StationMetadataBasic[];
   dataTypes: DataTypes[];
 }
@@ -58,4 +68,10 @@ export interface StationMetadataBasic {
 
 export interface RawRegions {
   region: string;
+}
+
+export interface CoordinateRow {
+  latitude: Range[];
+  longitude: Range[];
+  elevation: Range[];
 }
