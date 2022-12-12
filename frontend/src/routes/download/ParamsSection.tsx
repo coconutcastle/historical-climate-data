@@ -2,6 +2,7 @@ import { Field, Form, Formik, ErrorMessage } from 'formik';
 import { Months, Range, DataTypes, ParamsFields } from '../../common/download.interface';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
+import Checkbox from '@mui/material/Checkbox';
 
 interface ParamsSectionProps {
   params: ParamsFields;
@@ -70,26 +71,33 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
               <div className="heading-2">
                 Years
               </div>
-              <div>
+              <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
               <Field name='years' type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }} />
 
               {/* MONTHS PARAMS */}
-              <div className='heading-2'>
+              <div className='heading-2 mt-4'>
                 Months
               </div>
-              <div>
+              <div className="mb-1">
                 Select months for which you want data for.
+              </div>
+              <div className='d-flex w-75 justify-content-start flex-wrap'>
+                {Object.values(Months).map((month: string) => (
+                  <div className='col-3'>
+                    <Checkbox />{month}
+                  </div>
+                ))}
               </div>
 
               {/* LOCATION PARAMS */}
-              <div className='d-flex flex-row'>
+              <div className='d-flex flex-row mt-4'>
                 <div className='col-6'>
                   <div className='heading-2'>
                     Countries
                   </div>
-                  <div>
+                  <div className="mb-1">
                     Select countries to include.
                   </div>
                   {/* <Autocomplete
@@ -111,9 +119,6 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                   <Autocomplete
                     id="combo-box-demo"
                     options={['Canada', 'USA']}
-                    // classes={useStyles}
-                    // options={top100Films}
-                    // getOptionLabel={(option) => option.title}
                     style={{ width: '50%' }}
                     renderInput={(params) => {
                       return (
@@ -125,26 +130,38 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                       );
                     }}
                   />
-
                 </div>
                 <div className='col-6'>
                   <div className='heading-2'>
                     Regions
                   </div>
-                  <div>
+                  <div className="mb-1">
                     Region specifications are not available for all countries.
                   </div>
-
+                  <Autocomplete
+                    id="combo-box-demo"
+                    options={['Canada', 'USA']}
+                    style={{ width: '50%' }}
+                    renderInput={(params) => {
+                      return (
+                        <TextField
+                          {...params}
+                          variant="outlined"
+                          fullWidth
+                        />
+                      );
+                    }}
+                  />
                 </div>
               </div>
 
               {/* COORDINATES PARAMS */}
-              <div className='d-flex flex-row'>
+              <div className='d-flex flex-row mt-4'>
                 <div className='col-4'>
                   <div className='heading-2'>
                     Latitude
                   </div>
-                  <div>
+                  <div className="mb-1">
                     Enter latitude range.
                   </div>
                   <div className='d-flex flex-row align-items-center'>
@@ -158,7 +175,7 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                   <div className='heading-2'>
                     Longitude
                   </div>
-                  <div>
+                  <div className="mb-1">
                     Enter longitude range.
                   </div>
                   <div className='d-flex flex-row align-items-center'>
@@ -172,7 +189,7 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                   <div className='heading-2'>
                     Elevation
                   </div>
-                  <div>
+                  <div className="mb-1">
                     Enter elevation range.
                   </div>
                   <div className='d-flex flex-row align-items-center'>
@@ -180,24 +197,46 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                     <div className='pe-2 ps-2'>-</div>
                     <input type='text' className="text-field w-25" />
                     <div className='text-field-emphasis ps-2'>m</div>
+                    <button className='plus-button'>
+                      <div>+</div>
+                    </button>
                   </div>
                 </div>
               </div>
 
               {/* STATIONS PARAMS */}
-              <div className='heading-2'>
+              <div className='heading-2 mt-4'>
                 Stations
               </div>
-              <div>
+              <div className="mb-1">
                 Search for and select stations by name.
               </div>
+              <Autocomplete
+                id="combo-box-demo"
+                options={['Canada', 'USA']}
+                style={{ width: '30%' }}
+                renderInput={(params) => {
+                  return (
+                    <TextField
+                      {...params}
+                      variant="outlined"
+                      fullWidth
+                    />
+                  );
+                }}
+              />
 
               {/* DATA TYPE PARAMS */}
-              <div className='heading-2'>
+              <div className='heading-2 mt-4'>
                 Data Types
               </div>
-              <div>
+              <div className="mb-1">
                 Select what type of station data to download.
+              </div>
+              <div className='d-flex w-100 justify-content-start'>
+                <div className='col-4'><Checkbox />Monthly Precipitation Readings</div>
+                <div className='col-4'><Checkbox />Monthly Precipitation Anomalies</div>
+                <div className='col-4'><Checkbox />Statistics per Month</div>
               </div>
             </>
           </Form>

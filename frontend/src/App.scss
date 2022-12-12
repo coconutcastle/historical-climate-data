@@ -143,6 +143,21 @@ button:hover {
   transition: opacity 0.2s ease;
 }
 
+.plus-button {
+  width: 24px;
+  height: 24px;
+  margin-left: 20%;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  div {
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+  }
+}
+
 //=================== DOWNLOADS PAGE =========================//
 
 .params-format-wrapper {

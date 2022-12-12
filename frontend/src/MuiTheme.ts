@@ -1,5 +1,4 @@
-import { red } from '@mui/material/colors';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 export const MuiTheme = createTheme({
   palette: {
@@ -52,6 +51,19 @@ export const MuiTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '0px',
+        }
+      }
+    },
+    MuiCheckbox: {
+      styleOverrides: {
+        root: {
+          height: '30px',
+          width: '30px',
+          color: 'black',
+          fontSize: '10px',
+          svg: {
+            fontSize: '20px'
+          }
         }
       }
     }
