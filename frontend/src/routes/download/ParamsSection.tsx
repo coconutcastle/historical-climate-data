@@ -106,7 +106,11 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                     multiple
                     options={countries}
                     getOptionLabel={(option) => `(${option.code}) ${toTitleCase(option.country)}`}
-                    style={{ width: '50%' }}
+                    onChange={(event: any, newValue) => {
+                      setFieldValue('countries', newValue);
+                    }}
+                    isOptionEqualToValue={(option, value) => option.code === value.code}
+                    style={{ width: '60%' }}
                     renderInput={(params) => {
                       return (
                         <TextField
@@ -126,9 +130,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                     Region specifications are not available for all countries.
                   </div>
                   <Autocomplete
-                    id="combo-box-demo"
                     options={['Canada', 'USA']}
-                    style={{ width: '50%' }}
+                    style={{ width: '60%' }}
                     renderInput={(params) => {
                       return (
                         <TextField
@@ -202,6 +205,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                 multiple
                 options={stations}
                 getOptionLabel={(option) => `(${option.code}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
+                onChange={(event: any, newValue) => {
+                  setFieldValue('stations', newValue);
+                }}
+                isOptionEqualToValue={(option, value) => option.code === value.code}
                 style={{ width: '50%' }}
                 renderInput={(params) => {
                   return (
