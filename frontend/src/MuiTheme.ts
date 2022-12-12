@@ -21,7 +21,8 @@ export const MuiTheme = createTheme({
             height: '35px',
             fontSize: '12px',
             padding: 'none',
-          }
+          },
+          overflow: 'auto'
         },
         inputRoot: {
           height: '35px',
@@ -51,6 +52,17 @@ export const MuiTheme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '0px',
+        }
+      }
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          height: '20px',
+          svg: {
+            height: '16px',
+            width: '16px'
+          }
         }
       }
     },

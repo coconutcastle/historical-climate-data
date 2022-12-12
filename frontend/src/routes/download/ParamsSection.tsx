@@ -1,5 +1,8 @@
 import { Field, Form, Formik, ErrorMessage } from 'formik';
-import { Months, Range, DataTypes, ParamsFields } from '../../common/download.interface';
+import { Months, Range, DataTypes, ParamsFields, CountryInfo, StationMetadataBasic } from '../../common/download.interface';
+import { useQuery } from 'react-query';
+import { getAllCountries } from '../../GHCNMService';
+import { toTitleCase } from '../../common/helpers';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -7,6 +10,8 @@ import Checkbox from '@mui/material/Checkbox';
 interface ParamsSectionProps {
   params: ParamsFields;
   onParamsChanged: (params: ParamsFields) => void;
+  countries: CountryInfo[];
+  stations: StationMetadataBasic[];
 }
 
 const parseRange = (textRange: string): Range[] => {
@@ -33,7 +38,7 @@ const parseRange = (textRange: string): Range[] => {
   })
 }
 
-export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) => {
+export const ParamsSection = ({ params, onParamsChanged, countries, stations }: ParamsSectionProps) => {
 
   const validateFields = (values: ParamsFields) => {
     const errors: Record<string, string> = {};
@@ -50,7 +55,6 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
       onParamsChanged(values);    //if no errors in the fields, set the new parameters
     }
   }
-
 
   return (
     <div className="params-section">
@@ -84,8 +88,8 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                 Select months for which you want data for.
               </div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
-                {Object.values(Months).map((month: string) => (
-                  <div className='col-3'>
+                {Object.values(Months).map((month: string, index: number) => (
+                  <div className='col-3' key={index}>
                     <Checkbox />{month}
                   </div>
                 ))}
@@ -100,25 +104,10 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                   <div className="mb-1">
                     Select countries to include.
                   </div>
-                  {/* <Autocomplete
-                    disablePortal
-                    id="combo-box-courses"
-                    onChange={(event: any, newValue: string | null) => {
-                      console.log(newValue)
-                      // const yearCheck = (values.years).replace(/\s/g, '');
-                    }}
-                    inputValue={'Canada'}
-                    onInputChange={(event, newInputValue) => {
-                      console.log(newInputValue)
-                    }}
-                    options={['Canada', 'USA']}
-                    sx={{ width: 300, borderColor: "#8f78a2", marginTop: '30px', }}
-                    renderInput={(params) =>
-                      <TextField {...params} label="Course" />}
-                  /> */}
                   <Autocomplete
-                    id="combo-box-demo"
-                    options={['Canada', 'USA']}
+                    multiple
+                    options={countries}
+                    getOptionLabel={(option) => `(${option.code}) ${toTitleCase(option.country)}`}
                     style={{ width: '50%' }}
                     renderInput={(params) => {
                       return (
@@ -197,7 +186,7 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                     <div className='pe-2 ps-2'>-</div>
                     <input type='text' className="text-field w-25" />
                     <div className='text-field-emphasis ps-2'>m</div>
-                    <button className='plus-button'>
+                    <button type='button' className='plus-button'>
                       <div>+</div>
                     </button>
                   </div>
@@ -212,9 +201,10 @@ export const ParamsSection = ({ params, onParamsChanged }: ParamsSectionProps) =
                 Search for and select stations by name.
               </div>
               <Autocomplete
-                id="combo-box-demo"
-                options={['Canada', 'USA']}
-                style={{ width: '30%' }}
+                multiple
+                options={stations}
+                getOptionLabel={(option) => `(${option.code}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
+                style={{ width: '50%' }}
                 renderInput={(params) => {
                   return (
                     <TextField

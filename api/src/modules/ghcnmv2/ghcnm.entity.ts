@@ -108,7 +108,7 @@ export class GHCNMAnnualCycleData {
   9.5: number | null;
 }
 
-@Entity({ schema: 'countrycodes' })
+@Entity({ schema: 'public', name: 'countrycodes' })
 export class GHCNMCountryCode {
   @PrimaryColumn('integer', { nullable: false, width: 3 })
   code: number;

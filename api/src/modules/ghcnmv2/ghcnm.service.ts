@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 import { Repository } from 'typeorm'
-import { GHCNMStationMetadataDto } from './ghcnm.dto'
+import { GHCNMCountryDto, GHCNMStationMetadataDto } from './ghcnm.dto'
 import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
 
 @Injectable()
@@ -31,6 +31,15 @@ export class GHCNMService {
       latitude: station.latitude,
       longitude: station.longitude,
       elevation: station.elevation
+    }));
+  }
+
+  public async getAllCountries(): Promise<GHCNMCountryDto[]> {
+    const countries = await this.countryRepository.find();
+    return countries.map(country => ({
+      country: country.country,
+      code: country.code,
+      supportedRegions: []
     }));
   }
 }
