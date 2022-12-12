@@ -13,30 +13,6 @@ interface ParamsSectionProps {
   stations: StationMetadataBasic[];
 }
 
-const parseRange = (textRange: string): Range[] => {
-  // const rangePattern = /(\d{0,4})(-)(\d{0,4})/g;
-  ///(\d{0})(?!=\d{4})(?!<=\d{0})(\d{4})(-)(\d{0})(?!=\d{4})(?!<=\d{0})(\d{4})/g
-  const rangePattern = /(\d{4})-(\d{4})/g
-  console.log(rangePattern.exec('1945-1958'));
-  const ranges = (textRange.replace(/\s/g, '')).split(',');  //remove whitespace and then split by comma
-  return ranges.map((range: string) => {
-    if (!range.includes('-')) {
-      return ({
-        single: parseInt(range),
-        start: null,
-        end: null
-      })
-    } else {
-      const matches = rangePattern.exec(range)
-      return ({
-        single: 0,
-        start: range[0] == '-' ? null : 0,
-        end: null
-      })
-    }
-  })
-}
-
 export const ParamsSection = ({ params, onParamsChanged, countries, stations }: ParamsSectionProps) => {
 
   const paramsChanged = (values: ParamsFields) => {
@@ -65,7 +41,33 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
-              <Field name='years' type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }} />
+              <input type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }}
+                onBlur={(e: any) => {
+                  const yearRanges: Range[] = [];
+                  const years = ((e.target.value).replace(/\s/g, '')).split(',');
+
+                  years.forEach((year: string) => {
+                    if ((year.length == 4) && (/\d{4}/.test(year))) {
+                      yearRanges.push({ single: parseInt(year), start: null, end: null});
+                    } else if ((year.length == 5) && ((/-\d{4}/.test(year)) || (/\d{4}-/.test(year)))) {
+                      yearRanges.push({ 
+                        single: null, 
+                        start: year[0] === '-' ? null : parseInt(year.slice(0, 4)), 
+                        end: year[4] === '-' ? null : parseInt(year.slice(1))
+                      });
+                    } else if ((year.length == 9) && (/\d{4}-\d{4}/.test(year))) {
+                      yearRanges.push({ single: null, start: parseInt(year.slice(0, 4)), end: parseInt(year.slice(5))});
+                    };
+
+                    if (yearRanges.length < years.length) {
+                      setErrors({ ...errors, 'years': 'Please enter valid ranges' });
+                    } else {
+                      const { years, ...fieldErrors } = errors;
+                      setErrors({...fieldErrors});
+                      setFieldValue('years', yearRanges);
+                    }
+              })}} />
+              {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
               {/* MONTHS PARAMS */}
               <div className='heading-2 mt-4'>
@@ -77,18 +79,18 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
               <div className='d-flex w-75 justify-content-start flex-wrap'>
                 <FieldArray name='months' render={(arrayHelpers) => (
                   Object.values(Months).map((month: string, index: number) => (
-                  <div className='col-3' key={index}>
-                    <Checkbox 
-                    value={month}
-                    onChange={(e: any) => {
-                      if (e.target.checked) {
-                        arrayHelpers.push(month)
-                      } else {
-                        arrayHelpers.remove(params.months.indexOf(month as Months));
-                      };
-                    }}/>{month}
-                  </div>
-                )))} />
+                    <div className='col-3' key={index}>
+                      <Checkbox
+                        value={month}
+                        onChange={(e: any) => {
+                          if (e.target.checked) {
+                            arrayHelpers.push(month)
+                          } else {
+                            arrayHelpers.remove(params.months.indexOf(month as Months));
+                          };
+                        }} />{month}
+                    </div>
+                  )))} />
               </div>
 
               {/* LOCATION PARAMS */}
@@ -112,7 +114,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           variant="outlined"
                           fullWidth
                         />
-                    )}}
+                      )
+                    }}
                   />
                 </div>
                 <div className='col-6'>
@@ -133,7 +136,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                           variant="outlined"
                           fullWidth
                         />
-                    )}}
+                      )
+                    }}
                   />
                 </div>
               </div>
@@ -206,7 +210,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
                       variant="outlined"
                       fullWidth
                     />
-                )}}
+                  )
+                }}
               />
 
               {/* DATA TYPE PARAMS */}
@@ -218,34 +223,34 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations }: 
               </div>
               <div className='d-flex w-100 justify-content-start'>
                 <div className='col-4'>
-                  <Checkbox value={'prcp'} 
-                  onChange={(e: any) => {
-                    if (e.target.checked) {
-                      setFieldValue('dataTypes', [...params.dataTypes, 'prcp']);
-                    } else {
-                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('prcp')));
-                    }
-                  }}/>Monthly Precipitation Readings
+                  <Checkbox value={'prcp'}
+                    onChange={(e: any) => {
+                      if (e.target.checked) {
+                        setFieldValue('dataTypes', [...params.dataTypes, 'prcp']);
+                      } else {
+                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('prcp')));
+                      }
+                    }} />Monthly Precipitation Readings
                 </div>
                 <div className='col-4'>
                   <Checkbox value={'anom'}
-                  onChange={(e: any) => {
-                    if (e.target.checked) {
-                      setFieldValue('dataTypes', [...params.dataTypes, 'anom']);
-                    } else {
-                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('anom')));
-                    }
-                  }}/>Monthly Precipitation Anomalies
+                    onChange={(e: any) => {
+                      if (e.target.checked) {
+                        setFieldValue('dataTypes', [...params.dataTypes, 'anom']);
+                      } else {
+                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('anom')));
+                      }
+                    }} />Monthly Precipitation Anomalies
                 </div>
                 <div className='col-4'>
                   <Checkbox value={'cycles'}
-                  onChange={(e: any) => {
-                    if (e.target.checked) {
-                      setFieldValue('dataTypes', [...params.dataTypes, 'cycles']);
-                    } else {
-                      setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('cycles')));
-                    }
-                  }}/>Statistics per Month
+                    onChange={(e: any) => {
+                      if (e.target.checked) {
+                        setFieldValue('dataTypes', [...params.dataTypes, 'cycles']);
+                      } else {
+                        setFieldValue('dataTypes', mutateArray(params.dataTypes, params.dataTypes.indexOf('cycles')));
+                      }
+                    }} />Statistics per Month
                 </div>
               </div>
             </>
