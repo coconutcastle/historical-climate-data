@@ -23,9 +23,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
   return (
     <div className="params-section">
-      <div className="heading-1 mb-4">
-        Parameters
-      </div>
+      <div className="heading-1 mb-4">Parameters</div>
       <Formik
         initialValues={{ ...params }}
         validate={paramsChanged}
@@ -71,9 +69,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
               {/* MONTHS PARAMS */}
               <div className='heading-2 mt-4'>Months</div>
-              <div className="mb-1">
-                Select months for which you want data for.
-              </div>
+              <div className="mb-1">Select months for which you want data for.</div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
                 <FieldArray name='months' render={(arrayHelpers) => (
                   Object.values(Months).map((month: string, index: number) => (
@@ -94,12 +90,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* LOCATION PARAMS */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-6'>
-                  <div className='heading-2'>
-                    Countries
-                  </div>
-                  <div className="mb-1">
-                    Select countries to include.
-                  </div>
+                  <div className='heading-2'>Countries</div>
+                  <div className="mb-1">Select countries to include.</div>
                   <Autocomplete
                     multiple
                     options={countries}
@@ -111,18 +103,13 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     style={{ width: '60%' }}
                     renderInput={(params) => {
                       return (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          fullWidth
-                        />
-                  )}} />
+                        <TextField {...params} variant="outlined" fullWidth />
+                      )
+                    }} />
                 </div>
                 <div className='col-6'>
                   <div className='heading-2'>Regions</div>
-                  <div className="mb-1">
-                    Region specifications are not available for all countries.
-                  </div>
+                  <div className="mb-1">Region specifications are not available for all countries.</div>
                   <Autocomplete
                     multiple
                     options={params.countries.length > 0 ?
@@ -134,12 +121,9 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     style={{ width: '60%' }}
                     renderInput={(params) => {
                       return (
-                        <TextField
-                          {...params}
-                          variant="outlined"
-                          fullWidth
-                        />
-                  )}} />
+                        <TextField {...params} variant="outlined" fullWidth />
+                      )
+                    }} />
                 </div>
               </div>
 
@@ -159,14 +143,14 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                       <div className='heading-2'>Elevation</div>
                       <div className="mb-1">Enter elevation range.</div>
                     </div>
-                    <button type='button' 
-                    onClick={(e) => 
-                      setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {
-                        latitude: { single: null, start: null, end: null },
-                        longitude: { single: null, start: null, end: null },
-                        elevation: { single: null, start: null, end: null }
-                      }))}
-                    className='plus-button d-flex align-self-center right-0'>
+                    <button type='button'
+                      onClick={(e) =>
+                        setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {
+                          latitude: { single: null, start: null, end: null },
+                          longitude: { single: null, start: null, end: null },
+                          elevation: { single: null, start: null, end: null }
+                        }))}
+                      className='plus-button d-flex align-self-center right-0'>
                       <div>+</div>
                     </button>
                   </div>
@@ -174,20 +158,18 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               </div>
               {(values.coordinates).map((range: CoordinateRange, index: number) => (
                 <CoordinatesInput
-                onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
-                  const newCoordinates = {...values.coordinates[index]};
-                  (newCoordinates[parameter])[bound] = parseInt(newValue);
-                  setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
-                }}
-                deleteRow={() => setFieldValue('coordinates', mutateArray(values.coordinates, index))}
-                key={index} />
+                  onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
+                    const newCoordinates = { ...values.coordinates[index] };
+                    (newCoordinates[parameter])[bound] = parseInt(newValue);
+                    setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
+                  }}
+                  deleteRow={() => setFieldValue('coordinates', mutateArray(values.coordinates, index))}
+                  key={index} />
               ))}
 
               {/* STATIONS PARAMS */}
               <div className='heading-2 mt-4'>Stations</div>
-              <div className="mb-1">
-                Search for and select stations by name.
-              </div>
+              <div className="mb-1">Search for and select stations by name.</div>
               <Autocomplete
                 multiple
                 options={stations}
@@ -199,18 +181,13 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 style={{ width: '50%' }}
                 renderInput={(params) => {
                   return (
-                    <TextField
-                      {...params}
-                      variant="outlined"
-                      fullWidth
-                    />
-              )}}/>
+                    <TextField {...params} variant="outlined" fullWidth />
+                  )
+                }} />
 
               {/* DATA TYPE PARAMS */}
               <div className='heading-2 mt-4'>Data Types</div>
-              <div className="mb-1">
-                Select what type of station data to download.
-              </div>
+              <div className="mb-1">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
                   ['prcp', 'anom', 'cycles'].map((type: string, index: number) => (
