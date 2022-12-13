@@ -12,6 +12,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/material": "^5.10.17",
+    "@popperjs/core": "^2.11.6",
     "autoprefixer": "^10.4.13",
     "bootstrap": "^5.2.3",
     "formik": "^2.2.9",
@@ -26,6 +27,7 @@
     "sass": "^1.56.2"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.2.6",
     "@types/isomorphic-fetch": "^0.0.36",
     "@types/react": "^18.0.22",
     "@types/react-dom": "^18.0.7",

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Form, Formik, FieldArray } from 'formik';
 import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../common/download.interface';
 import { toTitleCase, mutateArray } from '../../common/helpers';
@@ -5,6 +6,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { CoordinatesInput } from './CoordinatesInput';
+import { Tooltip } from 'bootstrap';
+import paramHints from '../../texts/download-hints.json';
 
 interface ParamsSectionProps {
   params: ParamsFields;
@@ -21,6 +24,17 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
     onParamsChanged(values);  // because the field types are so irregular (not default input options), it's easier to handle them individually in the selectors themselves
   };
 
+  useEffect(() => {     // initialize all tooltips on first render
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="tooltip"]'));
+    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl: any) {
+      return new Tooltip(tooltipTriggerEl, { 
+        placement: 'right', 
+        title: paramHints[tooltipTriggerEl.id as keyof typeof paramHints],
+        delay: { "show": 700, "hide": 100 },
+      })
+    });
+  }, []);
+
   return (
     <div className="params-section">
       <div className="heading-1 mb-4">Parameters</div>
@@ -33,7 +47,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
             <>
 
               {/* =========== YEARS PARAMS =========== */}
-              <div className="heading-2">Years</div>
+              <div className="heading-2">
+                Years
+                <i id='hint-years' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+              </div>
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
@@ -68,14 +85,16 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
               {/* =========== MONTHS PARAMS =========== */}
-              <div className='heading-2 mt-4'>Months</div>
+              <div className='heading-2 mt-4'>
+                Months
+                <i id='hint-months' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+              </div>
               <div className="mb-1">Select months for which you want data for.</div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
                 <FieldArray name='months' render={(arrayHelpers) => (
                   Object.values(Months).map((month: string, index: number) => (
                     <div className='col-3' key={index}>
-                      <Checkbox
-                        value={month}
+                      <Checkbox value={month}
                         onChange={(e: any) => {
                           if (e.target.checked) {
                             arrayHelpers.push(month)
@@ -92,7 +111,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== COUNTRY PARAMS =========== */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-6'>
-                  <div className='heading-2'>Countries</div>
+                  <div className='heading-2'>
+                    Countries
+                    <i id='hint-countries' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                  </div>
                   <div className="mb-1">Select countries to include.</div>
                   <Autocomplete
                     multiple
@@ -112,7 +134,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
                 {/* =========== REGION PARAMS =========== */}
                 <div className='col-6'>
-                  <div className='heading-2'>Regions</div>
+                  <div className='heading-2'>
+                    Regions
+                    <i id='hint-regions' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                  </div>
                   <div className="mb-1">Region specifications are not available for all countries.</div>
                   <Autocomplete
                     multiple
@@ -134,17 +159,26 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== COORDINATES PARAMS =========== */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-4'>
-                  <div className='heading-2'>Latitude</div>
+                  <div className='heading-2'>
+                    Latitude
+                    <i id='hint-latitude' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                  </div>
                   <div className="mb-1">Enter latitude range.</div>
                 </div>
                 <div className='col-4'>
-                  <div className='heading-2'>Longitude</div>
+                  <div className='heading-2'>
+                    Longitude
+                    <i id='hint-longitude' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                  </div>
                   <div className="mb-1">Enter longitude range.</div>
                 </div>
                 <div className='col-4'>
                   <div className='d-flex flex-row justify-content-between'>
                     <div>
-                      <div className='heading-2'>Elevation</div>
+                      <div className='heading-2'>
+                        Elevation
+                        <i id='hint-elevation' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                      </div>
                       <div className="mb-1">Enter elevation range.</div>
                     </div>
                     <button type='button'
@@ -172,7 +206,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               ))}
 
               {/* =========== STATIONS PARAMS =========== */}
-              <div className='heading-2 mt-4'>Stations</div>
+              <div className='heading-2 mt-4'>
+                Stations
+                <i id='hint-stations' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+              </div>
               <div className="mb-1">Search for and select stations by name.</div>
               <Autocomplete
                 multiple
@@ -190,7 +227,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 }} />
 
               {/* =========== DATA TYPE PARAMS =========== */}
-              <div className='heading-2 mt-4'>Data Types</div>
+              <div className='heading-2 mt-4'>
+                Data Types
+                <i id='hint-dataTypes' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+              </div>
               <div className="mb-1">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
@@ -208,7 +248,6 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     </div>
                   )))} />
               </div>
-
             </>
           </Form>
         )}

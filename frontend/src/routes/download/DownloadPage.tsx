@@ -43,14 +43,19 @@ export default function DownloadPage() {
   });
 
   return (
-    <div className="data-content" 
-    style={{ height: (isLoadingCountries || isLoadingStations || isLoadingRegions) ? '100vh' : '100%' }} >
+    <div className="data-content"
+      style={{ height: !(dataCountries && dataStations && dataRegions) ? '100vh' : '100%' }} >
       <div className='title'>
         Historical Precipitation Data Explorer
       </div>
       <hr style={{ width: "100%" }} />
       <div className="d-flex flex-row align-items-start">
-        <div className='params-format-wrapper'>
+        <div className='params-format-wrapper'><>
+          {(errorCountries || errorStations || errorRegions) && (
+            <div className='params-section heading-1'>
+              There was an error loading the data.
+            </div>
+          )}
           {(isLoadingCountries || isLoadingStations || isLoadingRegions) && (
             <div className='params-section heading-1'>
               <Spinner animation="border" /> Loading...
@@ -71,8 +76,21 @@ export default function DownloadPage() {
               <FormatSection />
             </>
           )}
-        </div>
+        </></div>
         <SelectionSection params={params} />
+      </div>
+      <div className="d-flex flex-row justify-content-start">
+        <button className='big-button'>
+          <div className='button-text'>
+            DOWNLOAD
+          </div>
+        </button>
+        <button className='big-button ms-3'>
+          <div className='button-text'>
+            VISUALIZE
+          </div>
+          <i className='material-icons'>play_arrow</i>
+        </button>
       </div>
     </div>
   )

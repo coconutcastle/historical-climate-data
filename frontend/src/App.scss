@@ -14,7 +14,7 @@ $custom-colors: (
   "primary": $primary
 );
 
-$theme-colors: map-merge($theme-colors, $custom-colors);
+$theme-colors: map-merge($theme-colors, $custom-colors); // override default bootstrap colours
 @import "bootstrap/scss/bootstrap";
 
 #root {
@@ -29,9 +29,9 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
 
 .data-content {
   width: 100%;
-  height: 100%;
+  height: 100%; //ended up hacking a way to set the height if 100% < viewport... dunno if its the best way though
   background-color: #F5F5F5;
-  padding-top: 2rem;    //for some reason shorthand isn't working
+  padding-top: 2rem; //for some reason shorthand isn't working
   padding-right: 4rem;
   padding-bottom: 2rem;
   padding-left: 4rem;
@@ -66,12 +66,16 @@ hr {
   font-family: "Roboto Condensed";
   font-weight: 700;
   font-size: 35px;
+  display: flex;
+  align-items: center;
 }
 
 .heading-2 {
   font-family: "Roboto Condensed";
   font-weight: 700;
   font-size: 24px;
+  display: flex;
+  align-items: center;
 }
 
 
@@ -82,6 +86,7 @@ hr {
   justify-items: start;
   height: 50px;
   box-sizing: unset;
+
   .navbar-collapse {
     .nav-item {
       margin-left: 20px;
@@ -140,7 +145,7 @@ hr {
 
 button:hover {
   opacity: 80%;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
 }
 
 .plus-button {
@@ -151,6 +156,7 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
+
   div {
     color: white;
     font-size: 16px;
@@ -183,7 +189,6 @@ button:hover {
 .text-field {
   height: 35px;
   padding: 8px;
-  // margin-top: 15px;
   border: none;
   background-color: #E8E8E8;
 }
@@ -202,4 +207,22 @@ button:hover {
   font-size: 10px;
   color: red;
   text-align: left;
+}
+
+i.help-icon {
+  color: #929292;
+  height: 20px;
+  width: 30px;
+  transform: scale(0.8);
+  margin-left: 8px;
+}
+
+.tooltip {    // overriding bootstrap tooltip because custom classes aren't working ahahah
+  max-width: 500px;
+
+  div.tooltip-inner {
+    max-width: 500px;
+    padding: 10px;
+    text-align: left;
+  }
 }
