@@ -4,7 +4,7 @@ import { FormatSection } from "./FormatSection";
 import { useState } from "react";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { getAllCountries, getAllStationMetadata, getAllRegions } from '../../services/GHCNMService';
+import { getAllCountries, getAllStationMetadata, getAllRegions, getAllBasicStationMetadata } from '../../services/GHCNMService';
 import { ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
@@ -31,9 +31,9 @@ export default function DownloadPage() {
   });
 
   const { data: dataStations, error: errorStations, isLoading: isLoadingStations } = useQuery({
-    queryKey: [QueryKeys.STATIONS],
+    queryKey: [QueryKeys.BASIC_STATIONS],
     ...ReactQueryConfig,
-    queryFn: () => getAllStationMetadata()
+    queryFn: () => getAllBasicStationMetadata()
   });
 
   const { data: dataRegions, error: errorRegions, isLoading: isLoadingRegions } = useQuery({
@@ -67,10 +67,7 @@ export default function DownloadPage() {
                 params={params}
                 onParamsChanged={(newParams: ParamsFields) => setParams(newParams)}
                 countries={dataCountries}
-                stations={dataStations.map((station: StationMetadata) => ({
-                  code: station.code,
-                  name: station.name
-                }))}
+                stations={dataStations}
                 regions={dataRegions.map((region: RawRegions) => region.region)}
               />
               <FormatSection />

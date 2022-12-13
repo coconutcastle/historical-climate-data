@@ -11,6 +11,12 @@ export class GHCNMStationMetadataDto {
   elevation: number | null;
 }
 
+//used for situations where you need to get a lot of stations but don't need all the data
+export class GHCNMBasicStationMetadataDto {
+  code: string;
+  name: string | null;
+}
+
 // full station data
 export class GHCNMStationDataDto extends GHCNMStationMetadataDto {
   monthly: GHCNMMonthlyDataDto[];

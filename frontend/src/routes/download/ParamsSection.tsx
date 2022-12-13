@@ -7,7 +7,7 @@ import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { CoordinatesInput } from './CoordinatesInput';
 import { Tooltip } from 'bootstrap';
-import paramHints from '../../texts/download-hints.json';
+import paramHints from '../../text/download-hints.json';
 
 interface ParamsSectionProps {
   params: ParamsFields;
