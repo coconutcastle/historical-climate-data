@@ -4,7 +4,7 @@ import { FormatSection } from "./FormatSection";
 import { useState } from "react";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { getAllCountries, getAllStationMetadata, getAllRegions } from '../../GHCNMService';
+import { getAllCountries, getAllStationMetadata, getAllRegions } from '../../services/GHCNMService';
 import { ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
@@ -16,7 +16,7 @@ export default function DownloadPage() {
     countries: [],
     regions: [],
     coordinates: [{
-      latitude: { single: null, start: null, end: null },
+      latitude: { single: null, start: null, end: null },   //set initial value for coordinates so users can see the coordinate input box
       longitude: { single: null, start: null, end: null },
       elevation: { single: null, start: null, end: null },
     }],
@@ -43,7 +43,8 @@ export default function DownloadPage() {
   });
 
   return (
-    <div className="data-content">
+    <div className="data-content" 
+    style={{ height: (isLoadingCountries || isLoadingStations || isLoadingRegions) ? '100vh' : '100%' }} >
       <div className='title'>
         Historical Precipitation Data Explorer
       </div>

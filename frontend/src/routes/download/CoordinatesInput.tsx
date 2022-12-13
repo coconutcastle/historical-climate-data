@@ -4,6 +4,7 @@ interface CoordinatesInputProps {
   deleteRow: () => void;
 }
 
+// validating and updating all input changes on blur as otherwise it's too slow and laggy
 export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: CoordinatesInputProps) => {
 
   return (
@@ -33,21 +34,20 @@ export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: Coordin
         </div>
       </div>
       <div className='col-4'>
-        <div className='d-flex flex-row justify-content-between'>
-          <div className='d-flex flex-row align-items-center'>
-            <input type='text'
-              onBlur={(e) => onCoordinateInputChange('elevation', 'start', e.target.value)}
-              className="text-field w-25" />
-            <div className='pe-2 ps-2'>-</div>
-            <input type='text'
-              onBlur={(e) => onCoordinateInputChange('elevation', 'end', e.target.value)}
-              className="text-field w-25" />
-            <div className='text-field-emphasis ps-2'>m</div>
-          </div>
-          <button type='button' className='plus-button d-flex align-self-center right-0' onClick={(e) => deleteRow()}>
+        <div className='d-flex flex-row align-items-center'>
+          <input type='text'
+            onBlur={(e) => onCoordinateInputChange('elevation', 'start', e.target.value)}
+            className="text-field w-25" />
+          <div className='pe-2 ps-2'>-</div>
+          <input type='text'
+            onBlur={(e) => onCoordinateInputChange('elevation', 'end', e.target.value)}
+            className="text-field w-25" />
+          <div className='text-field-emphasis ps-2'>m</div>
+          <button type='button' className='plus-button ms-auto' onClick={(e) => deleteRow()}>
             <div>-</div>
           </button>
         </div>
+
       </div>
     </div>
   )

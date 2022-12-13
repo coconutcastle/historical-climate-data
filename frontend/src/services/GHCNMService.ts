@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import { CountryInfo, RawRegions, StationMetadata } from './common/download.interface';
+import { CountryInfo, RawRegions, StationMetadata } from '../common/download.interface';
 
 const rejectOrJson = (res: Response) => {
   if (!res.ok) {

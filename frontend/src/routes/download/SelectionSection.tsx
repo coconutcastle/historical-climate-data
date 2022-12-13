@@ -93,7 +93,6 @@ export const SelectionSection = ({ params }: SelectionSectionProps) => {
           </div>
         ))}
       </div>
-
     </div>
   )
 }

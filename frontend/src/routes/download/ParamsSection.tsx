@@ -16,9 +16,9 @@ interface ParamsSectionProps {
 
 export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
 
-  const paramsChanged = (values: ParamsFields) => {
+  const paramsChanged = (values: ParamsFields) => { // setting params here interferes with error checking
     console.log(values);
-    onParamsChanged(values);
+    onParamsChanged(values);  // because the field types are so irregular (not default input options), it's easier to handle them individually in the selectors themselves
   };
 
   return (
@@ -27,47 +27,47 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
       <Formik
         initialValues={{ ...params }}
         validate={paramsChanged}
-        onSubmit={() => {
-          console.log('submitted')
-        }}>
+        onSubmit={() => console.log('submitted')}>
         {({ errors, values, setFieldValue, setErrors }) => (
           <Form>
             <>
-              {/* YEARS PARAMS */}
+
+              {/* =========== YEARS PARAMS =========== */}
               <div className="heading-2">Years</div>
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
               <input type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }}
-                onBlur={(e: any) => {
+                onBlur={(e: any) => {   // validate and update on blur because it's too slow otherwise
                   const yearRanges: Range[] = [];
-                  const years = ((e.target.value).replace(/\s/g, '')).split(',');
+                  const years = ((e.target.value).replace(/\s/g, '')).split(',');   // strip whitespace and split by comma
 
-                  years.forEach((year: string) => {
-                    if ((year.length == 4) && (/\d{4}/.test(year))) {
-                      yearRanges.push({ single: parseInt(year), start: null, end: null });
-                    } else if ((year.length == 5) && ((/-\d{4}/.test(year)) || (/\d{4}-/.test(year)))) {
+                  // theoretically I guess this could be done in a single regex but it's too complicated... believe me I tried :'(
+                  years.forEach((yearRange: string) => {
+                    if ((yearRange.length == 4) && (/\d{4}/.test(yearRange))) {   // case 1: single year
+                      yearRanges.push({ single: parseInt(yearRange), start: null, end: null });
+                    } else if ((yearRange.length == 5) && ((/-\d{4}/.test(yearRange)) || (/\d{4}-/.test(yearRange)))) {    // case 2: single bound year range (-year or year-)
                       yearRanges.push({
                         single: null,
-                        start: year[0] === '-' ? null : parseInt(year.slice(0, 4)),
-                        end: year[4] === '-' ? null : parseInt(year.slice(1))
+                        start: yearRange[0] === '-' ? null : parseInt(yearRange.slice(0, 4)),   // case 2a: -year
+                        end: yearRange[4] === '-' ? null : parseInt(yearRange.slice(1))         // case 2b: year-
                       });
-                    } else if ((year.length == 9) && (/\d{4}-\d{4}/.test(year))) {
-                      yearRanges.push({ single: null, start: parseInt(year.slice(0, 4)), end: parseInt(year.slice(5)) });
+                    } else if ((yearRange.length == 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
+                      yearRanges.push({ single: null, start: parseInt(yearRange.slice(0, 4)), end: parseInt(yearRange.slice(5)) });
                     };
 
-                    if (yearRanges.length < years.length) {
+                    if (yearRanges.length < years.length) {   // set error if user has entered ANY invalid range. need to set errors here as otherwise overwritten by validate function
                       setErrors({ ...errors, 'years': 'Please enter valid ranges' });
                     } else {
                       const { years, ...fieldErrors } = errors;
-                      setErrors({ ...fieldErrors });
+                      setErrors({ ...fieldErrors });    // if ranges are all valid, remove the errors for years
                       setFieldValue('years', yearRanges);
                     }
                   })
                 }} />
               {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
-              {/* MONTHS PARAMS */}
+              {/* =========== MONTHS PARAMS =========== */}
               <div className='heading-2 mt-4'>Months</div>
               <div className="mb-1">Select months for which you want data for.</div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
@@ -87,7 +87,9 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                   )))} />
               </div>
 
-              {/* LOCATION PARAMS */}
+              {/* =============== LOCATION PARAMS =============== */}
+
+              {/* =========== COUNTRY PARAMS =========== */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-6'>
                   <div className='heading-2'>Countries</div>
@@ -107,6 +109,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                       )
                     }} />
                 </div>
+
+                {/* =========== REGION PARAMS =========== */}
                 <div className='col-6'>
                   <div className='heading-2'>Regions</div>
                   <div className="mb-1">Region specifications are not available for all countries.</div>
@@ -127,7 +131,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 </div>
               </div>
 
-              {/* COORDINATES PARAMS */}
+              {/* =========== COORDINATES PARAMS =========== */}
               <div className='d-flex flex-row mt-4'>
                 <div className='col-4'>
                   <div className='heading-2'>Latitude</div>
@@ -145,7 +149,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     </div>
                     <button type='button'
                       onClick={(e) =>
-                        setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {
+                        setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {   // add new empty coordinate input
                           latitude: { single: null, start: null, end: null },
                           longitude: { single: null, start: null, end: null },
                           elevation: { single: null, start: null, end: null }
@@ -167,7 +171,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                   key={index} />
               ))}
 
-              {/* STATIONS PARAMS */}
+              {/* =========== STATIONS PARAMS =========== */}
               <div className='heading-2 mt-4'>Stations</div>
               <div className="mb-1">Search for and select stations by name.</div>
               <Autocomplete
@@ -185,7 +189,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                   )
                 }} />
 
-              {/* DATA TYPE PARAMS */}
+              {/* =========== DATA TYPE PARAMS =========== */}
               <div className='heading-2 mt-4'>Data Types</div>
               <div className="mb-1">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
@@ -204,6 +208,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     </div>
                   )))} />
               </div>
+
             </>
           </Form>
         )}
