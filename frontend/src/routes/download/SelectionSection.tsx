@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range } from "../../common/download.interface"
+import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range, DataTypeText } from "../../common/download.interface"
 import { toTitleCase } from "../../common/helpers";
 
 interface SelectionSectionProps {
@@ -47,10 +47,10 @@ export const SelectionSection = ({ params }: SelectionSectionProps) => {
         stringArray = params.regions.map((region: string) => region.length == 2 ? region : toTitleCase(region));
         break;
       case 'stations':
-        stringArray = params.station.map((station: StationMetadataBasic) => `(${station.code})${station.name === null ? '' : ' ' + toTitleCase(station.name)}`);
+        stringArray = params.stations.map((station: StationMetadataBasic) => `(${station.code})${station.name === null ? '' : ' ' + toTitleCase(station.name)}`);
         break;
       case 'dataTypes':
-        stringArray = params.dataTypes;
+        stringArray = params.dataTypes.map((data) => DataTypeText[data]);
         break;
       default:
         console.log('bad type');

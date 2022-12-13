@@ -40,7 +40,7 @@ export interface ParamsFields {
   countries: CountryInfo[];
   regions: string[];
   coordinates: CoordinateRange[];
-  station: StationMetadataBasic[];
+  stations: StationMetadataBasic[];
   dataTypes: DataTypes[];
 }
 

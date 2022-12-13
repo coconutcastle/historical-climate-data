@@ -20,7 +20,7 @@ export default function DownloadPage() {
       longitude: { single: null, start: null, end: null },
       elevation: { single: null, start: null, end: null },
     }],
-    station: [],
+    stations: [],
     dataTypes: []
   });
 
@@ -58,7 +58,7 @@ export default function DownloadPage() {
           )}
           {(isLoadingCountries || isLoadingStations || isLoadingRegions) && (
             <div className='params-section heading-1'>
-              <Spinner animation="border" /> Loading...
+              <Spinner animation="border" className='me-4' /> Loading...
             </div>
           )}
           {(dataCountries && dataStations && dataRegions) && (
@@ -79,19 +79,22 @@ export default function DownloadPage() {
         </></div>
         <SelectionSection params={params} />
       </div>
-      <div className="d-flex flex-row justify-content-start">
-        <button className='big-button'>
-          <div className='button-text'>
-            DOWNLOAD
-          </div>
-        </button>
-        <button className='big-button ms-3'>
-          <div className='button-text'>
-            VISUALIZE
-          </div>
-          <i className='material-icons'>play_arrow</i>
-        </button>
-      </div>
+      {(dataCountries && dataStations && dataRegions) && (
+        <div className="d-flex flex-row justify-content-start">
+          <button className='big-button'>
+            <div className='button-text'>
+              DOWNLOAD
+            </div>
+          </button>
+          <button className='big-button ms-3'>
+            <div className='button-text'>
+              VISUALIZE
+            </div>
+            <i className='material-icons'>play_arrow</i>
+          </button>
+        </div>
+      )}
+
     </div>
   )
 }
