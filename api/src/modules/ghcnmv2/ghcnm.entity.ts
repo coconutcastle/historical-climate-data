@@ -27,7 +27,7 @@ export class GHCNMStationMetadata {
   elevation: number | null;
 }
 
-@Entity({ schema: 'anomalies' })
+@Entity({ schema: 'public', name: 'anomalies' })
 export class GHCNMAnomalyData {
   @PrimaryColumn('character varying', { nullable: false })
   station: string;
@@ -72,13 +72,13 @@ export class GHCNMAnomalyData {
   december: number | null;
 }
 
-@Entity({ schema: 'prcp' })
+@Entity({ schema: 'public', name: 'prcp' })
 export class GHCNMPrecipitationData extends GHCNMAnomalyData {
   @Column('bigint', { nullable: false, width: 16 })
   identifier: string;
 }
 
-@Entity({ schema: 'annualcycles' })
+@Entity({ schema: 'public', name: 'annualcycles' })
 export class GHCNMAnnualCycleData {
   @PrimaryColumn('character varying', { nullable: false })
   station: string;

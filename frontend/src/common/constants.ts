@@ -4,11 +4,14 @@ export enum QueryKeys {
   BASIC_STATIONS = 'basic-stations',
   COUNTRIES = 'countries',
   REGIONS = 'regions',
+  DOWNLOAD = 'download'
 }
 
 export const ReactQueryConfig = {
   refetchOnWindowFocus: false,
   refetchIntervalInBackground: false,
+  refetchOnMount: false,
+  retry: 3,
   staleTime: Infinity,    // nothing but GET requests so it's not like the data will become out of date...
 }
 

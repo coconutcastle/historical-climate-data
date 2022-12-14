@@ -1,8 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { buildWhereConditions } from 'src/common/helpers'
 import { Repository } from 'typeorm'
-import { GHCNMCountryDto, GHCNMStationMetadataDto, GHCNMBasicStationMetadataDto } from './ghcnm.dto'
+import { GHCNMCountryDto, GHCNMStationMetadataDto, GHCNMBasicStationMetadataDto, GHCNMStationDataDto } from './ghcnm.dto'
 import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
+import { CoordinateRange, DataTypes, downloadParams, GHCNMBasicStationMetadata, monthType, Range } from './ghcnm.interface'
+import { ALL_MONTHS } from 'src/common/constants';
 
 @Injectable()
 export class GHCNMService {
@@ -18,7 +21,7 @@ export class GHCNMService {
     private readonly annualCycleRepository: Repository<GHCNMAnnualCycleData>,
     @InjectRepository(GHCNMCountryCode)
     private readonly countryRepository: Repository<GHCNMCountryCode>
-  ) {}
+  ) { }
 
   public async getAllStationMetadata(): Promise<GHCNMStationMetadataDto[]> {
     const metadata = await this.stationMetadataRepository.find();
@@ -40,7 +43,7 @@ export class GHCNMService {
       code: station.station,
       name: station.name
     }));
-  } 
+  }
 
   public async getAllCountries(): Promise<GHCNMCountryDto[]> {
     const countries = await this.countryRepository.find();
@@ -63,10 +66,94 @@ export class GHCNMService {
 
   public async getAllUniqueRegions(): Promise<string[]> {
     return this.stationMetadataRepository
-    .createQueryBuilder()
-    .select('region')
-    .distinct(true)
-    .where('region IS NOT null')
-    .getRawMany();
+      .createQueryBuilder()
+      .select('region')
+      .distinct(true)
+      .where('region IS NOT null')
+      .getRawMany();
+  }
+
+  public async getStationMetadata(
+    format: 'metadata' | 'withAllData' | 'basic',  // return metadata, basic station info or full data for each station
+    stationCodes: string[],
+    countries: string[],
+    regions: string[],
+    coordinates: CoordinateRange[]
+  ): Promise<GHCNMStationMetadataDto[] | GHCNMStationDataDto[] | GHCNMBasicStationMetadataDto[]> {
+
+    const [whereConditions, whereParameters] = buildWhereConditions({ countries, regions, coordinates });
+    var selectColumns: string[] = [];
+
+    console.log('where ', Object.values(whereConditions).join(' AND '))
+    console.log(whereParameters)
+
+    switch (format) {
+      case 'metadata':
+        // selectColumns = 'station, name, region, country, region, latitude, longitude, elevation';
+        selectColumns = ['station', 'name', 'region', 'country', 'region', 'latitude', 'longitude', 'elevation'];
+        break;
+      case 'withAllData':
+        selectColumns = [];
+        break;
+      case 'basic':
+        selectColumns = ['station', 'name'];
+        break;
+      default:
+        console.log('bad format type');
+    };
+
+    return this.stationMetadataRepository.createQueryBuilder()
+      .select(selectColumns)
+      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .getRawMany();
+  }
+
+  // assumes you already have a list of filtered stations
+  public async getMonthlyData(type: 'prcp' | 'anom', years: Range[], months: monthType[], stations: string[]): Promise<any[]> {
+    const [whereConditions, whereParameters] = buildWhereConditions({ years, stations });
+
+    const repository = type === 'prcp' ? this.precipitationRepository : this.anomalyRepository;
+
+    // if no specific months are selected, don't filter on months
+    const selectMonths: string[] = months.length === 0 ? ALL_MONTHS : months;
+    const selectColumns: string[] = ['station', 'year', ...selectMonths];
+
+    return repository.createQueryBuilder()
+      .select(selectColumns.join(','))
+      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .getRawMany();
+  }
+
+  public async getCyclesData(months: monthType[], stations: string[]): Promise<any[]> {
+    const [whereConditions, whereParameters] = buildWhereConditions({ months, stations });
+
+    // console.log('where ', whereConditions)
+    // console.log(whereParameters)
+
+    return this.annualCycleRepository.createQueryBuilder()
+      .select('*')
+      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .getRawMany();
+  }
+
+  // option to return data by station (return array of full metadata + prcp, anom, and cycles cycle),
+  // or to get just the raw numerical data (return object containing raw prcp, anom, and cycles daa)
+  public async getDownloadData(byStation: boolean, params: downloadParams): Promise<any> {
+    if (byStation) {
+
+    }
+    console.log(params)
+
+    const filteredStations: GHCNMBasicStationMetadataDto[] = await this.getStationMetadata('basic', params.stations, params.countries, params.regions, params.coordinates);
+    const validStations: string[] = filteredStations.map((station: any) => station.station);
+    params.stations.forEach((station: string) => {{
+      if (!validStations.includes(station)) { validStations.push(station) }
+    }});
+
+    return {
+      prcp: params.dataTypes.includes('prcp') ? await this.getMonthlyData('prcp', params.years, params.months, validStations) : [],
+      anom: params.dataTypes.includes('anom') ? await await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
+      cycles: params.dataTypes.includes('cycles') ? await this.getCyclesData(params.months, validStations) : [],
+    };
   }
 }

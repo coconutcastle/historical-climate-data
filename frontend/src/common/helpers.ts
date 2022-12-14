@@ -1,4 +1,4 @@
-export function toTitleCase(str: string) {
+export function toTitleCase(str: string): string {
   return str.replace(
     /\w\S*/g,
     function(txt) {
@@ -16,3 +16,9 @@ export function mutateArray(arr: any[], index: number, newItem?: any): any[] {
   };
   return newArray;
 }
+
+export function encodeData(data: any): string {
+  return Object.keys(data).map(function(key) {
+      return [key, data[key]].map(encodeURIComponent).join("=");
+  }).join("&");
+}   

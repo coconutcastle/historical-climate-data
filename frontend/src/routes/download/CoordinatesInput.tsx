@@ -43,7 +43,7 @@ export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: Coordin
             onBlur={(e) => onCoordinateInputChange('elevation', 'end', e.target.value)}
             className="text-field w-25" />
           <div className='text-field-emphasis ps-2'>m</div>
-          <button type='button' className='plus-button ms-auto' onClick={(e) => deleteRow()}>
+          <button id='hint-removeRange' toggle-hint="tooltip" type='button' className='plus-button ms-auto' onClick={(e) => deleteRow()}>
             <div>-</div>
           </button>
         </div>

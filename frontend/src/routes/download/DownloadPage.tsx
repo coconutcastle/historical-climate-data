@@ -1,11 +1,11 @@
 import { ParamsSection } from "./ParamsSection"
 import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { getAllCountries, getAllStationMetadata, getAllRegions, getAllBasicStationMetadata } from '../../services/GHCNMService';
-import { ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
+import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
+import { ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
@@ -42,6 +42,16 @@ export default function DownloadPage() {
     queryFn: () => getAllRegions()
   });
 
+  const { data: downloadData, error: errorDownloadData, isLoading: isLoadingDownloadData, refetch: refetchDownloadData } = useQuery({
+    queryKey: [QueryKeys.DOWNLOAD],
+    ...ReactQueryConfig,
+    enabled: false,
+    queryFn: () => getDownloadData(false, params)
+  });
+
+  // console.log(dataCountries)
+  console.log(downloadData)
+
   return (
     <div className="data-content"
       style={{ height: !(dataCountries && dataStations && dataRegions) ? '100vh' : '100%' }} >
@@ -77,13 +87,18 @@ export default function DownloadPage() {
         <SelectionSection params={params} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
-        <div className="d-flex flex-row justify-content-start">
-          <button className='big-button'>
+        <div className="d-flex flex-row justify-content-center pt-3 pb-5" style={{ width: '65%' }} >
+          <button className='big-button' style={{ width: '250px'}}
+            onClick={(e) => {
+              refetchDownloadData();
+              // console.log(encodeData(params))
+            }}>
             <div className='button-text'>
               DOWNLOAD
             </div>
+            <i className='material-icons help-icon'>download_outlined</i>
           </button>
-          <button className='big-button ms-3'>
+          <button className='big-button ms-3' style={{ width: '250px'}}>
             <div className='button-text'>
               VISUALIZE
             </div>
@@ -91,7 +106,6 @@ export default function DownloadPage() {
           </button>
         </div>
       )}
-
     </div>
   )
 }

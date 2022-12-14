@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch';
-import { CountryInfo, RawRegions, StationMetadata, StationMetadataBasic } from '../common/download.interface';
+import { CountryInfo, ParamsFields, RawRegions, StationMetadata, StationMetadataBasic } from '../common/download.interface';
 import { getHeaders } from '../common/constants';
+import { encodeData } from '../common/helpers';
+import axios from 'axios';
 
 const rejectOrJson = (res: Response) => {
   if (!res.ok) {
@@ -32,4 +34,20 @@ export async function getAllRegions(): Promise<RawRegions[]> {
   return fetch('http://localhost:9999/api/ghcnmv2/regions', {
     headers: getHeaders
   }).then(rejectOrJson)
+}
+
+//assume all arrays actually hold relevant data
+// export async function getDownloadData(byStation: boolean, dataParams: ParamsFields): Promise<any> {
+//   return fetch('http://localhost:9999/api/ghcnmv2/download?' + encodeData({ byStation, ...dataParams }), {
+//     headers: getHeaders
+//   }).then(rejectOrJson)
+// }
+export async function getDownloadData(byStation: boolean, dataParams: ParamsFields): Promise<any> {
+  return axios.get('http://localhost:9999/api/ghcnmv2/download', {
+    headers: getHeaders,
+    params: {
+      byStation,
+      ...dataParams
+    }
+  }).then(res => res.data);
 }

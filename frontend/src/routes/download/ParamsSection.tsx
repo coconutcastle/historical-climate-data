@@ -27,13 +27,17 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
   useEffect(() => {     // initialize all tooltips on first render
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="tooltip"]'));
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl: any) {
-      return new Tooltip(tooltipTriggerEl, { 
-        placement: 'right', 
+      return new Tooltip(tooltipTriggerEl, {
+        placement: 'right',
         title: paramHints[tooltipTriggerEl.id as keyof typeof paramHints],
-        delay: { "show": 700, "hide": 100 },
+        delay: { "show": 900, "hide": 100 },
       })
     });
   }, []);
+
+  // TODO: add error handling to make sure that:
+  // start range always before end range
+  // range numbers are actually numbers
 
   return (
     <div className="params-section">
@@ -182,6 +186,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                       <div className="mb-1">Enter elevation range.</div>
                     </div>
                     <button type='button'
+                      id='hint-addRange' toggle-hint="tooltip"
                       onClick={(e) =>
                         setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {   // add new empty coordinate input
                           latitude: { single: null, start: null, end: null },
