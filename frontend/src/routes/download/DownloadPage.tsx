@@ -1,15 +1,17 @@
+import { useEffect, useState } from "react";
 import { ParamsSection } from "./ParamsSection"
 import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
-import { useCallback, useState } from "react";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
+import { downloadCSV } from "./formatDownloadUtils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
+  const [doDownload, setDoDownload] = useState<boolean>(false);
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -50,7 +52,21 @@ export default function DownloadPage() {
     queryFn: () => getDownloadData(false, params)
   });
 
-  // console.log(dataCountries)
+  useEffect(() => {
+    if (doDownload && errorDownloadData) {
+      setDownloadError('Download failed');
+      setDoDownload(false);
+    }
+    if (doDownload && downloadData) {
+      Object.values(downloadData).forEach((download: any) => {
+        if (download.length > 0) {
+          downloadCSV(download, 'test')
+        }
+      });
+      setDoDownload(false);
+    }
+  }, [isLoadingDownloadData, errorDownloadData, doDownload]);
+
   console.log(downloadData)
 
   return (
@@ -95,7 +111,8 @@ export default function DownloadPage() {
                 if (params.dataTypes.length === 0) {
                   setDownloadError('Please select data type');
                 } else {
-                  setDownloadError(undefined)
+                  setDownloadError(undefined);
+                  setDoDownload(true);
                   refetchDownloadData();
                 }
               }}>

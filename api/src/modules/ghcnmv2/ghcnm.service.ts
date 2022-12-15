@@ -4,7 +4,7 @@ import { buildWhereConditions } from 'src/common/helpers'
 import { Repository } from 'typeorm'
 import { GHCNMCountryDto, GHCNMStationMetadataDto, GHCNMBasicStationMetadataDto, GHCNMStationDataDto } from './ghcnm.dto'
 import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
-import { CoordinateRange, DataTypes, downloadParams, GHCNMBasicStationMetadata, monthType, Range } from './ghcnm.interface'
+import { CoordinateRange, downloadParams, monthType, Range } from './ghcnm.interface'
 import { ALL_MONTHS } from 'src/common/constants';
 
 @Injectable()
@@ -104,6 +104,7 @@ export class GHCNMService {
     return this.stationMetadataRepository.createQueryBuilder()
       .select(selectColumns)
       .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .orderBy('station', 'ASC')
       .getRawMany();
   }
 
@@ -121,6 +122,8 @@ export class GHCNMService {
     return repository.createQueryBuilder()
       .select(['station', 'year', ...selectMonths])
       .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .orderBy('station', 'ASC')
+      .addOrderBy('year', 'ASC')
       .getRawMany();
   }
 
@@ -135,6 +138,8 @@ export class GHCNMService {
     return this.annualCycleRepository.createQueryBuilder()
       .select('*')
       .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .orderBy('station', 'ASC')
+      .addOrderBy('month', 'ASC')
       .getRawMany();
   }
 
