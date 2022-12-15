@@ -88,7 +88,7 @@ export default function DownloadPage() {
       </div>
       {(dataCountries && dataStations && dataRegions) && (
         <div className="d-flex flex-row justify-content-center pt-3 pb-5" style={{ width: '65%' }} >
-          <button className='big-button' style={{ width: '250px'}}
+          <button className={`big-button ${isLoadingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px'}}
             onClick={(e) => {
               refetchDownloadData();
               // console.log(encodeData(params))
@@ -96,9 +96,11 @@ export default function DownloadPage() {
             <div className='button-text'>
               DOWNLOAD
             </div>
-            <i className='material-icons help-icon'>download_outlined</i>
+            {isLoadingDownloadData === true ? 
+            <Spinner animation="border" className="help-icon" /> : <i className='material-icons help-icon'>download_outlined</i>
+            }
           </button>
-          <button className='big-button ms-3' style={{ width: '250px'}}>
+          <button className='big-button ms-3 disabled' style={{ width: '250px'}}>
             <div className='button-text'>
               VISUALIZE
             </div>

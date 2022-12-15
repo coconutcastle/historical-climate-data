@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { Form, Formik, FieldArray } from 'formik';
 import { Months, Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../common/download.interface';
 import { toTitleCase, mutateArray } from '../../common/helpers';
+import { filterOptions } from '../../MuiTheme';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
@@ -15,6 +16,11 @@ interface ParamsSectionProps {
   countries: CountryInfo[];
   stations: StationMetadataBasic[];
   regions: string[]
+}
+
+const isValidRange = (bound: 'start' | 'end', newBound: number, existingBound: number | null): boolean => {
+  if (existingBound === null) return true;
+  return bound === 'start' ? newBound < existingBound : newBound > existingBound;
 }
 
 export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
@@ -201,10 +207,13 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               </div>
               {(values.coordinates).map((range: CoordinateRange, index: number) => (
                 <CoordinatesInput
-                  onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
-                    const newCoordinates = { ...values.coordinates[index] };
-                    (newCoordinates[parameter])[bound] = parseInt(newValue);
-                    setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
+                  onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string): boolean => {
+                    if (newValue.length > 0 && /-?\d*.?\d+/.test(newValue) && isValidRange(bound, Number(newValue), range[parameter][bound === 'start' ? 'end' : 'start'])) {
+                      const newCoordinates = { ...values.coordinates[index] };
+                      (newCoordinates[parameter])[bound] = Number(newValue);
+                      setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
+                      return true
+                    } else return false;    // returning booleans for each input row to individually handle errors... might change this later on
                   }}
                   deleteRow={() => setFieldValue('coordinates', mutateArray(values.coordinates, index))}
                   key={index} />
@@ -219,11 +228,12 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <Autocomplete
                 multiple
                 options={stations}
-                getOptionLabel={(option) => `(${option.code}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
+                filterOptions={filterOptions}
+                getOptionLabel={(option: StationMetadataBasic) => `(${option.code}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
                 onChange={(event: any, newValue) => {
                   setFieldValue('stations', newValue);
                 }}
-                isOptionEqualToValue={(option, value) => option.code === value.code}
+                isOptionEqualToValue={(option: StationMetadataBasic, value: StationMetadataBasic) => option.code === value.code}
                 style={{ width: '50%' }}
                 renderInput={(params) => {
                   return (

@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { createFilterOptions } from "@mui/material";
 
 export const MuiTheme = createTheme({
   palette: {
@@ -81,3 +82,9 @@ export const MuiTheme = createTheme({
     }
   }
 });
+
+export const filterOptions = (options: any, state: any): any[] => {
+  const defaultFilterOptions = createFilterOptions();
+  return defaultFilterOptions(options, state).slice(0, 15);     // limit autocomplete to display 15 items max
+};
+

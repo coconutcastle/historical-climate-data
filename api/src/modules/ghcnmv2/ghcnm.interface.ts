@@ -17,9 +17,9 @@ export type monthType =
 export type DataTypes = 'prcp' | 'anom' | 'cycles';
 
 export interface Range {
-  single: number | null;    //either this or start + end will be null
-  start: number | null;
-  end: number | null;
+  single?: number;    // axios removes null params
+  start?: number;
+  end?: number;
 }
 
 export interface CoordinateRange {

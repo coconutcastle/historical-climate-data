@@ -13,16 +13,14 @@ function toTitleCase(str: string): string {
 // query does not work otherwise
 const buildRangeCondition = (name: string, range: Range) => {
   var rangeCondition = '';
-  if (range.single !== null) {
+  if (range.single) {
     rangeCondition = `(${name}=${range.single})`;
-  } else if (range.start === null && range.end !== null) {    // upper bound
+  } else if (!range.start && range.end) {    // upper bound
     rangeCondition = `(${name} <= ${range.end})`;
-  } else if (range.start !== null && range.end === null) {    // lower bound
+  } else if (range.start && !range.end) {    // lower bound
     rangeCondition = `(${name} >= ${range.start})`;
-  } else if (range.start !== null && range.end !== null) {   // both upper and lower bound
+  } else if (range.start && range.end) {   // both upper and lower bound
     rangeCondition = `(${name} BETWEEN ${range.start} AND ${range.end})`;
-  } else {
-    console.log(`null ${name} range`);
   };
   return rangeCondition;
 }
@@ -30,6 +28,8 @@ const buildRangeCondition = (name: string, range: Range) => {
 export const buildWhereConditions = (whereParams: whereConditionParams) => {
   const conditions: Record<any, any> = {};  // SQL statements with placeholder variables
   const parameters: Record<any, any> = {};
+
+  // console.log(whereParams)
 
   // only applicable for prcp and anom data
   if (whereParams.years && whereParams.years.length > 0) {
@@ -67,6 +67,7 @@ export const buildWhereConditions = (whereParams: whereConditionParams) => {
 
     whereParams.coordinates.forEach((coordinate: CoordinateRange) => {    // get range for each bound type (lat, lon, elev)
       const coordinateCondition: string[] = [];
+      console.log(coordinate)
 
       Object.keys(coordinate).forEach((bound: string) => {
         const condition = buildRangeCondition(bound, coordinate[bound as keyof CoordinateRange]);

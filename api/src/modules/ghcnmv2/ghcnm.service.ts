@@ -89,7 +89,6 @@ export class GHCNMService {
 
     switch (format) {
       case 'metadata':
-        // selectColumns = 'station, name, region, country, region, latitude, longitude, elevation';
         selectColumns = ['station', 'name', 'region', 'country', 'region', 'latitude', 'longitude', 'elevation'];
         break;
       case 'withAllData':
