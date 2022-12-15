@@ -9,6 +9,7 @@ import { ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
+  const [downloadError, setDownloadError] = useState<string | undefined>();
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -87,20 +88,29 @@ export default function DownloadPage() {
         <SelectionSection params={params} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
-        <div className="d-flex flex-row justify-content-center pt-3 pb-5" style={{ width: '65%' }} >
-          <button className={`big-button ${isLoadingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px'}}
-            onClick={(e) => {
-              refetchDownloadData();
-              // console.log(encodeData(params))
-            }}>
-            <div className='button-text'>
-              DOWNLOAD
-            </div>
-            {isLoadingDownloadData === true ? 
-            <Spinner animation="border" className="help-icon" /> : <i className='material-icons help-icon'>download_outlined</i>
-            }
-          </button>
-          <button className='big-button ms-3 disabled' style={{ width: '250px'}}>
+        <div className='d-flex flex-row justify-content-center pt-3 pb-5' style={{ width: '65%' }} >
+          <div className='column'>
+            <button className={`big-button ${isLoadingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
+              onClick={(e) => {
+                if (params.dataTypes.length === 0) {
+                  setDownloadError('Please select data type');
+                } else {
+                  setDownloadError(undefined)
+                  refetchDownloadData();
+                }
+              }}>
+              <div className='button-text'>
+                DOWNLOAD
+              </div>
+              {isLoadingDownloadData === true ?
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+              }
+            </button>
+            {downloadError && (
+              <div className="text-field-error pt-1 text-center">{downloadError}</div>
+            )}
+          </div>
+          <button className='big-button ms-3 disabled' style={{ width: '250px' }}>
             <div className='button-text'>
               VISUALIZE
             </div>

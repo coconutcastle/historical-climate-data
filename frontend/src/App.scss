@@ -141,6 +141,12 @@ hr {
     // left: 59.3%;
     transform: translateY(40%);
   }
+
+  .heading-1.text-white {
+    display: flex;
+    align-self: center;
+    margin-left: 10px;
+  }
 }
 
 button:hover {

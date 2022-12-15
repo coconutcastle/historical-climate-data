@@ -115,15 +115,18 @@ export class GHCNMService {
 
     // if no specific months are selected, don't filter on months
     const selectMonths: string[] = months.length === 0 ? ALL_MONTHS : months;
-    const selectColumns: string[] = ['station', 'year', ...selectMonths];
+
+    console.log('monthly', whereConditions, whereParameters);
 
     return repository.createQueryBuilder()
-      .select(selectColumns.join(','))
+      .select(['station', 'year', ...selectMonths])
       .where(Object.values(whereConditions).join(' AND '), whereParameters)
       .getRawMany();
   }
 
   public async getCyclesData(months: monthType[], stations: string[]): Promise<any[]> {
+    if (stations.length === 0) return [];
+
     const [whereConditions, whereParameters] = buildWhereConditions({ months, stations });
 
     // console.log('where ', whereConditions)
@@ -143,16 +146,19 @@ export class GHCNMService {
     }
     console.log(params)
 
-    const filteredStations: GHCNMBasicStationMetadataDto[] = await this.getStationMetadata('basic', params.stations, params.countries, params.regions, params.coordinates);
+    // if no filters are applied to find stations but specific stations are selected, this probably means that they only want that one particular station and not all of them
+    const filteredStations: GHCNMBasicStationMetadataDto[] = ((params.countries.length === 0 && params.regions.length === 0 && params.coordinates.length === 0) && params.stations.length > 0) 
+      ? [] : await this.getStationMetadata('basic', [], params.countries, params.regions, params.coordinates);
     const validStations: string[] = filteredStations.map((station: any) => station.station);
-    params.stations.forEach((station: string) => {{
+    params.stations.forEach((station: string) => {
       if (!validStations.includes(station)) { validStations.push(station) }
-    }});
+    });
 
+    // if no valid stations are found, return empty arrays
     return {
-      prcp: params.dataTypes.includes('prcp') ? await this.getMonthlyData('prcp', params.years, params.months, validStations) : [],
-      anom: params.dataTypes.includes('anom') ? await await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
-      cycles: params.dataTypes.includes('cycles') ? await this.getCyclesData(params.months, validStations) : [],
+      prcp: params.dataTypes.includes('prcp') && validStations.length > 0 ? await this.getMonthlyData('prcp', params.years, params.months, validStations) : [],
+      anom: params.dataTypes.includes('anom') && validStations.length > 0 ? await await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
+      cycles: params.dataTypes.includes('cycles') && validStations.length > 0 ? await this.getCyclesData(params.months, validStations) : [],
     };
   }
 }
