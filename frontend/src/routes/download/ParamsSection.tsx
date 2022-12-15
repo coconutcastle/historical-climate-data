@@ -80,7 +80,11 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                         end: yearRange[4] === '-' ? null : parseInt(yearRange.slice(1))         // case 2b: year-
                       });
                     } else if ((yearRange.length == 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
-                      yearRanges.push({ single: null, start: parseInt(yearRange.slice(0, 4)), end: parseInt(yearRange.slice(5)) });
+                      const rangeStart = parseInt(yearRange.slice(0, 4));
+                      const rangeEnd = parseInt(yearRange.slice(5));
+                      if (isValidRange('start', rangeStart, rangeEnd)) {
+                        yearRanges.push({ single: null, start: parseInt(yearRange.slice(0, 4)), end: parseInt(yearRange.slice(5)) });
+                      };
                     };
 
                     if (yearRanges.length < years.length) {   // set error if user has entered ANY invalid range. need to set errors here as otherwise overwritten by validate function
@@ -208,7 +212,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {(values.coordinates).map((range: CoordinateRange, index: number) => (
                 <CoordinatesInput
                   onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string): boolean => {
-                    if (newValue.length > 0 && /-?\d*.?\d+/.test(newValue) && isValidRange(bound, Number(newValue), range[parameter][bound === 'start' ? 'end' : 'start'])) {
+                    if (newValue.length === 0) return true;
+                    if (/-?\d*.?\d+/.test(newValue) && isValidRange(bound, Number(newValue), range[parameter][bound === 'start' ? 'end' : 'start'])) {
                       const newCoordinates = { ...values.coordinates[index] };
                       (newCoordinates[parameter])[bound] = Number(newValue);
                       setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));

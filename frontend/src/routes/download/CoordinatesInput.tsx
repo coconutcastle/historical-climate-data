@@ -18,11 +18,7 @@ export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: Coordin
   const handleInputChange = (parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string) => {
     const passed = onCoordinateInputChange(parameter, bound, newValue);
     const newErrors = { ...errors };
-    if (passed) {
-      newErrors[parameter] = null;
-    } else { 
-      newErrors[parameter] = 'Invalid range';
-    };
+    newErrors[parameter] = passed ? null : 'Invalid range';
     setErrors(newErrors)
   };
 
@@ -31,16 +27,11 @@ export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: Coordin
       <div className='col-4'>
         <div className='d-flex flex-row align-items-center'>
           <input type='text'
-            onBlur={(e) => {
-              // const passed = onCoordinateInputChange('latitude', 'start', e.target.value)
-              handleInputChange('latitude', 'start', e.target.value);
-            }}
+            onBlur={(e) => handleInputChange('latitude', 'start', e.target.value)}
             className="text-field w-25" />
           <div className='pe-2 ps-2'>-</div>
           <input type='text'
-            onBlur={(e) => {
-              handleInputChange('latitude', 'end', e.target.value)
-            }}
+            onBlur={(e) => handleInputChange('latitude', 'end', e.target.value)}
             className="text-field w-25" />
           <div className='text-field-emphasis ps-2'>N</div>
         </div>
