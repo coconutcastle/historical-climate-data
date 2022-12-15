@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 import { Module, MiddlewareConsumer, NestModule } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { LoggerMiddleware } from 'src/common/logger.middleware';
+import { LoggerMiddleware } from './common/logger.middleware';
 import { GHCNMController } from './modules/ghcnmv2/ghcnm.controller';
 import { GHCNModule } from './modules/ghcnmv2/ghcnm.module';
 import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./modules/ghcnmv2/ghcnm.entity";

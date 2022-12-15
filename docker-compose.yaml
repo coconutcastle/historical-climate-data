@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  api:
+    build: ./api
+    env_file:
+      - "./api/.env.dev"
+    container_name: climate-hist-api-c
+    ports:
+      - target: 9999
+      - host_ip: "0.0.0.0"
+      - published: 9999
+      - mode: "host"
+    volumes:
+      - ./api:/climate-hist/api
+      - /climate-hist/api/node_modules
+  client:
+    build: ./frontend
+    container_name: climate-hist-client-c
+    ports:
+      - target: 3000
+      - host_ip: "0.0.0.0"
+      - published: 3000
+      - mode: "host"
+
+    stdin_open: true
+    tty: true

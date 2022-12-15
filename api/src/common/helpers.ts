@@ -1,4 +1,4 @@
-import { CoordinateRange, CountryInfo, DataTypes, downloadParams, GHCNMBasicStationMetadata, monthType, Range, whereConditionParams } from '../modules/ghcnmv2/ghcnm.interface';
+import { CoordinateRange, Range, whereConditionParams } from '../modules/ghcnmv2/ghcnm.interface';
 
 function toTitleCase(str: string): string {
   return str.replace(

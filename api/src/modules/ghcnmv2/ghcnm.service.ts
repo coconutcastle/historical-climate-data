@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
-import { buildWhereConditions } from 'src/common/helpers'
+import { buildWhereConditions } from '../../common/helpers'
 import { Repository } from 'typeorm'
 import { GHCNMCountryDto, GHCNMStationMetadataDto, GHCNMBasicStationMetadataDto, GHCNMStationDataDto } from './ghcnm.dto'
 import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
 import { CoordinateRange, downloadParams, monthType, Range } from './ghcnm.interface'
-import { ALL_MONTHS } from 'src/common/constants';
+import { ALL_MONTHS } from '../../common/constants';
 
 @Injectable()
 export class GHCNMService {
