@@ -14,7 +14,7 @@ export type monthType =
   | 'november'
   | 'december';
 
-export type DataTypes = 'prcp' | 'anom' | 'cycles';
+export type DataTypes = 'prcp' | 'anom' | 'cycles' | 'stations';
 
 export interface Range {
   single?: number;    // axios removes null params
@@ -35,7 +35,7 @@ export interface CountryInfo {
 }
 
 export interface GHCNMBasicStationMetadata {
-  code: string;
+  station: string;
   name: string | null;
 }
 

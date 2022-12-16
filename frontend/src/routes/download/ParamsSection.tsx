@@ -234,11 +234,11 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 multiple
                 options={stations}
                 filterOptions={filterOptions}
-                getOptionLabel={(option: StationMetadataBasic) => `(${option.code}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
+                getOptionLabel={(option: StationMetadataBasic) => `(${option.station}) ${option.name !== null ? toTitleCase(option.name) : ''}`}
                 onChange={(event: any, newValue) => {
                   setFieldValue('stations', newValue);
                 }}
-                isOptionEqualToValue={(option: StationMetadataBasic, value: StationMetadataBasic) => option.code === value.code}
+                isOptionEqualToValue={(option: StationMetadataBasic, value: StationMetadataBasic) => option.station === value.station}
                 style={{ width: '50%' }}
                 renderInput={(params) => {
                   return (
@@ -254,8 +254,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <div className="mb-1">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
-                  ['prcp', 'anom', 'cycles'].map((type: string, index: number) => (
-                    <div className='col-4' key={index}>
+                  ['prcp', 'anom', 'cycles', 'stations'].map((type: string, index: number) => (
+                    <div className='col-3' key={index}>
                       <Checkbox
                         value={type}
                         onChange={(e: any) => {

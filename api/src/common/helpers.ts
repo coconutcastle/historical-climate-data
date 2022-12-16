@@ -26,7 +26,7 @@ const buildRangeCondition = (name: string, range: Range) => {
 }
 
 export const buildWhereConditions = (whereParams: whereConditionParams) => {
-  const conditions: Record<any, any> = {};  // SQL statements with placeholder variables
+  const conditions: string[] = [];  // SQL statements with placeholder variables
   const parameters: Record<any, any> = {};
 
   // console.log(whereParams)
@@ -40,24 +40,24 @@ export const buildWhereConditions = (whereParams: whereConditionParams) => {
         yearConds.push(yearRangeCondition);
       };
     });
-    conditions.years = `(${yearConds.join(' OR ')})`;
+    conditions.push(`(${yearConds.join(' OR ')})`);
   }
 
   // only applicable for annual cycles data
   if (whereParams.months && whereParams.months.length > 0) {
-    conditions.months = '(month IN (:...months))';
+    conditions.push('(month IN (:...months))');
     parameters.months = whereParams.months.map((month: string) => toTitleCase(month));    // months are title case in the annual cycles table
   }
 
   // only applicable for station metadata
   if (whereParams.countries && whereParams.countries.length > 0) {
-    conditions.countries = '(country IN (:...countries))';
+    conditions.push('(country IN (:...countries))');
     parameters.countries = whereParams.countries;
   }
 
   // only applicable for station metadata
   if (whereParams.regions && whereParams.regions.length > 0) {
-    conditions.regions = '(region IN (:...regions))';
+    conditions.push('(region IN (:...regions))');
     parameters.regions = whereParams.regions;
   }
 
@@ -79,11 +79,11 @@ export const buildWhereConditions = (whereParams: whereConditionParams) => {
       allCoordinateConditions.push(`(${coordinateCondition.join(' AND ')})`);
     });
 
-    conditions.coordinates = `(${allCoordinateConditions.join(' OR ')})`;
+    conditions.push(`(${allCoordinateConditions.join(' OR ')})`);
   }
 
   if (whereParams.stations && whereParams.stations.length > 0) {
-    conditions.stations = '(station IN (:...stations))';
+    conditions.push('(station IN (:...stations))');
     parameters.stations = whereParams.stations;
   }
 

@@ -24,25 +24,13 @@ export class GHCNMService {
   ) { }
 
   public async getAllStationMetadata(): Promise<GHCNMStationMetadataDto[]> {
-    const metadata = await this.stationMetadataRepository.find();
-    return metadata.map(station => ({
-      code: station.station,
-      identifier: station.identifier,
-      name: station.name,
-      region: station.region,
-      country: station.country,
-      latitude: station.latitude,
-      longitude: station.longitude,
-      elevation: station.elevation
-    }));
+    return this.stationMetadataRepository.find();
   }
 
   public async getAllBasicStationMetadata(): Promise<GHCNMBasicStationMetadataDto[]> {
-    const metadata = await this.stationMetadataRepository.find();
-    return metadata.map(station => ({
-      code: station.station,
-      name: station.name
-    }));
+    return this.stationMetadataRepository.createQueryBuilder()
+      .select(['station', 'name'])
+      .getRawMany();
   }
 
   public async getAllCountries(): Promise<GHCNMCountryDto[]> {
@@ -53,10 +41,12 @@ export class GHCNMService {
       .distinct(true)
       .where('region IS NOT null')
       .getRawMany();
+
     const regionsPerCountry: Record<string, string[]> = countryRegions.reduce((accumulator, curr) => {
       const currArr = accumulator[curr.country] ?? [];
       return { ...accumulator, [curr.country]: [...currArr, curr.region] };    // for each country with supported regions, give it the array of regions it supports
     }, {});
+
     return countries.map(country => ({
       country: country.country,
       code: country.code,
@@ -81,11 +71,18 @@ export class GHCNMService {
     coordinates: CoordinateRange[]
   ): Promise<GHCNMStationMetadataDto[] | GHCNMStationDataDto[] | GHCNMBasicStationMetadataDto[]> {
 
-    const [whereConditions, whereParameters] = buildWhereConditions({ countries, regions, coordinates });
+    const [whereSearchConditions, whereSearchParameters] = buildWhereConditions({ countries, regions, coordinates });
+    const [stationWhereConditions, stationWhereParameters] = buildWhereConditions({ stations: stationCodes });
+
+    // if a user selects specific stations in addition to station search parameters, assume they want the union of the two results
+
+    const whereConditions = `(${whereSearchConditions.join(' AND ')})${stationCodes.length > 0 ? ` OR ${stationWhereConditions[0]}` : ''}`;
+    const whereParameters = {...whereSearchParameters, ...stationWhereParameters};
+
     var selectColumns: string[] = [];
 
-    console.log('where ', Object.values(whereConditions).join(' AND '))
-    console.log(whereParameters)
+    console.log('where ', Object.values(whereSearchConditions).join(' AND '))
+    console.log(whereSearchParameters)
 
     switch (format) {
       case 'metadata':
@@ -103,7 +100,7 @@ export class GHCNMService {
 
     return this.stationMetadataRepository.createQueryBuilder()
       .select(selectColumns)
-      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .where(whereConditions, whereParameters)
       .orderBy('station', 'ASC')
       .getRawMany();
   }
@@ -152,18 +149,20 @@ export class GHCNMService {
     console.log(params)
 
     // if no filters are applied to find stations but specific stations are selected, this probably means that they only want that one particular station and not all of them
+    // get all station metadata if the user wants station metadata - one API call
     const filteredStations: GHCNMBasicStationMetadataDto[] = ((params.countries.length === 0 && params.regions.length === 0 && params.coordinates.length === 0) && params.stations.length > 0) 
-      ? [] : await this.getStationMetadata('basic', [], params.countries, params.regions, params.coordinates);
+      ? [] : await this.getStationMetadata(params.dataTypes.includes('stations') ? 'metadata' : 'basic', params.stations, params.countries, params.regions, params.coordinates);
     const validStations: string[] = filteredStations.map((station: any) => station.station);
-    params.stations.forEach((station: string) => {
-      if (!validStations.includes(station)) { validStations.push(station) }
-    });
+    // params.stations.forEach((station: string) => {
+    //   if (!validStations.includes(station)) { validStations.push(station) }
+    // });
 
     // if no valid stations are found, return empty arrays
     return {
       prcp: params.dataTypes.includes('prcp') && validStations.length > 0 ? await this.getMonthlyData('prcp', params.years, params.months, validStations) : [],
       anom: params.dataTypes.includes('anom') && validStations.length > 0 ? await await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
       cycles: params.dataTypes.includes('cycles') && validStations.length > 0 ? await this.getCyclesData(params.months, validStations) : [],
+      stations: params.dataTypes.includes('stations') && validStations.length > 0 ? filteredStations : []
     };
   }
 }

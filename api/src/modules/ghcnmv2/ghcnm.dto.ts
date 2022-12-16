@@ -1,7 +1,7 @@
 import { monthValues, monthType } from "./ghcnm.interface";
 
 export class GHCNMStationMetadataDto {
-  code: string;
+  station: string;
   identifier: string;
   name: string | null;
   region: string | null;
@@ -13,7 +13,7 @@ export class GHCNMStationMetadataDto {
 
 //used for situations where you need to get a lot of stations but don't need all the data
 export class GHCNMBasicStationMetadataDto {
-  code: string;
+  station: string;
   name: string | null;
 }
 

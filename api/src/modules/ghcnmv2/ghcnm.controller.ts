@@ -46,7 +46,7 @@ export class GHCNMController {
       countries: countries.map((country: CountryInfo) => country.country),    //makes it easier to identify stations to use name over code
       regions,
       coordinates,
-      stations: stations.map((station: GHCNMBasicStationMetadata) => station.code),
+      stations: stations.map((station: GHCNMBasicStationMetadata) => station.station),
       dataTypes
     };
     return this.ghcnmService.getDownloadData(byStation, params);

@@ -3,9 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { MuiTheme } from './MuiTheme';
-// import DownloadPage from './routes/download/DownloadPage';
 import './App.scss'
-// import '../node_modules/papaparse/';
 
 import { Header } from './components/Header';
 

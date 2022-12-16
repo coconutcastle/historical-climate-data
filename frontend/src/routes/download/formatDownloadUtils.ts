@@ -1,7 +1,6 @@
 import Papa from 'papaparse';
 
 export const downloadCSV = (content: any, fileName: string) => {
-  // const { jsonToCSV } = usePapaParse();
   const csvString: string = Papa.unparse(content);
   const link = window.document.createElement('a');
   link.href = window.URL.createObjectURL(

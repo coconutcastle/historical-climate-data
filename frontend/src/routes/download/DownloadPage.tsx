@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ParamsSection } from "./ParamsSection"
 import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
@@ -11,7 +11,8 @@ import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
-  const [doDownload, setDoDownload] = useState<boolean>(false);
+  // const [doDownload, setDoDownload] = useState<boolean>(false);
+  const doDownload = useRef<boolean>(false);
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -45,17 +46,18 @@ export default function DownloadPage() {
     queryFn: () => getAllRegions()
   });
 
+  // currently it seems like you can't download more than once...
   const { data: downloadData, error: errorDownloadData, isLoading: isLoadingDownloadData, refetch: refetchDownloadData } = useQuery({
     queryKey: [QueryKeys.DOWNLOAD],
     ...ReactQueryConfig,
-    enabled: false,
+    enabled: doDownload.current,
     queryFn: () => getDownloadData(false, params)
   });
 
   useEffect(() => {
     if (doDownload && errorDownloadData) {
       setDownloadError('Download failed');
-      setDoDownload(false);
+      doDownload.current = false;
     }
     if (doDownload && downloadData) {
       Object.values(downloadData).forEach((download: any) => {
@@ -63,7 +65,7 @@ export default function DownloadPage() {
           downloadCSV(download, 'test')
         }
       });
-      setDoDownload(false);
+      doDownload.current = false;
     }
   }, [isLoadingDownloadData, errorDownloadData, doDownload]);
 
@@ -112,7 +114,7 @@ export default function DownloadPage() {
                   setDownloadError('Please select data type');
                 } else {
                   setDownloadError(undefined);
-                  setDoDownload(true);
+                  doDownload.current = true;
                   refetchDownloadData();
                 }
               }}>

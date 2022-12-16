@@ -47,7 +47,7 @@ export const SelectionSection = ({ params }: SelectionSectionProps) => {
         stringArray = params.regions.map((region: string) => region.length == 2 ? region : toTitleCase(region));
         break;
       case 'stations':
-        stringArray = params.stations.map((station: StationMetadataBasic) => `(${station.code})${station.name === null ? '' : ' ' + toTitleCase(station.name)}`);
+        stringArray = params.stations.map((station: StationMetadataBasic) => `(${station.station})${station.name === null ? '' : ' ' + toTitleCase(station.name)}`);
         break;
       case 'dataTypes':
         stringArray = params.dataTypes.map((data) => DataTypeText[data]);
