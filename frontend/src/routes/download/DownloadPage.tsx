@@ -60,14 +60,15 @@ export default function DownloadPage() {
       doDownload.current = false;
     }
     if (doDownload && downloadData) {
-      Object.values(downloadData).forEach((download: any) => {
-        if (download.length > 0) {
-          downloadCSV(download, 'test')
+      console.log('downloading')
+      Object.keys(downloadData).forEach((download: string) => {
+        if (downloadData[download].length> 0) {
+          downloadCSV(downloadData[download], download)
         }
       });
       doDownload.current = false;
     }
-  }, [isLoadingDownloadData, errorDownloadData, doDownload]);
+  }, [downloadData, errorDownloadData, doDownload]);
 
   console.log(downloadData)
 

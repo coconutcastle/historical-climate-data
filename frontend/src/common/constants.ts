@@ -20,3 +20,32 @@ export const getHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET'
 }
+
+export type monthType =
+  | 'january'
+  | 'february'
+  | 'march'
+  | 'april'
+  | 'may'
+  | 'june'
+  | 'july'
+  | 'august'
+  | 'september'
+  | 'october'
+  | 'november'
+  | 'december';
+
+export enum Months {
+  JANUARY = 'January',
+  FEBRUARY = 'February',
+  MARCH = 'March',
+  APRIL = 'April',
+  MAY = 'May',
+  JUNE = 'June',
+  JULY = 'July',
+  AUGUST = 'August',
+  SEPTEMBER = 'September',
+  OCTOBER = 'October',
+  NOVEMBER = 'November',
+  DECEMBER = 'December'
+}

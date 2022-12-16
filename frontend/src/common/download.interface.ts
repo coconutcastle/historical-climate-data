@@ -1,18 +1,4 @@
-
-export enum Months {
-  JANUARY = 'January',
-  FEBRUARY = 'February',
-  MARCH = 'March',
-  APRIL = 'April',
-  MAY = 'May',
-  JUNE = 'June',
-  JULY = 'July',
-  AUGUST = 'August',
-  SEPTEMBER = 'September',
-  OCTOBER = 'October',
-  NOVEMBER = 'November',
-  DECEMBER = 'December'
-}
+import { monthType, Months } from "./constants";
 
 export interface Range {
   single: number | null;    //either this or start + end will be null
@@ -51,9 +37,10 @@ export interface CountryInfo {
   supportedRegions: [];
 }
 
+// get the data raw from the backend, process it in the frontend to avoid unecessary additional processing
+
 export interface StationMetadata {
   station: string;
-  identifier: string;
   name: string | null;
   region: string | null;
   country: string;
@@ -67,6 +54,57 @@ export interface StationMetadataBasic {
   name: string | null;
 }
 
+export interface MonthlyData {
+  station: string;
+  year: number;
+  january?: number | null;
+  february?: number | null;
+  march?: number | null;
+  april?: number | null;
+  may?: number | null;
+  june?: number | null;
+  july?: number | null;
+  august?: number | null;
+  september?: number | null;
+  october?: number | null;
+  november?: number | null;
+  december?: number | null;
+}
+
+export interface CyclesData {
+  station: string;
+  month: monthType;
+  mean: number | null;
+  standardDeviation: number | null;
+  '2.5': number | null;
+  '17': number | null;
+  '50': number | null;
+  '83': number | null;
+  '97.5': number | null;
+}
+
+export type percentile = '2.5' | '17' | '50' | '83' | '97.5';
+
 export interface RawRegions {
   region: string;
+}
+
+// format of data that has had station metadata stuffed into them
+
+export interface MonthlyDataStationDetails extends MonthlyData {
+  name: string | null;
+  country: string;
+  region: string | null;
+  latitude: number;
+  longitude: number;
+  elevation: number | null;
+}
+
+export interface CyclesDataStationDetails extends CyclesData {
+  name: string | null;
+  country: string;
+  region: string | null;
+  latitude: number;
+  longitude: number;
+  elevation: number | null;
 }
