@@ -42,10 +42,6 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
     });
   }, []);
 
-  // TODO: add error handling to make sure that:
-  // start range always before end range
-  // range numbers are actually numbers
-
   return (
     <div className="params-section">
       <div className="heading-1 mb-4">Parameters</div>
@@ -65,7 +61,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
               </div>
-              <input type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }}
+              <input type='text' placeholder='Ex: "1888-1912, 1916, 2000-"' className="text-field" style={{ width: '50%' }}
                 onBlur={(e: any) => {   // validate and update on blur because it's too slow otherwise
                   const yearRanges: Range[] = [];
 

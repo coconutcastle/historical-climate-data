@@ -61,7 +61,7 @@ export default function DownloadPage() {
     if (doDownload && downloadData) {
       Object.keys(downloadData).forEach((download: string) => {
         if (downloadData[download].length> 0) {
-          downloadCSV(downloadData[download], download)
+          downloadCSV(downloadData[download], download);
         }
       });
       setDoDownload(false);

@@ -247,7 +247,7 @@ i.help-icon {
 
 //==================== Preview Table ======================//
 
-.preview-table {
+.preview-tabs {
   background-color: none;
   color: black;
   border-radius: 0;
@@ -256,6 +256,7 @@ i.help-icon {
   li {
     button.nav-link {
       color: black;
+      font-weight: 700;
       background-color: $text-field-gray;
       border-radius: 0;
       border: none;
@@ -270,4 +271,19 @@ i.help-icon {
       background-color: $content-container;
     }
   }
+}
+
+.table-wrapper {
+  width: 100%;
+  max-height: 400px;
+  overflow: auto;
+}
+
+.preview-table {
+  background-color: $content-container;
+  width: 100%;
+  max-height: 400px;
+  overflow: auto;
+  display: table;
+  white-space: nowrap;
 }

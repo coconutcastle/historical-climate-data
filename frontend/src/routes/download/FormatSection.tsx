@@ -10,7 +10,7 @@ interface FormatSectionProps {
 interface FormatFields {
   monthlyDataViewFormat: 'condensed' | 'spread' | 'na';
   combineDates: 'separate' | 'combine' | 'na';     // only applicable in spread view
-  dateFormat: string | null;
+  dateFormat: string;
   files: 'byStation' | 'concat';
 }
 
@@ -31,7 +31,7 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
         initialValues={{
           monthlyDataViewFormat: 'na',
           combineDates: 'na',
-          dateFormat: null,
+          dateFormat: '',
           files: 'concat'
         }}
         validate={formatFieldsChanged}
@@ -65,13 +65,6 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
               <div className='heading-2 mt-4'>Date</div>
               <div className="mb-1">Only applicable to spread view data (monthly statistics and monthly data if selected).</div>
               <div className='d-flex flex-row justify-content-start align-items-start'>
-                <div className='d-flex flex-row align-items-center col-5'>
-                  <Radio
-                    checked={values.combineDates === 'separate'}
-                    onChange={() => setFieldValue('combineDates', 'separate')}
-                    disabled={!((dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
-                  Keep year and month in separate columns
-                </div>
                 <div className='d-flex flex-row col-5'>
                   <Radio
                     checked={values.combineDates === 'combine'}
@@ -79,9 +72,16 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
                     disabled={!((dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
                   <div className='d-flex flex-column' style={{ marginTop: '6px' }}>
                     <div>Combine year and month</div>
-                    <div className='mb-1 mt-3'>Enter date format:</div>
+                    <div className='mb-1 mt-2'>Enter date format:</div>
                     <Field type='text' name='dateFormat' className="text-field" disabled={values.combineDates !== 'combine'} placeholder='Ex: "YYYY-MM"' />
                   </div>
+                </div>
+                <div className='d-flex flex-row align-items-center col-5'>
+                  <Radio
+                    checked={values.combineDates === 'separate'}
+                    onChange={() => setFieldValue('combineDates', 'separate')}
+                    disabled={!((dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
+                  Keep year and month in separate columns
                 </div>
 
               </div>
@@ -105,7 +105,7 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
 
               {/* =========== PREVIEW FORMAT =========== */}
               <div className='heading-2 mt-4 mb-1'>Preview</div>
-              <PreviewTable dataTypes={dataTypes} downloadData={[]} />
+              {dataTypes.length > 0 ? <PreviewTable dataTypes={dataTypes} downloadData={[]} /> : <div>Please select what data to download.</div>}
 
             </>
           </Form>

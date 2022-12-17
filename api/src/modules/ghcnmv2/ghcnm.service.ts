@@ -133,10 +133,10 @@ export class GHCNMService {
     // console.log(whereParameters)
 
     return this.annualCycleRepository.createQueryBuilder()
-      .select('*')
+      // .select('*')
+      .select(['station', 'month', 'mean', 'standard_deviation', 'ARRAY["2_5", "17", "50", "83", "97_5"] AS percentiles'])
       .where(whereConditions.join(' AND '), whereParameters)
       .orderBy('station', 'ASC')
-      .addOrderBy('month', 'ASC')
       .getRawMany();
   }
 

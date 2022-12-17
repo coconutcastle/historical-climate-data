@@ -92,20 +92,20 @@ export class GHCNMAnnualCycleData {
   @Column('numeric', { nullable: true })
   standard_deviation: number | null;
 
-  @Column('numeric', { nullable: true })
-  2.5: number | null;
+  @Column('numeric', { nullable: true })    // arghh changed the periods to underscores because they were causing so many issues
+  "2_5": number | null;
 
   @Column('numeric', { nullable: true })
-  17: number | null;
+  "17": number | null;
 
   @Column('numeric', { nullable: true })
-  50: number | null;
+  "50": number | null;
 
   @Column('numeric', { nullable: true })
-  83: number | null;
+  "83": number | null;
 
   @Column('numeric', { nullable: true })
-  9.5: number | null;
+  "97_5": number | null;
 }
 
 @Entity({ schema: 'public', name: 'countrycodes' })

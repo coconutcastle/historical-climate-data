@@ -76,11 +76,12 @@ export interface CyclesData {
   month: monthType;
   mean: number | null;
   standardDeviation: number | null;
-  '2.5': number | null;
-  '17': number | null;
-  '50': number | null;
-  '83': number | null;
-  '97.5': number | null;
+  percentiles: number[]
+  // '2.5': number | null;
+  // '17': number | null;
+  // '50': number | null;
+  // '83': number | null;
+  // '97.5': number | null;
 }
 
 export type percentile = '2.5' | '17' | '50' | '83' | '97.5';
