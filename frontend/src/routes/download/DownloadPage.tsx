@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { ParamsSection } from "./ParamsSection"
 import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
@@ -12,7 +12,6 @@ import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
   const [doDownload, setDoDownload] = useState<boolean>(false);
-  // const doDownload = useRef<boolean>(false);
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -57,7 +56,6 @@ export default function DownloadPage() {
   useEffect(() => {
     if (doDownload && errorDownloadData) {
       setDownloadError('Download failed');
-      // doDownload.current = false;
       setDoDownload(false);
     }
     if (doDownload && downloadData) {
@@ -66,7 +64,6 @@ export default function DownloadPage() {
           downloadCSV(downloadData[download], download)
         }
       });
-      // doDownload.current = false;
       setDoDownload(false);
     }
   }, [downloadData, errorDownloadData, doDownload]);
@@ -116,7 +113,6 @@ export default function DownloadPage() {
                   setDownloadError('Please select data type');
                 } else {
                   setDownloadError(undefined);
-                  // doDownload.current = true;
                   setDoDownload(true);
                   refetchDownloadData();
                 }

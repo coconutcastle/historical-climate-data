@@ -1,0 +1,20 @@
+[
+  {
+    "station": "99999",
+    "name": "SAMPLE STATION 1",
+    "region": "BC",
+    "country": "CANADA",
+    "latitude": "49.5",
+    "longitude": "-123.12",
+    "elevation": "40"
+  },
+  {
+    "station": "99999.9",
+    "name": "SAMPLE STATION 2",
+    "region": null,
+    "country": "ALGERIA",
+    "latitude": "37",
+    "longitude": "7.0",
+    "elevation": "9"
+  }
+]
