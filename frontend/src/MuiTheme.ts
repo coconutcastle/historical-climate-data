@@ -73,7 +73,17 @@ export const MuiTheme = createTheme({
           height: '30px',
           width: '30px',
           color: 'black',
-          fontSize: '10px',
+          svg: {
+            fontSize: '20px'
+          }
+        }
+      }
+    },
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          height: '30px',
+          width: '30px',
           svg: {
             fontSize: '20px'
           }
@@ -85,6 +95,6 @@ export const MuiTheme = createTheme({
 
 export const filterOptions = (options: any, state: any): any[] => {
   const defaultFilterOptions = createFilterOptions();
-  return defaultFilterOptions(options, state).slice(0, 30);     // limit autocomplete to display 15 items max
+  return defaultFilterOptions(options, state).slice(0, 30);     // limit autocomplete to display 30 items max for large lists
 };
 

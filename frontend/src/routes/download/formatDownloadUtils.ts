@@ -1,4 +1,5 @@
 import Papa from 'papaparse';
+import { monthType } from '../../common/constants';
 import { CyclesData, CyclesDataStationDetails, DataTypes, MonthlyDataStationDetails, MonthlyData, StationMetadata } from '../../common/download.interface';
 
 // only available if the user selected the option to also get the station metadata
@@ -6,7 +7,7 @@ export const insertStationMetadata = (
   contentType: DataTypes,
   content: MonthlyData[] | CyclesData[],
   stations: StationMetadata[]
-): MonthlyDataStationDetails[] | CyclesDataStationDetails[] => {
+): any[] => {
 
   // leverage the fact that the stations are in the same order in both the content and the metadata objects
   var currStation = '';
@@ -30,6 +31,10 @@ export const insertStationMetadata = (
   };
 
   return detailedContent;
+}
+
+export const formatDate = (year: number, month: monthType, dateFormat: string): string => {
+  return '';
 }
 
 export const downloadCSV = (content: any, fileName: string) => {

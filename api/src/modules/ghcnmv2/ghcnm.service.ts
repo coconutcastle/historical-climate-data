@@ -75,14 +75,14 @@ export class GHCNMService {
     const [stationWhereConditions, stationWhereParameters] = buildWhereConditions({ stations: stationCodes });
 
     // if a user selects specific stations in addition to station search parameters, assume they want the union of the two results
-
-    const whereConditions = `(${whereSearchConditions.join(' AND ')})${stationCodes.length > 0 ? ` OR ${stationWhereConditions[0]}` : ''}`;
+    // const whereConditions: string = [whereSearchConditions.join(' AND '), stationWhereConditions[0]].join(' OR ')
+    const whereConditions = `${whereSearchConditions.length > 0 ? `(${whereSearchConditions.join(' AND ')})` : ''}${whereSearchConditions.length > 0 && stationCodes.length > 0 ? ' OR ' : ''}${stationCodes.length > 0 ? `(${stationWhereConditions[0]})` : ''}`;
     const whereParameters = {...whereSearchParameters, ...stationWhereParameters};
 
     var selectColumns: string[] = [];
 
-    console.log('where ', Object.values(whereSearchConditions).join(' AND '))
-    console.log(whereSearchParameters)
+    console.log('where ', whereConditions)
+    console.log(whereParameters)
 
     switch (format) {
       case 'metadata':
@@ -118,7 +118,7 @@ export class GHCNMService {
 
     return repository.createQueryBuilder()
       .select(['station', 'year', ...selectMonths])
-      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .where(whereConditions.join(' AND '), whereParameters)
       .orderBy('station', 'ASC')
       .addOrderBy('year', 'ASC')
       .getRawMany();
@@ -134,7 +134,7 @@ export class GHCNMService {
 
     return this.annualCycleRepository.createQueryBuilder()
       .select('*')
-      .where(Object.values(whereConditions).join(' AND '), whereParameters)
+      .where(whereConditions.join(' AND '), whereParameters)
       .orderBy('station', 'ASC')
       .addOrderBy('month', 'ASC')
       .getRawMany();
@@ -148,14 +148,14 @@ export class GHCNMService {
     }
     console.log(params)
 
+    // what to do if no search params are selected, or column params for monthly data? behaviour is a bit weird here
+
     // if no filters are applied to find stations but specific stations are selected, this probably means that they only want that one particular station and not all of them
     // get all station metadata if the user wants station metadata - one API call
-    const filteredStations: GHCNMBasicStationMetadataDto[] = ((params.countries.length === 0 && params.regions.length === 0 && params.coordinates.length === 0) && params.stations.length > 0) 
-      ? [] : await this.getStationMetadata(params.dataTypes.includes('stations') ? 'metadata' : 'basic', params.stations, params.countries, params.regions, params.coordinates);
+    const filteredStations: GHCNMBasicStationMetadataDto[] = await this.getStationMetadata(params.dataTypes.includes('stations') ? 'metadata' : 'basic', params.stations, params.countries, params.regions, params.coordinates);
     const validStations: string[] = filteredStations.map((station: any) => station.station);
-    // params.stations.forEach((station: string) => {
-    //   if (!validStations.includes(station)) { validStations.push(station) }
-    // });
+
+    console.log('stations are ', validStations)
 
     // if no valid stations are found, return empty arrays
     return {

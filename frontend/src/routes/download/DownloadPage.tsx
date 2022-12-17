@@ -100,7 +100,7 @@ export default function DownloadPage() {
                 stations={dataStations}
                 regions={dataRegions.map((region: RawRegions) => region.region)}
               />
-              <FormatSection />
+              <FormatSection dataTypes={params.dataTypes} />
             </>
           )}
         </></div>

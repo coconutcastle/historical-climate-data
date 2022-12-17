@@ -213,10 +213,10 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {(values.coordinates).map((range: CoordinateRange, index: number) => (
                 <CoordinatesInput
                   onCoordinateInputChange={(parameter: 'latitude' | 'longitude' | 'elevation', bound: 'start' | 'end', newValue: string): boolean => {
-                    if (newValue.length === 0) return true;
-                    if (/-?\d*.?\d+/.test(newValue) && isValidRange(bound, Number(newValue), range[parameter][bound === 'start' ? 'end' : 'start'])) {
+                    if ((newValue.length === 0) ||
+                      (/-?\d*.?\d+/.test(newValue) && isValidRange(bound, Number(newValue), range[parameter][bound === 'start' ? 'end' : 'start']))) {
                       const newCoordinates = { ...values.coordinates[index] };
-                      (newCoordinates[parameter])[bound] = Number(newValue);
+                      (newCoordinates[parameter])[bound] = newValue.length === 0 ? null : Number(newValue);
                       setFieldValue('coordinates', mutateArray(values.coordinates, index, newCoordinates));
                       return true
                     } else return false;    // returning booleans for each input row to individually handle errors... might change this later on
@@ -252,11 +252,11 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 Data Types
                 <i id='hint-dataTypes' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
-              <div className="mb-1">Select what type of station data to download.</div>
+              <div className="mb-2">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
                   ['prcp', 'anom', 'cycles', 'stations'].map((type: string, index: number) => (
-                    <div className='col-3' key={index}>
+                    <div className='col-3 d-flex flex-row align-items-center' key={index}>
                       <Checkbox
                         value={type}
                         onChange={(e: any) => {
@@ -265,7 +265,8 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                           } else {
                             arrayHelpers.remove(params.dataTypes.indexOf(type as DataTypes));
                           };
-                        }} />{DataTypeText[type]}
+                        }} />
+                        <div>{DataTypeText[type]}</div>
                     </div>
                   )))} />
               </div>

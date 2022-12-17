@@ -22,6 +22,8 @@ export const CoordinatesInput = ({ onCoordinateInputChange, deleteRow }: Coordin
     setErrors(newErrors)
   };
 
+  //currently a bug where clearing all the text does not get changed
+
   return (
     <div className='d-flex flex-row mt-1'>
       <div className='col-4'>
