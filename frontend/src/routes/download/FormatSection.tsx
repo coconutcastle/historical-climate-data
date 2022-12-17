@@ -1,26 +1,20 @@
 import { Field, Form, Formik, ErrorMessage } from 'formik';
-import { DataTypes } from '../../common/download.interface';
+import { DataTypes, FormatFields } from '../../common/download.interface';
 import { Radio } from '@mui/material';
 import { PreviewTable } from './PreviewTable';
 
 interface FormatSectionProps {
+  format: FormatFields;
+  onFormatChanged: (format: FormatFields) => void;
   dataTypes: DataTypes[]
 }
 
-interface FormatFields {
-  monthlyDataViewFormat: 'condensed' | 'spread' | 'na';
-  combineDates: 'separate' | 'combine' | 'na';     // only applicable in spread view
-  dateFormat: string;
-  files: 'byStation' | 'concat';
-}
-
-export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
+export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSectionProps) => {
 
   const formatFieldsChanged = (values: FormatFields) => {
-    console.log(values)
-  }
-
-  console.log(dataTypes)
+    console.log(values);
+    onFormatChanged(values);
+  };
 
   return (
     <div className="params-section mt-3">
@@ -28,12 +22,8 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
         Format Download
       </div>
       <Formik
-        initialValues={{
-          monthlyDataViewFormat: 'na',
-          combineDates: 'na',
-          dateFormat: '',
-          files: 'concat'
-        }}
+        validateOnBlur
+        initialValues={{ ...format }}
         validate={formatFieldsChanged}
         onSubmit={() => console.log('submitted')}
       >
@@ -104,7 +94,7 @@ export const FormatSection = ({ dataTypes }: FormatSectionProps) => {
               </div>
 
               {/* =========== PREVIEW FORMAT =========== */}
-              <div className='heading-2 mt-4 mb-1'>Preview</div>
+              <div className='heading-2 mt-4 mb-2'>Preview</div>
               {dataTypes.length > 0 ? <PreviewTable dataTypes={dataTypes} downloadData={[]} /> : <div>Please select what data to download.</div>}
 
             </>

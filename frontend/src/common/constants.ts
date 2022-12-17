@@ -49,5 +49,3 @@ export enum Months {
   NOVEMBER = 'November',
   DECEMBER = 'December'
 }
-
-export const annualCycleFields = ['station', 'month', 'mean', 'standard_deviation', '2.5', '17', '50', '83', '97.5'];

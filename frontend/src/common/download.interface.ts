@@ -13,8 +13,8 @@ export interface CoordinateRange {
 }
 
 export const DataTypeText: Record<string, string> = {
-  'prcp': 'Monthly Precipitation Readings',
-  'anom': 'Monthly Precipitation Anomalies',
+  'prcp': 'Monthly Precipitation',
+  'anom': 'Monthly Anomalies',
   'cycles': 'Statistics per Month',
   'stations': 'Station Metadata'
 }
@@ -29,6 +29,13 @@ export interface ParamsFields {
   coordinates: CoordinateRange[];
   stations: StationMetadataBasic[];
   dataTypes: DataTypes[];
+}
+
+export interface FormatFields {
+  monthlyDataViewFormat: 'condensed' | 'spread' | 'na';
+  combineDates: 'separate' | 'combine' | 'na';     // only applicable in spread view
+  dateFormat: string;
+  files: 'byStation' | 'concat';
 }
 
 export interface CountryInfo {
@@ -77,11 +84,6 @@ export interface CyclesData {
   mean: number | null;
   standardDeviation: number | null;
   percentiles: number[]
-  // '2.5': number | null;
-  // '17': number | null;
-  // '50': number | null;
-  // '83': number | null;
-  // '97.5': number | null;
 }
 
 export type percentile = '2.5' | '17' | '50' | '83' | '97.5';

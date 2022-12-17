@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
 import { downloadCSV } from "./formatDownloadUtils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
-import { ParamsFields, RawRegions } from "../../common/download.interface";
+import { FormatFields, ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
@@ -26,6 +26,13 @@ export default function DownloadPage() {
     stations: [],
     dataTypes: []
   });
+
+  const [format, setFormat] = useState<FormatFields>({
+    monthlyDataViewFormat: 'na',
+    combineDates: 'na',
+    dateFormat: '',
+    files: 'concat'
+  })
 
   const { data: dataCountries, error: errorCountries, isLoading: isLoadingCountries } = useQuery({
     queryKey: [QueryKeys.COUNTRIES],
@@ -60,7 +67,7 @@ export default function DownloadPage() {
     }
     if (doDownload && downloadData) {
       Object.keys(downloadData).forEach((download: string) => {
-        if (downloadData[download].length> 0) {
+        if (downloadData[download].length > 0) {
           downloadCSV(downloadData[download], download);
         }
       });
@@ -98,7 +105,10 @@ export default function DownloadPage() {
                 stations={dataStations}
                 regions={dataRegions.map((region: RawRegions) => region.region)}
               />
-              <FormatSection dataTypes={params.dataTypes} />
+              <FormatSection
+                format={format}
+                onFormatChanged={(newFormat: FormatFields) => setFormat(newFormat)}
+                dataTypes={params.dataTypes} />
             </>
           )}
         </></div>

@@ -1,6 +1,6 @@
 [
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "January",
       "mean": "95.78064516129032",
       "standard_deviation": "57.92957581773301",
@@ -13,7 +13,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "February",
       "mean": "80.76129032258065",
       "standard_deviation": "62.21628081406884",
@@ -26,7 +26,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "March",
       "mean": "70.99358974358974",
       "standard_deviation": "42.80149422189093",
@@ -39,7 +39,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "April",
       "mean": "55.282051282051285",
       "standard_deviation": "40.3911634902974",
@@ -52,7 +52,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "May",
       "mean": "36.70967741935484",
       "standard_deviation": "31.705900080204966",
@@ -65,7 +65,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "June",
       "mean": "14.23225806451613",
       "standard_deviation": "16.409603543338022",
@@ -78,7 +78,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "July",
       "mean": "2.176470588235294",
       "standard_deviation": "4.569174418154121",
@@ -91,7 +91,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "August",
       "mean": "3.1156462585034013",
       "standard_deviation": "5.475383385828405",
@@ -104,7 +104,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "September",
       "mean": "29.961038961038962",
       "standard_deviation": "30.884342924556446",
@@ -117,7 +117,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "October",
       "mean": "75.0",
       "standard_deviation": "55.68719873152269",
@@ -130,7 +130,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "November",
       "mean": "100.47096774193548",
       "standard_deviation": "66.84129587722956",
@@ -143,7 +143,7 @@
       ]
   },
   {
-      "station": "60354.1",
+      "station": "99999",
       "month": "December",
       "mean": "115.50649350649351",
       "standard_deviation": "72.89115232800553",
@@ -156,7 +156,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "January",
       "mean": "112.35394736842102",
       "standard_deviation": "71.27814576267853",
@@ -169,7 +169,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "February",
       "mean": "90.65569620253164",
       "standard_deviation": "47.56902179614254",
@@ -182,7 +182,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "March",
       "mean": "72.29240506329114",
       "standard_deviation": "118.73445403600562",
@@ -195,7 +195,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "April",
       "mean": "54.685135135135134",
       "standard_deviation": "40.85037193397265",
@@ -208,7 +208,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "May",
       "mean": "37.62567567567568",
       "standard_deviation": "34.73395044812281",
@@ -221,7 +221,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "June",
       "mean": "1.0027397260273978",
       "standard_deviation": "106.01037423077372",
@@ -234,7 +234,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "July",
       "mean": "2.441333333333333",
       "standard_deviation": "4.708094967417521",
@@ -247,7 +247,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "August",
       "mean": "10.619736842105262",
       "standard_deviation": "14.792138912779262",
@@ -260,7 +260,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "September",
       "mean": "38.699999999999996",
       "standard_deviation": "30.38609300136041",
@@ -273,7 +273,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "October",
       "mean": "80.54166666666669",
       "standard_deviation": "60.34107857744084",
@@ -286,7 +286,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "November",
       "mean": "101.99599999999998",
       "standard_deviation": "56.88994859082461",
@@ -299,7 +299,7 @@
       ]
   },
   {
-      "station": "60355",
+      "station": "99999.9",
       "month": "December",
       "mean": "132.3383561643836",
       "standard_deviation": "148.79779294848058",
