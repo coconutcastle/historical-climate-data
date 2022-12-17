@@ -1,4 +1,3 @@
-import React from 'react';
 import { DataTypes, DataTypeText } from "../../common/download.interface";
 import { Tab, Table, Tabs } from 'react-bootstrap';
 import { cyclesSample, anomSample, prcpSample, stationsSample } from './samples/samples';

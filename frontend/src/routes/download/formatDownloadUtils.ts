@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import { monthType } from '../../common/constants';
+import { monthIndex, monthType } from '../../common/constants';
 import { CyclesData, CyclesDataStationDetails, DataTypes, MonthlyDataStationDetails, MonthlyData, StationMetadata } from '../../common/download.interface';
 
 // only available if the user selected the option to also get the station metadata
@@ -34,6 +34,12 @@ export const insertStationMetadata = (
 }
 
 export const formatDate = (year: number, month: monthType, dateFormat: string): string => {
+  const date = new Date(year, monthIndex[month]);
+  const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+  });
   return '';
 }
 

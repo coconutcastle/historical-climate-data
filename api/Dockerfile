@@ -12,4 +12,5 @@ COPY . .
 
 EXPOSE 9999
 
-CMD ["npm", "run", "dev"]
+# CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "start:dev"]

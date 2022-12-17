@@ -35,6 +35,21 @@ export type monthType =
   | 'november'
   | 'december';
 
+export const monthIndex: Record<monthType, number> = {
+  'january': 0,
+  'february': 1,
+  'march': 2,
+  'april': 3,
+  'may': 4,
+  'june': 5,
+  'july': 6,
+  'august': 7,
+  'september': 8,
+  'october': 9,
+  'november': 11,
+  'december': 12
+}
+
 export enum Months {
   JANUARY = 'January',
   FEBRUARY = 'February',
@@ -48,4 +63,17 @@ export enum Months {
   OCTOBER = 'October',
   NOVEMBER = 'November',
   DECEMBER = 'December'
+}
+
+export const dateOptions = {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+  hour: 'numeric',
+  minute: 'numeric',
+  second: 'numeric',
+  fractionalSecondDigits: 3,
+  hour12: true,
+  timeZone: 'UTC'
 }
