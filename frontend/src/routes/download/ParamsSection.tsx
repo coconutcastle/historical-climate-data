@@ -68,34 +68,40 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <input type='text' placeholder="Year ranges" className="text-field" style={{ width: '50%' }}
                 onBlur={(e: any) => {   // validate and update on blur because it's too slow otherwise
                   const yearRanges: Range[] = [];
-                  const years = ((e.target.value).replace(/\s/g, '')).split(',');   // strip whitespace and split by comma
 
-                  // theoretically I guess this could be done in a single regex but it's too complicated... believe me I tried :'(
-                  years.forEach((yearRange: string) => {
-                    if ((yearRange.length == 4) && (/\d{4}/.test(yearRange))) {   // case 1: single year
-                      yearRanges.push({ single: parseInt(yearRange), start: null, end: null });
-                    } else if ((yearRange.length == 5) && ((/-\d{4}/.test(yearRange)) || (/\d{4}-/.test(yearRange)))) {    // case 2: single bound year range (-year or year-)
-                      yearRanges.push({
-                        single: null,
-                        start: yearRange[0] === '-' ? null : parseInt(yearRange.slice(0, 4)),   // case 2a: -year
-                        end: yearRange[4] === '-' ? null : parseInt(yearRange.slice(1))         // case 2b: year-
-                      });
-                    } else if ((yearRange.length == 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
-                      const rangeStart = parseInt(yearRange.slice(0, 4));
-                      const rangeEnd = parseInt(yearRange.slice(5));
-                      if (isValidRange('start', rangeStart, rangeEnd)) {
-                        yearRanges.push({ single: null, start: parseInt(yearRange.slice(0, 4)), end: parseInt(yearRange.slice(5)) });
+                  // set field if field is empty
+                  if (e.target.value.length === 0) {
+                    setFieldValue('years', []);
+                  } else {
+                    const years = ((e.target.value).replace(/\s/g, '')).split(',');   // strip whitespace and split by comma
+
+                    // theoretically I guess this could be done in a single regex but it's too complicated... believe me I tried :'(
+                    years.forEach((yearRange: string) => {
+                      if ((yearRange.length == 4) && (/\d{4}/.test(yearRange))) {   // case 1: single year
+                        yearRanges.push({ single: parseInt(yearRange), start: null, end: null });
+                      } else if ((yearRange.length == 5) && ((/-\d{4}/.test(yearRange)) || (/\d{4}-/.test(yearRange)))) {    // case 2: single bound year range (-year or year-)
+                        yearRanges.push({
+                          single: null,
+                          start: yearRange[0] === '-' ? null : parseInt(yearRange.slice(0, 4)),   // case 2a: -year
+                          end: yearRange[4] === '-' ? null : parseInt(yearRange.slice(1))         // case 2b: year-
+                        });
+                      } else if ((yearRange.length == 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
+                        const rangeStart = parseInt(yearRange.slice(0, 4));
+                        const rangeEnd = parseInt(yearRange.slice(5));
+                        if (isValidRange('start', rangeStart, rangeEnd)) {
+                          yearRanges.push({ single: null, start: parseInt(yearRange.slice(0, 4)), end: parseInt(yearRange.slice(5)) });
+                        };
                       };
-                    };
 
-                    if (yearRanges.length < years.length) {   // set error if user has entered ANY invalid range. need to set errors here as otherwise overwritten by validate function
-                      setErrors({ ...errors, 'years': 'Please enter valid ranges' });
-                    } else {
-                      const { years, ...fieldErrors } = errors;
-                      setErrors({ ...fieldErrors });    // if ranges are all valid, remove the errors for years
-                      setFieldValue('years', yearRanges);
-                    }
-                  })
+                      if (yearRanges.length < years.length) {   // set error if user has entered ANY invalid range. need to set errors here as otherwise overwritten by validate function
+                        setErrors({ ...errors, 'years': 'Please enter valid ranges' });
+                      } else {
+                        const { years, ...fieldErrors } = errors;
+                        setErrors({ ...fieldErrors });    // if ranges are all valid, remove the errors for years
+                        setFieldValue('years', yearRanges);
+                      }
+                    })
+                  }
                 }} />
               {errors.years && <div className="text-field-error">{errors.years as string}</div>}
 
@@ -266,7 +272,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                             arrayHelpers.remove(params.dataTypes.indexOf(type as DataTypes));
                           };
                         }} />
-                        <div>{DataTypeText[type]}</div>
+                      <div>{DataTypeText[type]}</div>
                     </div>
                   )))} />
               </div>

@@ -11,8 +11,8 @@ import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
-  // const [doDownload, setDoDownload] = useState<boolean>(false);
-  const doDownload = useRef<boolean>(false);
+  const [doDownload, setDoDownload] = useState<boolean>(false);
+  // const doDownload = useRef<boolean>(false);
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -50,23 +50,24 @@ export default function DownloadPage() {
   const { data: downloadData, error: errorDownloadData, isLoading: isLoadingDownloadData, refetch: refetchDownloadData } = useQuery({
     queryKey: [QueryKeys.DOWNLOAD],
     ...ReactQueryConfig,
-    enabled: doDownload.current,
+    enabled: doDownload,
     queryFn: () => getDownloadData(false, params)
   });
 
   useEffect(() => {
     if (doDownload && errorDownloadData) {
       setDownloadError('Download failed');
-      doDownload.current = false;
+      // doDownload.current = false;
+      setDoDownload(false);
     }
     if (doDownload && downloadData) {
-      console.log('downloading')
       Object.keys(downloadData).forEach((download: string) => {
         if (downloadData[download].length> 0) {
           downloadCSV(downloadData[download], download)
         }
       });
-      doDownload.current = false;
+      // doDownload.current = false;
+      setDoDownload(false);
     }
   }, [downloadData, errorDownloadData, doDownload]);
 
@@ -115,14 +116,15 @@ export default function DownloadPage() {
                   setDownloadError('Please select data type');
                 } else {
                   setDownloadError(undefined);
-                  doDownload.current = true;
+                  // doDownload.current = true;
+                  setDoDownload(true);
                   refetchDownloadData();
                 }
               }}>
               <div className='button-text'>
                 DOWNLOAD
               </div>
-              {isLoadingDownloadData === true ?
+              {doDownload === true ?
                 <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
               }
             </button>
