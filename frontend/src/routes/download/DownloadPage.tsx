@@ -31,7 +31,8 @@ export default function DownloadPage() {
     monthlyDataViewFormat: 'na',
     combineDates: 'na',
     dateFormat: '',
-    files: 'concat'
+    files: 'concat',
+    insertMetadata: false,
   })
 
   const { data: dataCountries, error: errorCountries, isLoading: isLoadingCountries } = useQuery({
@@ -108,7 +109,7 @@ export default function DownloadPage() {
               <FormatSection
                 format={format}
                 onFormatChanged={(newFormat: FormatFields) => setFormat(newFormat)}
-                dataTypes={params.dataTypes} />
+                params={params} />
             </>
           )}
         </></div>

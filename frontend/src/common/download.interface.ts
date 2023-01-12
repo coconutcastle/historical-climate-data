@@ -36,6 +36,7 @@ export interface FormatFields {
   combineDates: 'separate' | 'combine' | 'na';     // only applicable in spread view
   dateFormat: string;
   files: 'byStation' | 'concat';
+  insertMetadata: boolean;
 }
 
 export interface CountryInfo {

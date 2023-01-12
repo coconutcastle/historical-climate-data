@@ -35,11 +35,17 @@ export const insertStationMetadata = (
 
 export const formatDate = (year: number, month: monthType, dateFormat: string): string => {
   const date = new Date(year, monthIndex[month]);
-  const dateTimeFormat = new Intl.DateTimeFormat('en-US', {
+  const dateTimeFormatter = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: 'numeric',
     day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
   });
+
+  const dateParts = dateTimeFormatter.formatToParts(date);
+  
   return '';
 }
 

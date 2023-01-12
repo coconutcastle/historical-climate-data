@@ -1,15 +1,16 @@
 import { Field, Form, Formik, ErrorMessage } from 'formik';
-import { DataTypes, FormatFields } from '../../common/download.interface';
+import { DataTypes, FormatFields, ParamsFields } from '../../common/download.interface';
 import { Radio } from '@mui/material';
+import Checkbox from '@mui/material/Checkbox';
 import { PreviewTable } from './PreviewTable';
 
 interface FormatSectionProps {
   format: FormatFields;
   onFormatChanged: (format: FormatFields) => void;
-  dataTypes: DataTypes[]
+  params: ParamsFields;
 }
 
-export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSectionProps) => {
+export const FormatSection = ({ format, onFormatChanged, params }: FormatSectionProps) => {
 
   const formatFieldsChanged = (values: FormatFields) => {
     console.log(values);
@@ -38,14 +39,14 @@ export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSect
                   <Radio
                     checked={values.monthlyDataViewFormat === 'condensed'}
                     onChange={() => setFieldValue('monthlyDataViewFormat', 'condensed')}
-                    disabled={!(dataTypes.includes('prcp') || dataTypes.includes('anom'))} />
+                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom'))} />
                   Condensed
                 </div>
                 <div className='d-flex flex-row align-items-center col-5'>
                   <Radio
                     checked={values.monthlyDataViewFormat === 'spread'}
                     onChange={() => setFieldValue('monthlyDataViewFormat', 'spread')}
-                    disabled={!(dataTypes.includes('prcp') || dataTypes.includes('anom'))} />
+                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom'))} />
                   Spread
                 </div>
               </div>
@@ -59,7 +60,7 @@ export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSect
                   <Radio
                     checked={values.combineDates === 'combine'}
                     onChange={() => setFieldValue('combineDates', 'combine')}
-                    disabled={!((dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
+                    disabled={!((params.dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
                   <div className='d-flex flex-column' style={{ marginTop: '6px' }}>
                     <div>Combine year and month</div>
                     <div className='mb-1 mt-2'>Enter date format:</div>
@@ -70,7 +71,7 @@ export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSect
                   <Radio
                     checked={values.combineDates === 'separate'}
                     onChange={() => setFieldValue('combineDates', 'separate')}
-                    disabled={!((dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
+                    disabled={!((params.dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
                   Keep year and month in separate columns
                 </div>
 
@@ -78,6 +79,14 @@ export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSect
 
               {/* =========== NUMBER FILES FORMAT =========== */}
               <div className='heading-2 mt-4 mb-1'>Files</div>
+              <div className="mb-1">If also downloading station metadata, you can choose to insert the metadata into the data files.</div>
+              <Checkbox value={format.insertMetadata}
+                onChange={(e: any) => {
+                  setFieldValue('insertMetadata', e.target.checked);
+                }} />Insert metadata
+
+              {/* =========== NUMBER FILES FORMAT =========== */}
+              <div className='heading-2 mt-4 mb-1'>Insert Station Metadata</div>
               <div className='d-flex flex-row justify-content-start'>
                 <div className='d-flex flex-row align-items-center col-5'>
                   <Radio
@@ -95,7 +104,7 @@ export const FormatSection = ({ format, onFormatChanged, dataTypes }: FormatSect
 
               {/* =========== PREVIEW FORMAT =========== */}
               <div className='heading-2 mt-4 mb-2'>Preview</div>
-              {dataTypes.length > 0 ? <PreviewTable dataTypes={dataTypes} downloadData={[]} /> : <div>Please select what data to download.</div>}
+              {params.dataTypes.length > 0 ? <PreviewTable params={params} format={values} downloadData={[]} /> : <div>Please select what data to download.</div>}
 
             </>
           </Form>
