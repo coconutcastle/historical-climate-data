@@ -78,15 +78,15 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
               </div>
 
               {/* =========== NUMBER FILES FORMAT =========== */}
-              <div className='heading-2 mt-4 mb-1'>Files</div>
-              <div className="mb-1">If also downloading station metadata, you can choose to insert the metadata into the data files.</div>
-              <Checkbox value={format.insertMetadata}
+              <div className='heading-2 mt-4 mb-1'>Insert Station Metadata</div>
+              <div className="mb-1">If downloading station metadata, you can choose to insert the metadata into the data files.</div>
+              <Checkbox value={format.insertMetadata} disabled={!params.dataTypes.includes('stations')}
                 onChange={(e: any) => {
                   setFieldValue('insertMetadata', e.target.checked);
                 }} />Insert metadata
 
               {/* =========== NUMBER FILES FORMAT =========== */}
-              <div className='heading-2 mt-4 mb-1'>Insert Station Metadata</div>
+              <div className='heading-2 mt-4 mb-1'>Files</div>
               <div className='d-flex flex-row justify-content-start'>
                 <div className='d-flex flex-row align-items-center col-5'>
                   <Radio

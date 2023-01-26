@@ -53,6 +53,19 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
           };
         };
         if ((type === 'anom' || type === 'prcp') && format.monthlyDataViewFormat === 'spread') {
+          if (format.insertMetadata) {
+
+          } else {
+            
+          }
+          const { station, year, ...months } = newSample[row];
+        };
+        if ((type === 'anom' || type === 'prcp') && format.monthlyDataViewFormat === 'condensed') {
+          if (format.insertMetadata) {
+
+          } else {
+            
+          }
           const { station, year, ...months } = newSample[row];
         }
       }

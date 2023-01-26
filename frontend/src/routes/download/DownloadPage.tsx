@@ -4,9 +4,9 @@ import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { downloadCSV } from "./formatDownloadUtils";
+import { downloadCSV, formatData } from "./formatDownloadUtils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
-import { FormatFields, ParamsFields, RawRegions } from "../../common/download.interface";
+import { DataTypes, FormatFields, ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
 
 export default function DownloadPage() {
@@ -33,7 +33,7 @@ export default function DownloadPage() {
     dateFormat: '',
     files: 'concat',
     insertMetadata: false,
-  })
+  });
 
   const { data: dataCountries, error: errorCountries, isLoading: isLoadingCountries } = useQuery({
     queryKey: [QueryKeys.COUNTRIES],
@@ -67,10 +67,22 @@ export default function DownloadPage() {
       setDoDownload(false);
     }
     if (doDownload && downloadData) {
-      Object.keys(downloadData).forEach((download: string) => {
-        if (downloadData[download].length > 0) {
-          downloadCSV(downloadData[download], download);
+      Object.keys(downloadData).forEach((downloadType: string) => {
+        if (downloadData[downloadType].length > 0) {
+          const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['station']);
+          if (format.files === 'byStation') {
+            for (let i = 0; i < formattedDownload.length; i++) {
+              downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
+            };
+          } else {
+            downloadCSV(formattedDownload, downloadType);
+          }
         }
+
+        // if (downloadData[downloadType].length > 0) {
+        //   downloadCSV(downloadData[downloadType], downloadType);
+        //   console.log(downloadData[downloadType])
+        // }
       });
       setDoDownload(false);
     }
