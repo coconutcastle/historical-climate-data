@@ -124,6 +124,7 @@ export class GHCNMService {
       .getRawMany();
   }
 
+  // TODO: put the actual percentile numbers for each percentile value
   public async getCyclesData(months: monthType[], stations: string[]): Promise<any[]> {
     if (stations.length === 0) return [];
 

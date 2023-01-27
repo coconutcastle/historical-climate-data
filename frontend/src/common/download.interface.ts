@@ -32,8 +32,8 @@ export interface ParamsFields {
 }
 
 export interface FormatFields {
-  monthlyDataViewFormat: 'condensed' | 'spread' | 'na';
-  combineDates: 'separate' | 'combine' | 'na';     // only applicable in spread view
+  monthlyDataViewFormat: 'condensed' | 'spread';
+  combineDates: 'separate' | 'combine';     // only applicable in spread view
   dateFormat: string;
   files: 'byStation' | 'concat';
   insertMetadata: boolean;

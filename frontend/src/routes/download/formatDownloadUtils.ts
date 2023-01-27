@@ -33,6 +33,7 @@ export const insertStationMetadata = (
   return detailedContent;
 }
 
+// Date is showing up weird right now but otherwise working
 // only called when data is to be downloaded to reduce processing
 // data is entered in arrays of JSON objects (key: column heading, value: value)
 // if byStation is selected, returns an array of arrays of JSON objects - otherwise returns a single array of JSON objects
@@ -128,19 +129,19 @@ export const formatDate = (year: number, month: monthType, dateFormat: string): 
   const monthIndexStart = (dateFormat.toLowerCase()).search('mm');
   const dayIndexStart = (dateFormat.toLowerCase()).search('dd');
 
-  const formattedDateArray = [...dateFormat];   //string as array to make replacement easier
+  const formattedDateArray = dateFormat.split('');   //string as array to make replacement easier
   if (yearIndexStart !== -1) {
-    formattedDateArray.splice(yearIndexStart, 4, String(year));
+    formattedDateArray.splice(yearIndexStart, 4, ...[...String(year)]);
   };
   if (monthIndexStart !== -1) {
     const monthStr = String(monthIndex[month]);
     formattedDateArray.splice(monthIndexStart, 2, monthStr.length === 1 ? '0' + monthStr : monthStr);
   };
   if (dayIndexStart !== -1) {
-    formattedDateArray.splice(dayIndexStart, 2, '01');
+    formattedDateArray.splice(monthIndexStart !== -1 ? dayIndexStart - 1 : dayIndexStart, 2, '01');   // account for array element removed by mm
   };
 
-  return formattedDateArray.join();
+  return formattedDateArray.join('');
 }
 
 export const downloadCSV = (content: any, fileName: string, fields?: string[]) => {

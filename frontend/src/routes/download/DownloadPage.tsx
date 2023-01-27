@@ -28,8 +28,8 @@ export default function DownloadPage() {
   });
 
   const [format, setFormat] = useState<FormatFields>({
-    monthlyDataViewFormat: 'na',
-    combineDates: 'na',
+    monthlyDataViewFormat: 'condensed',
+    combineDates: 'separate',
     dateFormat: '',
     files: 'concat',
     insertMetadata: false,
@@ -68,21 +68,21 @@ export default function DownloadPage() {
     }
     if (doDownload && downloadData) {
       Object.keys(downloadData).forEach((downloadType: string) => {
-        if (downloadData[downloadType].length > 0) {
-          const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['station']);
-          if (format.files === 'byStation') {
-            for (let i = 0; i < formattedDownload.length; i++) {
-              downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
-            };
-          } else {
-            downloadCSV(formattedDownload, downloadType);
-          }
-        }
-
         // if (downloadData[downloadType].length > 0) {
-        //   downloadCSV(downloadData[downloadType], downloadType);
-        //   console.log(downloadData[downloadType])
+        //   const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['station']);
+        //   if (format.files === 'byStation') {
+        //     for (let i = 0; i < formattedDownload.length; i++) {
+        //       downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
+        //     };
+        //   } else {
+        //     downloadCSV(formattedDownload, downloadType);
+        //   }
         // }
+
+        if (downloadData[downloadType].length > 0) {
+          // downloadCSV(downloadData[downloadType], downloadType);
+          console.log(downloadData[downloadType])
+        }
       });
       setDoDownload(false);
     }

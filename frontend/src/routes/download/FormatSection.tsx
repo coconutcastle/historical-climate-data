@@ -24,6 +24,7 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
       </div>
       <Formik
         validateOnBlur
+        validateOnChange={ false }
         initialValues={{ ...format }}
         validate={formatFieldsChanged}
         onSubmit={() => console.log('submitted')}
@@ -54,13 +55,13 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
 
               {/* =========== DATE FORMAT =========== */}
               <div className='heading-2 mt-4'>Date</div>
-              <div className="mb-1">Only applicable to spread view data (monthly statistics and monthly data if selected).</div>
+              <div className="mb-1">Only applicable to spread view montly readings data.</div>
               <div className='d-flex flex-row justify-content-start align-items-start'>
                 <div className='d-flex flex-row col-5'>
                   <Radio
                     checked={values.combineDates === 'combine'}
                     onChange={() => setFieldValue('combineDates', 'combine')}
-                    disabled={!((params.dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
+                    disabled={!(values.monthlyDataViewFormat === 'spread')} />
                   <div className='d-flex flex-column' style={{ marginTop: '6px' }}>
                     <div>Combine year and month</div>
                     <div className='mb-1 mt-2'>Enter date format:</div>
@@ -71,7 +72,7 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                   <Radio
                     checked={values.combineDates === 'separate'}
                     onChange={() => setFieldValue('combineDates', 'separate')}
-                    disabled={!((params.dataTypes.includes('cycles')) || values.monthlyDataViewFormat === 'spread')} />
+                    disabled={!(values.monthlyDataViewFormat === 'spread')} />
                   Keep year and month in separate columns
                 </div>
 

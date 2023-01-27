@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { DataTypes, DataTypeText, FormatFields, ParamsFields } from "../../common/download.interface";
 import { Tab, Table, Tabs } from 'react-bootstrap';
 import { cyclesSample, anomSample, prcpSample, stationsSample } from './samples/samples';
-import { jsonToArrays } from './formatDownloadUtils';
+import { formatData, jsonToArrays } from './formatDownloadUtils';
 import { Months, monthIndex } from "../../common/constants";
 import { toTitleCase } from "../../common/helpers";
 
@@ -38,45 +38,16 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
 
   const [dataSamples, setDataSamples] = useState<DataSamples>(initialSamples);
 
-  const updatePreview = () => {     // for loops to increase efficiency
-    const unincludedMonths = Object.keys(monthIndex).filter((month: string) => !(params.months.includes(toTitleCase(month) as Months)));
-    for (let i = 0; i < params.dataTypes.length; i++) {
-      const type = params.dataTypes[i];
-      let newSample = initialSamples[type];
-      let spreadSample = [];
-      for (let row = 0; row < newSample.length; row++) {
-        if (!(params.months.length === 0 || params.months.length === 12)) {
-          if (type === 'anom' || type === 'prcp') {
-            unincludedMonths.forEach((unincludedMonth: string) => delete newSample[row][unincludedMonth]);
-          } else if (type === 'cycles') {
-            newSample = newSample.filter((monthCycle: any) => params.months.includes(monthCycle.month));
-          };
-        };
-        if ((type === 'anom' || type === 'prcp') && format.monthlyDataViewFormat === 'spread') {
-          if (format.insertMetadata) {
-
-          } else {
-            
-          }
-          const { station, year, ...months } = newSample[row];
-        };
-        if ((type === 'anom' || type === 'prcp') && format.monthlyDataViewFormat === 'condensed') {
-          if (format.insertMetadata) {
-
-          } else {
-            
-          }
-          const { station, year, ...months } = newSample[row];
-        }
-      }
-
-    }
-  }
-
-
   useEffect(() => {
+    setDataSamples({
+      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', format, stationsSample) : prcpSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', format, stationsSample) : anomSample),
+      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', format, stationsSample) : cyclesSample, 'cycles'),
+      stations: jsonToArrays(stationsSample)
+    });
+  }, [params, format]);
 
-  }, [params, format])
+  console.log('preview data is', dataSamples)
 
   return (
     <Tabs
@@ -95,9 +66,9 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
                 </tr>
               </thead>
               <tbody>
-                {dataSamples[type].slice(1).map((row: string[], index: number) => (
+                {dataSamples[type].slice(1).map((row: any[], index: number) => (
                   <tr key={index}>
-                    {row.map((element: string, i: number) => <td key={`${index}-${i}`}>{element}</td>)}
+                    {row.map((element: any, i: number) => <td key={`${index}-${i}`}>{type === 'cycles' && i === row.length ? JSON.parse(element) : element}</td>)}
                   </tr>
                 ))}
               </tbody>
