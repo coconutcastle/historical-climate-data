@@ -27,7 +27,6 @@ const isValidRange = (bound: 'start' | 'end', newBound: number, existingBound: n
 export const ParamsSection = ({ params, onParamsChanged, countries, stations, regions }: ParamsSectionProps) => {
 
   const paramsChanged = (values: ParamsFields) => { // setting params here interferes with error checking
-    console.log(values);
     onParamsChanged(values);  // because the field types are so irregular (not default input options), it's easier to handle them individually in the selectors themselves
   };
 

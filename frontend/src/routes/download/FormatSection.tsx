@@ -13,7 +13,6 @@ interface FormatSectionProps {
 export const FormatSection = ({ format, onFormatChanged, params }: FormatSectionProps) => {
 
   const formatFieldsChanged = (values: FormatFields) => {
-    console.log(values);
     onFormatChanged(values);
   };
 
@@ -23,8 +22,8 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
         Format Download
       </div>
       <Formik
-        validateOnBlur
-        validateOnChange={ false }
+        // validateOnBlur
+        // validateOnChange={ false }
         initialValues={{ ...format }}
         validate={formatFieldsChanged}
         onSubmit={() => console.log('submitted')}
@@ -65,7 +64,9 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                   <div className='d-flex flex-column' style={{ marginTop: '6px' }}>
                     <div>Combine year and month</div>
                     <div className='mb-1 mt-2'>Enter date format:</div>
-                    <Field type='text' name='dateFormat' className="text-field" disabled={values.combineDates !== 'combine'} placeholder='Ex: "YYYY-MM"' />
+                    <input type='text' placeholder='Ex: "YYYY-MM"' className="text-field" disabled={values.combineDates !== 'combine'}
+                    onBlur={(e: any) => setFieldValue('dateFormat', e.target.value)} />
+                    {/* <Field type='text' name='dateFormat' className="text-field" disabled={values.combineDates !== 'combine'} placeholder='Ex: "YYYY-MM"' /> */}
                   </div>
                 </div>
                 <div className='d-flex flex-row align-items-center col-5'>

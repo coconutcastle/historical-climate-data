@@ -39,15 +39,17 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
   const [dataSamples, setDataSamples] = useState<DataSamples>(initialSamples);
 
   useEffect(() => {
+    const reducedFormat: FormatFields = {...format};
+    reducedFormat.files = 'concat';
     setDataSamples({
-      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', format, stationsSample) : prcpSample),
-      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', format, stationsSample) : anomSample),
-      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', format, stationsSample) : cyclesSample, 'cycles'),
+      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, stationsSample) : prcpSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', reducedFormat, stationsSample) : anomSample),
+      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, stationsSample) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });
-  }, [params, format]);
+  }, [params, format]);    // don't react to bystation - messes things up
 
-  console.log('preview data is', dataSamples)
+  // console.log('preview data is', dataSamples)
 
   return (
     <Tabs

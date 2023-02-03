@@ -43,27 +43,25 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, s
   };
 
   const formattedData = [];
-  var currStationMetadata: any = {};
+  var formattedStation: any = {};
   var currStationCode: string = '';
-  const stationBreaks: number[] = [0];    // keep track of whenever we move on to a new station
+  const stationBreaks: number[] = [];    // keep track of whenever we move on to a new station
 
   for (let row = 0; row < data.length; row++) {
-    // const currStation = data[row]['station'];
 
     if (currStationCode !== data[row]['station']) {
       currStationCode = data[row]['station'];
-      stationBreaks.push(row);    
+      formattedStation = format.insertMetadata && stationMetadata ? stationMetadata.find((stationData: StationMetadata) => currStationCode === stationData.station) : { station: currStationCode };
+      stationBreaks.push(row);     // what if in spread format? account for this
     };
     
     // inserting station metadata is the same for all data types (excl. stations)
-
-    const formattedStation = format.insertMetadata && stationMetadata && currStationMetadata !== currStationCode ?
-      currStationMetadata = stationMetadata.find((stationData: StationMetadata) => currStationCode === stationData.station) : { station: currStationCode };
 
     if (type === 'prcp' || type === 'anom') {
       const { station, year, ...monthlyData } = data[row];
       const monthDates = format.combineDates === 'combine' && format.dateFormat.length > 0 ? Object.keys(monthlyData).map((month: string) => formatDate(year, month as monthType, format.dateFormat)) : [];
 
+      // make sure spread format still works when no date format set
       if (format.monthlyDataViewFormat === 'spread') {   // condensed form is default
         if (monthDates.length > 0) {  // if dates are formatted
           for (let m = 0; m < monthDates.length; m++) {
@@ -104,11 +102,12 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, s
   // separating stations is the same for all data types (excl. stations)
   // data for all stations is concatenated together by default
   if (format.files === 'byStation') {
+    console.log('files by station', stationBreaks);
     const dataByStation: any[] = [];
     for (let s = 0; s < stationBreaks.length - 1; s++) {
-      dataByStation.push(data.slice(s, s+1));
+      dataByStation.push(data.slice(stationBreaks[s], stationBreaks[s+1]));
     };
-    dataByStation.push(data.slice(stationBreaks.length - 1, data.length - 1));    // pushing last unaccounted for elements
+    dataByStation.push(data.slice(stationBreaks[stationBreaks.length - 1], data.length - 1));    // pushing last unaccounted for elements
     return dataByStation;
   } else {
     return formattedData;
@@ -116,15 +115,6 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, s
 }
 
 export const formatDate = (year: number, month: monthType, dateFormat: string): string => {
-  // const date = new Date(year, monthIndex[month], 1);
-  // const dateTimeFormatter = new Intl.DateTimeFormat('en-US', {
-  //   year: 'numeric',    // ignore hour-minutes-seconds for now, probably not necessary
-  //   month: 'numeric',
-  //   day: 'numeric'
-  // });
-
-  // const dateParts = dateTimeFormatter.formatToParts(date);
-
   const yearIndexStart = (dateFormat.toLowerCase()).search('yyyy');
   const monthIndexStart = (dateFormat.toLowerCase()).search('mm');
   const dayIndexStart = (dateFormat.toLowerCase()).search('dd');

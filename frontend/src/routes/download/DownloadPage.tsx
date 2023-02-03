@@ -67,28 +67,30 @@ export default function DownloadPage() {
       setDoDownload(false);
     }
     if (doDownload && downloadData) {
+      console.log(params, format);
       Object.keys(downloadData).forEach((downloadType: string) => {
-        // if (downloadData[downloadType].length > 0) {
-        //   const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['station']);
-        //   if (format.files === 'byStation') {
-        //     for (let i = 0; i < formattedDownload.length; i++) {
-        //       downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
-        //     };
-        //   } else {
-        //     downloadCSV(formattedDownload, downloadType);
-        //   }
-        // }
-
         if (downloadData[downloadType].length > 0) {
-          // downloadCSV(downloadData[downloadType], downloadType);
-          console.log(downloadData[downloadType])
+          const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['stations']);
+          // if (format.files === 'byStation') {
+          //   for (let i = 0; i < formattedDownload.length; i++) {
+          //     downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
+          //   };
+          // } else {
+          //   downloadCSV(formattedDownload, downloadType);
+          // }
+          console.log('formatted download is', formattedDownload)
         }
+
+        // if (downloadData[downloadType].length > 0) {
+        //   // downloadCSV(downloadData[downloadType], downloadType);
+        //   console.log(downloadData[downloadType])
+        // }
       });
       setDoDownload(false);
     }
-  }, [downloadData, errorDownloadData, doDownload]);
+  }, [format, downloadData, errorDownloadData, doDownload]);
 
-  console.log(downloadData)
+  // console.log(downloadData)
 
   return (
     <div className="data-content"
