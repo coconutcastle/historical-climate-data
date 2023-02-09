@@ -127,7 +127,7 @@ export default function DownloadPage() {
             </>
           )}
         </></div>
-        <SelectionSection params={params} />
+        <SelectionSection params={params} format={format} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
         <div className='d-flex flex-row justify-content-center pt-3 pb-5' style={{ width: '65%' }} >

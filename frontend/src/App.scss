@@ -194,10 +194,17 @@ button:hover {
 }
 
 .selection-section {
-  width: 30%;
+  width: 100%;
   background-color: white;
   padding: 2rem;
   margin-left: 20px;
+}
+
+.selection-wrapper {
+  position: sticky;
+  top: calc($header-height + 2rem);
+  display: flex;
+  flex-direction: column;
 }
 
 

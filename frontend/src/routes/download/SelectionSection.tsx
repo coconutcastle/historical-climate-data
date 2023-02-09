@@ -1,9 +1,10 @@
 import { useCallback } from "react";
-import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range, DataTypeText } from "../../common/download.interface"
+import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range, DataTypeText, FormatFields } from "../../common/download.interface"
 import { toTitleCase } from "../../common/helpers";
 
 interface SelectionSectionProps {
   params: ParamsFields;
+  format: FormatFields;
 }
 
 const getRangeString = (range: Range): string => {
@@ -26,7 +27,7 @@ const renderCoordinates = (coordinate: CoordinateRange, index: number) => {
   return validRangeStrings.length > 0 ? <div key={index}>{validRangeStrings.join(', ')}</div> : '';
 }
 
-export const SelectionSection = ({ params }: SelectionSectionProps) => {
+export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
 
   const renderParams = useCallback((param: string): string => {
     var stringArray: string[] = [];
@@ -59,39 +60,76 @@ export const SelectionSection = ({ params }: SelectionSectionProps) => {
   }, [params]);
 
   return (
-    <div className="selection-section">
-      <div className="heading-1">
-        Selections
+    <div className='selection-wrapper'>
+      <div className="selection-section">
+        <div className="heading-1">
+          Selections
+        </div>
+        <div>
+          The intersection of the selections will be returned.
+        </div>
+        <div className="heading-2 mt-4 mb-2">
+          Parameters
+        </div>
+        <div className='d-flex flex-column'>
+          {(Object.keys(params).filter((p: any) => params[p as keyof ParamsFields].length > 0)).map((param, index) => (
+            <div className='d-flex flex-row mb-2 flex-wrap' key={index}>
+              {param !== 'coordinates' ?
+                <>
+                  <div className='col-4'><b>{toTitleCase(param)}: </b></div>
+                  {renderParams(param)}
+                </> :
+                <>
+                  {(params.coordinates.filter((coord: CoordinateRange) =>   // only render if there are non-empty coordinates
+                    Object.values(coord.latitude).some(val => val !== null)
+                    || Object.values(coord.longitude).some(val => val !== null)
+                    || Object.values(coord.elevation).some(val => val !== null))).length === 0 ? '' :
+                    (<>
+                      <div className='col-4'><b>Coordinates: </b></div>
+                      <div className='d-flex flex-column col-8'>
+                        {params.coordinates.map((coord: CoordinateRange, index: number) => renderCoordinates(coord, index))}
+                      </div>
+                    </>)}
+                </>
+              }
+            </div>
+          ))}
+        </div>
       </div>
-      <div>
-        The intersection of the selections will be returned.
-      </div>
-      <div className="heading-2 mt-4 mb-2">
-        Parameters
-      </div>
-      <div className='d-flex flex-column'>
-        {(Object.keys(params).filter((p: any) => params[p as keyof ParamsFields].length > 0)).map((param, index) => (
-          <div className='d-flex flex-row mb-2 flex-wrap' key={index}>
-            {param !== 'coordinates' ?
-              <>
-                <div className='col-4'><b>{toTitleCase(param)}: </b></div>
-                {renderParams(param)}
-              </> :
-              <>
-                {(params.coordinates.filter((coord: CoordinateRange) =>   // only render if there are non-empty coordinates
-                  Object.values(coord.latitude).some(val => val !== null)
-                  || Object.values(coord.longitude).some(val => val !== null)
-                  || Object.values(coord.elevation).some(val => val !== null))).length === 0 ? '' :
-                  (<>
-                    <div className='col-4'><b>Coordinates: </b></div>
-                    <div className='d-flex flex-column col-8'>
-                      {params.coordinates.map((coord: CoordinateRange, index: number) => renderCoordinates(coord, index))}
-                    </div>
-                  </>)}
-              </>
-            }
-          </div>
-        ))}
+      <div className="selection-section mt-3">
+        <div className="heading-1">
+          Formatting
+        </div>
+        <div>
+          Format the .csv download file.
+        </div>
+        <div className="heading-2 mt-4 mb-2">
+          Parameters
+        </div>
+        <div className='d-flex flex-column'>
+          {(Object.keys(params).filter((p: any) => params[p as keyof ParamsFields].length > 0)).map((param, index) => (
+            <div className='d-flex flex-row mb-2 flex-wrap' key={index}>
+              {param !== 'coordinates' ?
+                <>
+                  <div className='col-4'><b>{toTitleCase(param)}: </b></div>
+                  {renderParams(param)}
+                </> :
+                <>
+                  {(params.coordinates.filter((coord: CoordinateRange) =>   // only render if there are non-empty coordinates
+                    Object.values(coord.latitude).some(val => val !== null)
+                    || Object.values(coord.longitude).some(val => val !== null)
+                    || Object.values(coord.elevation).some(val => val !== null))).length === 0 ? '' :
+                    (<>
+                      <div className='col-4'><b>Coordinates: </b></div>
+                      <div className='d-flex flex-column col-8'>
+                        {params.coordinates.map((coord: CoordinateRange, index: number) => renderCoordinates(coord, index))}
+                      </div>
+                    </>)}
+                </>
+              }
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
