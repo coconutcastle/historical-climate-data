@@ -70,7 +70,7 @@ export default function DownloadPage() {
       console.log(params, format);
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
-          const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, downloadData['stations']);
+          const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, params.months.length, downloadData['stations']);
           // if (format.files === 'byStation') {
           //   for (let i = 0; i < formattedDownload.length; i++) {
           //     downloadCSV(formattedDownload[i], formattedDownload[i]['station']);

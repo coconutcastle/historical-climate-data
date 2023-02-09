@@ -37,7 +37,7 @@ export const insertStationMetadata = (
 // only called when data is to be downloaded to reduce processing
 // data is entered in arrays of JSON objects (key: column heading, value: value)
 // if byStation is selected, returns an array of arrays of JSON objects - otherwise returns a single array of JSON objects
-export const formatData = (data: any[], type: DataTypes, format: FormatFields, stationMetadata?: StationMetadata[]): any[] => {
+export const formatData = (data: any[], type: DataTypes, format: FormatFields, numMonths: number, stationMetadata?: StationMetadata[]): any[] => {
   if (type === 'stations') {    // no modificcations made to station metadata
     return data;
   };
@@ -51,8 +51,9 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, s
 
     if (currStationCode !== data[row]['station']) {
       currStationCode = data[row]['station'];
+      // the station metadata is only updated if the station is different to reduce computation
       formattedStation = format.insertMetadata && stationMetadata ? stationMetadata.find((stationData: StationMetadata) => currStationCode === stationData.station) : { station: currStationCode };
-      stationBreaks.push(row);     // what if in spread format? account for this
+      stationBreaks.push(row);
     };
     
     // inserting station metadata is the same for all data types (excl. stations)
@@ -104,10 +105,15 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, s
   if (format.files === 'byStation') {
     console.log('files by station', stationBreaks);
     const dataByStation: any[] = [];
-    for (let s = 0; s < stationBreaks.length - 1; s++) {
-      dataByStation.push(data.slice(stationBreaks[s], stationBreaks[s+1]));
+
+    // multiply up the station breaks to account for the spread format, but only for monthly data
+    const updatedStationBreaks: number[] = ((format.monthlyDataViewFormat === 'spread') && (type !== 'cycles')) ? 
+      stationBreaks.reduce((accumulator, current: number) => accumulator.concat(current * numMonths), [] as number[]) : stationBreaks;
+
+    for (let s = 0; s < updatedStationBreaks.length - 1; s++) {
+      dataByStation.push(formattedData.slice(updatedStationBreaks[s], updatedStationBreaks[s+1]));
     };
-    dataByStation.push(data.slice(stationBreaks[stationBreaks.length - 1], data.length - 1));    // pushing last unaccounted for elements
+    dataByStation.push(formattedData.slice(updatedStationBreaks[updatedStationBreaks.length - 1], formattedData.length - 1));    // pushing last unaccounted for elements
     return dataByStation;
   } else {
     return formattedData;

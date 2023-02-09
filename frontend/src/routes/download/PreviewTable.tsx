@@ -42,9 +42,9 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
     const reducedFormat: FormatFields = {...format};
     reducedFormat.files = 'concat';
     setDataSamples({
-      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, stationsSample) : prcpSample),
-      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', reducedFormat, stationsSample) : anomSample),
-      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, stationsSample) : cyclesSample, 'cycles'),
+      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, params.months.length, stationsSample) : prcpSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomSample),
+      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, params.months.length, stationsSample) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });
   }, [params, format]);    // don't react to bystation - messes things up
