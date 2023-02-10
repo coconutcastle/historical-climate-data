@@ -17,6 +17,7 @@
     "axios": "^1.2.1",
     "bootstrap": "^5.2.3",
     "formik": "^2.2.9",
+    "jszip": "^3.10.1",
     "postcss": "^8.4.19",
     "postcss-cli": "^10.1.0",
     "react": "^18.2.0",

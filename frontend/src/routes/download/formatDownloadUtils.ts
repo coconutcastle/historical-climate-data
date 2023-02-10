@@ -1,37 +1,7 @@
 import Papa from 'papaparse';
+import JSZip from 'jszip';
 import { monthIndex, monthType } from '../../common/constants';
-import { CyclesData, CyclesDataStationDetails, DataTypes, MonthlyDataStationDetails, MonthlyData, StationMetadata, ParamsFields, FormatFields } from '../../common/download.interface';
-
-// only available if the user selected the option to also get the station metadata
-export const insertStationMetadata = (
-  contentType: DataTypes,
-  content: MonthlyData[] | CyclesData[],
-  stations: StationMetadata[]
-): any[] => {
-
-  // leverage the fact that the stations are in the same order in both the content and the metadata objects
-  var currStation = '';
-  var stationIndex = 0;
-  var stationDetails = {};
-
-  const detailedContent = [];
-
-  for (let row = 0; row < content.length; row++) {
-    if (currStation !== content[row].station) {
-      currStation = content[row].station;
-      stationIndex++;
-      const { station, ...details } = stations[stationIndex];
-      stationDetails = details;
-    };
-
-    detailedContent.push({
-      ...content[row],
-      ...stationDetails
-    });
-  };
-
-  return detailedContent;
-}
+import { DataTypes, StationMetadata, FormatFields } from '../../common/download.interface';
 
 // Date is showing up weird right now but otherwise working
 // only called when data is to be downloaded to reduce processing
@@ -55,7 +25,7 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
       formattedStation = format.insertMetadata && stationMetadata ? stationMetadata.find((stationData: StationMetadata) => currStationCode === stationData.station) : { station: currStationCode };
       stationBreaks.push(row);
     };
-    
+
     // inserting station metadata is the same for all data types (excl. stations)
 
     if (type === 'prcp' || type === 'anom') {
@@ -107,11 +77,11 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
     const dataByStation: any[] = [];
 
     // multiply up the station breaks to account for the spread format, but only for monthly data
-    const updatedStationBreaks: number[] = ((format.monthlyDataViewFormat === 'spread') && (type !== 'cycles')) ? 
+    const updatedStationBreaks: number[] = ((format.monthlyDataViewFormat === 'spread') && (type !== 'cycles')) ?
       stationBreaks.reduce((accumulator, current: number) => accumulator.concat(current * numMonths), [] as number[]) : stationBreaks;
 
     for (let s = 0; s < updatedStationBreaks.length - 1; s++) {
-      dataByStation.push(formattedData.slice(updatedStationBreaks[s], updatedStationBreaks[s+1]));
+      dataByStation.push(formattedData.slice(updatedStationBreaks[s], updatedStationBreaks[s + 1]));
     };
     dataByStation.push(formattedData.slice(updatedStationBreaks[updatedStationBreaks.length - 1], formattedData.length - 1));    // pushing last unaccounted for elements
     return dataByStation;
@@ -151,6 +121,23 @@ export const downloadCSV = (content: any, fileName: string, fields?: string[]) =
   link.download = `${fileName}.csv`;
   link.click();
   link.remove();
+}
+
+// takes an array of the files to download
+// contentArray and list of filenames should be the same length
+export const downloadZip = (contentArray: any[], zipFilename: string, individualFilenames: string[]) => {
+  const zip = new JSZip();
+  for (let i = 0; i < contentArray.length; i++) {
+    zip.file(individualFilenames[i] + '.csv', Papa.unparse(contentArray[i]));
+  };
+  zip.generateAsync({ type: "blob" })
+    .then(function (blob) {     // probably blob type application/zip
+      const link = window.document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = `${zipFilename}.zip`;
+      link.click();
+      link.remove();
+    });
 }
 
 export const jsonToArrays = (content: any, dataType?: DataTypes) => {

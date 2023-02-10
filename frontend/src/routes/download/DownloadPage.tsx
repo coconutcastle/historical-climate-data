@@ -4,7 +4,7 @@ import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { downloadCSV, formatData } from "./formatDownloadUtils";
+import { downloadCSV, downloadZip, formatData } from "./formatDownloadUtils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { DataTypes, FormatFields, ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
@@ -71,27 +71,18 @@ export default function DownloadPage() {
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
           const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, params.months.length, downloadData['stations']);
-          // if (format.files === 'byStation') {
-          //   for (let i = 0; i < formattedDownload.length; i++) {
-          //     downloadCSV(formattedDownload[i], formattedDownload[i]['station']);
-          //   };
-          // } else {
-          //   downloadCSV(formattedDownload, downloadType);
-          // }
-          console.log('formatted download is', formattedDownload)
+          if ((downloadType !== 'stations') && (format.files === 'byStation')) {
+            const stationNames = formattedDownload.map((stationData: any[]) => (stationData[stationData.length - 1])['station']);
+            downloadZip(formattedDownload, downloadType, stationNames);
+          } else {
+            downloadCSV(formattedDownload, downloadType);
+          };
         }
-
-        // if (downloadData[downloadType].length > 0) {
-        //   // downloadCSV(downloadData[downloadType], downloadType);
-        //   console.log(downloadData[downloadType])
-        // }
       });
       setDoDownload(false);
     }
   }, [format, downloadData, errorDownloadData, doDownload]);
-
-  // console.log(downloadData)
-
+  
   return (
     <div className="data-content"
       style={{ height: !(dataCountries && dataStations && dataRegions) ? '100vh' : '100%' }} >
