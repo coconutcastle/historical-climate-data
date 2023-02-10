@@ -17,6 +17,14 @@ const coordinateUnits: Record<string, string> = {
   elevation: 'm'
 }
 
+const formatParamNames: Record<string, string> = {
+  monthlyDataViewFormat: 'Monthly Data Format',
+  combineDates: 'Combine Dates',
+  dateFormat: 'Date Format',
+  insertMetadata: 'Insert Metadata',
+  files: 'Station Files'
+}
+
 const renderCoordinates = (coordinate: CoordinateRange, index: number) => {
   const rangeStrings = Object.keys(coordinate).map((bound: string) => {
     if (Object.values(coordinate[bound as keyof CoordinateRange]).some(val => val !== null)) {    // if all numbers for that bound is null, don't return a string
@@ -59,6 +67,28 @@ export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
     return stringArray.join(', ');
   }, [params]);
 
+  const getFormatParamString = useCallback((formatOption: string): string => {
+    var displayString = '';
+    switch (formatOption) {
+      case 'monthlyDataViewFormat':
+        displayString = toTitleCase(format[formatOption]);
+        break;
+      case 'combineDates':
+        displayString = toTitleCase(format[formatOption]);
+        break;
+      case 'dateFormat':
+        displayString = format[formatOption].length > 0 ? format[formatOption] : 'N/A';
+        break;
+      case 'insertMetadata':
+        displayString = format[formatOption] ? 'True' : 'False';
+        break;
+      case 'files':
+        displayString = format[formatOption] === 'byStation' ? 'Split files per station' : 'Combine stations';
+        break;
+    };
+    return displayString;
+  }, [format])
+
   return (
     <div className='selection-wrapper'>
       <div className="selection-section">
@@ -77,7 +107,7 @@ export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
               {param !== 'coordinates' ?
                 <>
                   <div className='col-4'><b>{toTitleCase(param)}: </b></div>
-                  {renderParams(param)}
+                  <div className='col-8'>{renderParams(param)}</div>
                 </> :
                 <>
                   {(params.coordinates.filter((coord: CoordinateRange) =>   // only render if there are non-empty coordinates
@@ -107,26 +137,10 @@ export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
           Parameters
         </div>
         <div className='d-flex flex-column'>
-          {(Object.keys(params).filter((p: any) => params[p as keyof ParamsFields].length > 0)).map((param, index) => (
+          {Object.keys(format).map((formatOption: string, index) => (
             <div className='d-flex flex-row mb-2 flex-wrap' key={index}>
-              {param !== 'coordinates' ?
-                <>
-                  <div className='col-4'><b>{toTitleCase(param)}: </b></div>
-                  {renderParams(param)}
-                </> :
-                <>
-                  {(params.coordinates.filter((coord: CoordinateRange) =>   // only render if there are non-empty coordinates
-                    Object.values(coord.latitude).some(val => val !== null)
-                    || Object.values(coord.longitude).some(val => val !== null)
-                    || Object.values(coord.elevation).some(val => val !== null))).length === 0 ? '' :
-                    (<>
-                      <div className='col-4'><b>Coordinates: </b></div>
-                      <div className='d-flex flex-column col-8'>
-                        {params.coordinates.map((coord: CoordinateRange, index: number) => renderCoordinates(coord, index))}
-                      </div>
-                    </>)}
-                </>
-              }
+              <div className='col-4'><b>{formatParamNames[formatOption]}: </b></div>
+              <div className='col-8'>{getFormatParamString(formatOption)}</div>
             </div>
           ))}
         </div>
