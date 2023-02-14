@@ -1,0 +1,7 @@
+{
+  "hint-monthlyView": "Select how you would like to format the monthly precipitation or anomaly data. If in condensed format, each year will have 12 columns giving the reading for that month. If in spread format, there will be 12 rows for one year, each for a certain month.",
+  "hint-dateFormat": "If the monthly data is in spread format, you can format the date column. You may choose to keep the year and month in separate columns, or to combine them and use a custom format. Use \"YYYY\", \"MM\", and \"DD\" to mark where you'd like the year, month, and day to be situated. \"01\" is used in place of the missing day. For example, February 1999 with \"MM/DD/YYYY\" will become \"02/01/1999\".",
+  "hint-metadata": "If \"Station Metadata\" is among the data types you are downloading, you can choose to insert the station metadata for each row in the data files in addition to just the station code. This includes the formal station name, latitude, longitude, elevation, country, and region data, if it exists.",
+  "hint-fileFormat": "Select if the files will be downloaded separately or individually by station. By default, all station data is concatenated together. However, if you'd like a separate file for each station, you can select \"Separate files per station\" and download a zipped folder containing the station-separated files.",
+  "hint-preview": "This table offers a preview of how your data will be formatted given your selections. Note that this table uses sample data, and is in no way related to actual data you will download."
+}

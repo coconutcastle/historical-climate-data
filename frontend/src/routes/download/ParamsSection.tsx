@@ -31,7 +31,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
   };
 
   useEffect(() => {     // initialize all tooltips on first render
-    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="tooltip"]'));
+    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="param-tooltip"]'));
     const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl: any) {
       return new Tooltip(tooltipTriggerEl, {
         placement: 'right',
@@ -55,7 +55,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== YEARS PARAMS =========== */}
               <div className="heading-2">
                 Years
-                <i id='hint-years' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                <i id='hint-years' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
               <div className="mb-1">
                 Enter comma separated year ranges with each year in the range separated by a dash, or single years.
@@ -103,7 +103,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== MONTHS PARAMS =========== */}
               <div className='heading-2 mt-4'>
                 Months
-                <i id='hint-months' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                <i id='hint-months' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
               <div className="mb-1">Select months for which you want data for.</div>
               <div className='d-flex w-75 justify-content-start flex-wrap'>
@@ -129,7 +129,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 <div className='col-6'>
                   <div className='heading-2'>
                     Countries
-                    <i id='hint-countries' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                    <i id='hint-countries' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
                   </div>
                   <div className="mb-1">Select countries to include.</div>
                   <Autocomplete
@@ -152,7 +152,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 <div className='col-6'>
                   <div className='heading-2'>
                     Regions
-                    <i id='hint-regions' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                    <i id='hint-regions' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
                   </div>
                   <div className="mb-1">Region specifications are not available for all countries.</div>
                   <Autocomplete
@@ -177,14 +177,14 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                 <div className='col-4'>
                   <div className='heading-2'>
                     Latitude
-                    <i id='hint-latitude' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                    <i id='hint-latitude' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
                   </div>
                   <div className="mb-1">Enter latitude range.</div>
                 </div>
                 <div className='col-4'>
                   <div className='heading-2'>
                     Longitude
-                    <i id='hint-longitude' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                    <i id='hint-longitude' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
                   </div>
                   <div className="mb-1">Enter longitude range.</div>
                 </div>
@@ -193,12 +193,12 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
                     <div>
                       <div className='heading-2'>
                         Elevation
-                        <i id='hint-elevation' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                        <i id='hint-elevation' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
                       </div>
                       <div className="mb-1">Enter elevation range.</div>
                     </div>
                     <button type='button'
-                      id='hint-addRange' toggle-hint="tooltip"
+                      id='hint-addRange' toggle-hint="param-tooltip"
                       onClick={(e) =>
                         setFieldValue('coordinates', mutateArray(values.coordinates, values.coordinates.length, {   // add new empty coordinate input
                           latitude: { single: null, start: null, end: null },
@@ -229,7 +229,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== STATIONS PARAMS =========== */}
               <div className='heading-2 mt-4'>
                 Stations
-                <i id='hint-stations' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                <i id='hint-stations' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
               <div className="mb-1">Search for and select stations by name.</div>
               <Autocomplete
@@ -251,7 +251,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               {/* =========== DATA TYPE PARAMS =========== */}
               <div className='heading-2 mt-4'>
                 Data Types
-                <i id='hint-dataTypes' toggle-hint="tooltip" className='material-icons help-icon'>help_outlined</i>
+                <i id='hint-dataTypes' toggle-hint="param-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
               <div className="mb-2">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>

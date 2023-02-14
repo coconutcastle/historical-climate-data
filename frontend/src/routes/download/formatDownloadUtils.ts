@@ -73,7 +73,6 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
   // separating stations is the same for all data types (excl. stations)
   // data for all stations is concatenated together by default
   if (format.files === 'byStation') {
-    console.log('files by station', stationBreaks);
     const dataByStation: any[] = [];
 
     // multiply up the station breaks to account for the spread format, but only for monthly data

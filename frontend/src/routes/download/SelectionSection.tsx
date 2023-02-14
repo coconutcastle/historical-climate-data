@@ -96,7 +96,7 @@ export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
           Selections
         </div>
         <div>
-          The intersection of the selections will be returned.
+          The union of the selections will be returned.
         </div>
         <div className="heading-2 mt-4 mb-2">
           Parameters
