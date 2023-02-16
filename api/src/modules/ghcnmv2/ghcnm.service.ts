@@ -42,12 +42,12 @@ export class GHCNMService {
       .where('region IS NOT null')
       .getRawMany();
 
-    const regionsPerCountry: Record<string, string[]> = countryRegions.reduce((accumulator, curr) => {
+    const regionsPerCountry: Record<string, string[]> = countryRegions.reduce((accumulator: any, curr: any) => {
       const currArr = accumulator[curr.country] ?? [];
       return { ...accumulator, [curr.country]: [...currArr, curr.region] };    // for each country with supported regions, give it the array of regions it supports
     }, {});
 
-    return countries.map(country => ({
+    return countries.map((country: any) => ({
       country: country.country,
       code: country.code,
       supportedRegions: regionsPerCountry[country.country] ?? []
