@@ -28,11 +28,11 @@ export default function LandingPage() {
         </button>
         <div className='w-75 text-center mt-5 mb-2'>
           This site uses data from The Global Historical Climatology Network Monthly (GHCN-M) Version 2 dataset created by the National Climatic Data Center (NCDC). 
-          Download links and documentation are available <a href=''>here</a>.
+          Download links and documentation are available <a href='https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C00835'>here</a>.
         </div>
         <div className='w-75 text-center'>
           Alternatively, the data can be subset and accessed through the World Meteorological Organization and 
-          Royal Netherlands Meteorological Institute's <a href=''>Climate Explorer</a> tool.
+          Royal Netherlands Meteorological Institute's <a href='https://climexp.knmi.nl/start.cgi?id=someone@somewhere'>Climate Explorer</a> tool.
         </div>
       </div>
     </div>

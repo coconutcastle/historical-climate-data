@@ -40,7 +40,7 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
         validate={formatFieldsChanged}
         onSubmit={() => console.log('submitted')}
       >
-        {({ errors, values, setFieldValue, setErrors }) => (
+        {({ values, setFieldValue }) => (
           <Form>
             <>
               {/* =========== DATE FORMAT =========== */}
@@ -133,7 +133,9 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                 Preview
                 <i id='hint-preview' toggle-hint="format-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
-              {params.dataTypes.length > 0 ? <PreviewTable params={params} format={values} downloadData={[]} /> : <div>Please select what data to download.</div>}
+              {params.dataTypes.length > 0 ? <PreviewTable params={params} format={values} downloadData={[]} /> : <div>
+                Preview sample data using the selected formatting options. Select the desired data types.
+              </div>}
 
             </>
           </Form>

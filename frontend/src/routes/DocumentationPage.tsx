@@ -5,7 +5,7 @@ export default function DocumentationPage() {
       <div className='title'>
         Historical Precipitation Data Explorer
       </div>
-      <hr style={{ width: "100%" }}/>
+      <hr style={{ width: "100%" }} />
       <div className="plain-section">
         <div className='heading-1'>
           Documentation
@@ -35,6 +35,16 @@ export default function DocumentationPage() {
           <b>Data Documentation: </b>
           <a href="https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C00835">
             https://www.ncei.noaa.gov/access/metadata/landing-page/bin/iso?id=gov.noaa.ncdc:C00835
+          </a>
+        </div>
+        <div className="mt-3">
+          The data can alternatively be downloaded and visualized using the World Meteorological Organization and
+          Royal Netherlands Meteorological Institute's Climate Explorer Tool.
+        </div>
+        <div className="mt-2">
+          <b>KNMI Climate Explorer: </b>
+          <a href="https://climexp.knmi.nl/start.cgi?id=someone@somewhere">
+            https://climexp.knmi.nl/start.cgi?id=someone@somewhere
           </a>
         </div>
       </div>

@@ -8,11 +8,13 @@ import { GHCNModule } from './modules/ghcnmv2/ghcnm.module';
 import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./modules/ghcnmv2/ghcnm.entity";
 
 dotenv.config({ path: `${process.cwd()}\\.env.dev` });
+// dotenv.config({ path: `${process.cwd()}\\.env.prod` });
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       envFilePath: `${process.cwd()}\\.env.${process.env.NODE_ENV}`,
+      // envFilePath: `${process.cwd()}\\.env.dev`,
       isGlobal: true
     }),
     TypeOrmModule.forRoot({
