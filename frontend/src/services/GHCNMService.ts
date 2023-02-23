@@ -2,7 +2,7 @@ import { CountryInfo, ParamsFields, RawRegions, StationMetadata, StationMetadata
 import { getHeaders } from '../common/constants';
 import axios from 'axios';
 
-const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:9999/api/ghcnmv2/' : 'http://0.0.0.0:9999/api/ghcnmv2/';
+const BASE_URL = import.meta.env.VITE_API_HOST;
 
 export async function getAllStationMetadata(): Promise<StationMetadata[]> {
   return axios.get(`${BASE_URL}station`, {

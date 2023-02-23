@@ -1,9 +1,9 @@
-import React, { Suspense, useState } from 'react'
+import React, { Suspense } from 'react'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { MuiTheme } from './MuiTheme';
-import './App.scss'
+import './App.scss';
 
 import { Header } from './components/Header';
 
@@ -23,6 +23,9 @@ const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
 const DocumentationPage = React.lazy(() => import('./routes/DocumentationPage'));
 
 const App: React.FC = () => {
+
+  console.log(process.env.NODE_ENV)
+  console.log(import.meta.env.VITE_API_HOST)
 
   return (
     <ThemeProvider theme={MuiTheme}>
