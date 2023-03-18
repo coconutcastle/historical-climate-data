@@ -1,6 +1,7 @@
 import cyclesSample from './annualCyclesDataSample.json';
-import anomSample from './anomalyDataSample.json';
+import anomMmSample from './anomalyMmDataSample.json';
+import anomPercentageSample from './anomalyPercentageDataSample.json';
 import prcpSample from './precipitationDataSample.json';
 import stationsSample from './stationMetadataSample.json';
 
-export { cyclesSample, anomSample, prcpSample, stationsSample };
+export { cyclesSample, anomMmSample, anomPercentageSample, prcpSample, stationsSample };

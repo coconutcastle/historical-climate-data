@@ -14,12 +14,13 @@ export interface CoordinateRange {
 
 export const DataTypeText: Record<string, string> = {
   'prcp': 'Monthly Precipitation',
-  'anom': 'Monthly Anomalies',
+  'anom': 'Monthly Anomalies (mm)',
+  'anom_pcnt': 'Monthly Anomalies (percentages)',
   'cycles': 'Statistics per Month',
   'stations': 'Station Metadata'
 }
 
-export type DataTypes = 'prcp' | 'anom' | 'cycles' | 'stations';
+export type DataTypes = 'prcp' | 'anom' | 'anom_pcnt' | 'cycles' | 'stations';
 
 export interface ParamsFields {
   years: Range[];

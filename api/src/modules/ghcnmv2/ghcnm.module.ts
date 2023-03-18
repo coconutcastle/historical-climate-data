@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm'
-import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./ghcnm.entity";
+import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMAnomalyPercentageData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./ghcnm.entity";
 import { GHCNMService } from "./ghcnm.service";
 import { GHCNMController } from "./ghcnm.controller";
 
@@ -9,6 +9,7 @@ import { GHCNMController } from "./ghcnm.controller";
     TypeOrmModule.forFeature([
       GHCNMStationMetadata,
       GHCNMAnomalyData,
+      GHCNMAnomalyPercentageData,
       GHCNMPrecipitationData,
       GHCNMAnnualCycleData,
       GHCNMCountryCode])

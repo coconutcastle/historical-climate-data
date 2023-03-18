@@ -47,7 +47,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
       <Formik
         initialValues={{ ...params }}
         validate={paramsChanged}
-        onSubmit={() => console.log('submitted')}>
+        onSubmit={() => {}}>
         {({ errors, values, setFieldValue, setErrors }) => (
           <Form>
             <>
@@ -256,7 +256,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <div className="mb-2">Select what type of station data to download.</div>
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
-                  ['prcp', 'anom', 'cycles', 'stations'].map((type: string, index: number) => (
+                  ['prcp', 'anom', 'anom_pcnt', 'cycles', 'stations'].map((type: string, index: number) => (
                     <div className='col-3 d-flex flex-row align-items-center' key={index}>
                       <Checkbox
                         value={type}

@@ -24,9 +24,6 @@ const DocumentationPage = React.lazy(() => import('./routes/DocumentationPage'))
 
 const App: React.FC = () => {
 
-  console.log(process.env.NODE_ENV)
-  console.log(import.meta.env.VITE_API_HOST)
-
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>

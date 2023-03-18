@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { DataTypes, DataTypeText, FormatFields, ParamsFields } from "../../common/download.interface";
 import { Tab, Table, Tabs } from 'react-bootstrap';
-import { cyclesSample, anomSample, prcpSample, stationsSample } from './samples/samples';
+import { cyclesSample, anomMmSample, anomPercentageSample, prcpSample, stationsSample } from './samples/samples';
 import { formatData, jsonToArrays } from './formatDownloadUtils';
 import { Months, monthIndex } from "../../common/constants";
 import { toTitleCase } from "../../common/helpers";
@@ -23,13 +23,15 @@ interface PreviewTableProps {
 interface DataSamples {
   prcp: any[],
   anom: any[],
+  anom_pcnt: any[],
   cycles: any[],
   stations: any[]
 }
 
 const initialSamples: DataSamples = {
   prcp: jsonToArrays(prcpSample),
-  anom: jsonToArrays(anomSample),
+  anom: jsonToArrays(anomMmSample),
+  anom_pcnt: jsonToArrays(anomPercentageSample),
   cycles: jsonToArrays(cyclesSample, 'cycles'),
   stations: jsonToArrays(stationsSample)
 }
@@ -43,7 +45,8 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
     reducedFormat.files = 'concat';
     setDataSamples({
       prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, params.months.length, stationsSample) : prcpSample),
-      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomMmSample),
+      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomPercentageSample),
       cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, params.months.length, stationsSample) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });

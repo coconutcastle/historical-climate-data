@@ -54,14 +54,14 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                   <Radio
                     checked={values.monthlyDataViewFormat === 'condensed'}
                     onChange={() => setFieldValue('monthlyDataViewFormat', 'condensed')}
-                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom'))} />
+                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom') || params.dataTypes.includes('anom_pcnt'))} />
                   Condensed
                 </div>
                 <div className='d-flex flex-row align-items-center col-5'>
                   <Radio
                     checked={values.monthlyDataViewFormat === 'spread'}
                     onChange={() => setFieldValue('monthlyDataViewFormat', 'spread')}
-                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom'))} />
+                    disabled={!(params.dataTypes.includes('prcp') || params.dataTypes.includes('anom') || params.dataTypes.includes('anom_pcnt'))} />
                   Spread
                 </div>
               </div>
@@ -103,7 +103,8 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                 <i id='hint-metadata' toggle-hint="format-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
               <div className="mb-1">If downloading station metadata, you can choose to insert the metadata into the data files.</div>
-              <Checkbox value={format.insertMetadata} disabled={!params.dataTypes.includes('stations')}
+              <Checkbox value={format.insertMetadata} 
+                disabled={!params.dataTypes.includes('stations')}
                 onChange={(e: any) => {
                   setFieldValue('insertMetadata', e.target.checked);
                 }} />Insert metadata

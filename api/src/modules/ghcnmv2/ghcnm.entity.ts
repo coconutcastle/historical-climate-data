@@ -72,6 +72,51 @@ export class GHCNMAnomalyData {
   december: number | null;
 }
 
+@Entity({ schema: 'public', name: 'anomalies_percentages' })
+export class GHCNMAnomalyPercentageData {
+  @PrimaryColumn('character varying', { nullable: false })
+  station: string;
+
+  @PrimaryColumn('integer', { nullable: false, width: 4 })
+  year: number;
+
+  @Column('numeric', { nullable: true })
+  january: number | null;
+
+  @Column('numeric', { nullable: true })
+  february: number | null;
+
+  @Column('numeric', { nullable: true })
+  march: number | null;
+
+  @Column('numeric', { nullable: true })
+  april: number | null;
+
+  @Column('numeric', { nullable: true })
+  may: number | null;
+
+  @Column('numeric', { nullable: true })
+  june: number | null;
+
+  @Column('numeric', { nullable: true })
+  july: number | null;
+
+  @Column('numeric', { nullable: true })
+  august: number | null;
+
+  @Column('numeric', { nullable: true })
+  september: number | null;
+
+  @Column('numeric', { nullable: true })
+  october: number | null;
+
+  @Column('numeric', { nullable: true })
+  november: number | null;
+
+  @Column('numeric', { nullable: true })
+  december: number | null;
+}
+
 @Entity({ schema: 'public', name: 'prcp' })
 export class GHCNMPrecipitationData extends GHCNMAnomalyData {
   @Column('bigint', { nullable: false, width: 16 })

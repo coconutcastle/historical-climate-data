@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm'
 import { buildWhereConditions } from '../../common/helpers'
 import { Repository } from 'typeorm'
 import { GHCNMCountryDto, GHCNMStationMetadataDto, GHCNMBasicStationMetadataDto, GHCNMStationDataDto } from './ghcnm.dto'
-import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
+import { GHCNMAnnualCycleData, GHCNMAnomalyData, GHCNMAnomalyPercentageData, GHCNMCountryCode, GHCNMPrecipitationData, GHCNMStationMetadata } from './ghcnm.entity'
 import { CoordinateRange, downloadParams, monthType, Range } from './ghcnm.interface'
 import { ALL_MONTHS } from '../../common/constants';
 
@@ -15,6 +15,8 @@ export class GHCNMService {
     private readonly stationMetadataRepository: Repository<GHCNMStationMetadata>,
     @InjectRepository(GHCNMAnomalyData)
     private readonly anomalyRepository: Repository<GHCNMAnomalyData>,
+    @InjectRepository(GHCNMAnomalyPercentageData)
+    private readonly anomalyPercentageRepository: Repository<GHCNMAnomalyData>,
     @InjectRepository(GHCNMPrecipitationData)
     private readonly precipitationRepository: Repository<GHCNMPrecipitationData>,
     @InjectRepository(GHCNMAnnualCycleData)
@@ -106,10 +108,11 @@ export class GHCNMService {
   }
 
   // assumes you already have a list of filtered stations
-  public async getMonthlyData(type: 'prcp' | 'anom', years: Range[], months: monthType[], stations: string[]): Promise<any[]> {
+  public async getMonthlyData(type: 'prcp' | 'anom' | 'anom_pcnt', years: Range[], months: monthType[], stations: string[]): Promise<any[]> {
     const [whereConditions, whereParameters] = buildWhereConditions({ years, stations });
 
-    const repository = type === 'prcp' ? this.precipitationRepository : this.anomalyRepository;
+    const repository = type === 'prcp' ? this.precipitationRepository : 
+      (type === 'anom' ? this.anomalyRepository : this.anomalyPercentageRepository);
 
     // if no specific months are selected, don't filter on months
     const selectMonths: string[] = months.length === 0 ? ALL_MONTHS : months;
@@ -156,12 +159,13 @@ export class GHCNMService {
     const filteredStations: GHCNMBasicStationMetadataDto[] = await this.getStationMetadata(params.dataTypes.includes('stations') ? 'metadata' : 'basic', params.stations, params.countries, params.regions, params.coordinates);
     const validStations: string[] = filteredStations.map((station: any) => station.station);
 
-    console.log('stations are ', validStations)
+    // console.log('stations are ', validStations)
 
     // if no valid stations are found, return empty arrays
     return {
       prcp: params.dataTypes.includes('prcp') && validStations.length > 0 ? await this.getMonthlyData('prcp', params.years, params.months, validStations) : [],
-      anom: params.dataTypes.includes('anom') && validStations.length > 0 ? await await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
+      anom: params.dataTypes.includes('anom') && validStations.length > 0 ? await this.getMonthlyData('anom', params.years, params.months, validStations) : [],
+      anom_pcnt: params.dataTypes.includes('anom_pcnt') && validStations.length > 0 ? await this.getMonthlyData('anom_pcnt', params.years, params.months, validStations) : [],
       cycles: params.dataTypes.includes('cycles') && validStations.length > 0 ? await this.getCyclesData(params.months, validStations) : [],
       stations: params.dataTypes.includes('stations') && validStations.length > 0 ? filteredStations : []
     };

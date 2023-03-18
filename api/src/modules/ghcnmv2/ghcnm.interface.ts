@@ -14,7 +14,7 @@ export type monthType =
   | 'november'
   | 'december';
 
-export type DataTypes = 'prcp' | 'anom' | 'cycles' | 'stations';
+export type DataTypes = 'prcp' | 'anom' | 'anom_pcnt' | 'cycles' | 'stations';
 
 export interface Range {
   single?: number;    // axios removes null params
