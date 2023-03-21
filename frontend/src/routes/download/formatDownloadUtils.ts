@@ -28,7 +28,7 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
 
     // inserting station metadata is the same for all data types (excl. stations)
 
-    if (type === 'prcp' || type === 'anom') {
+    if (type === 'prcp' || type === 'anom' || type === 'anom_pcnt') {
       const { station, year, ...monthlyData } = data[row];
       const monthDates = format.combineDates === 'combine' && format.dateFormat.length > 0 ? Object.keys(monthlyData).map((month: string) => formatDate(year, month as monthType, format.dateFormat)) : [];
 
@@ -62,10 +62,17 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
     } else {    // for cycles data
       // combining dates not applicable for cycles data, as there is no year field
       // cycles data must be in spread format, so only insert metadata to be concerned about
-      const { station, ...monthAndReadings } = data[row];
+      const { station, month, mean, standard_deviation, percentiles } = data[row];
       formattedData.push({
         ...formattedStation,
-        ...monthAndReadings
+        month,
+        mean,
+        "stddev": standard_deviation,
+        "prcntl_2.5": percentiles["2.5"],
+        "prcntl_17": percentiles["17"],
+        "prcntl_50": percentiles["50"],
+        "prcntl_83": percentiles["83"],
+        "prcntl_97.5": percentiles["97.5"]
       });
     };
   };
@@ -143,16 +150,16 @@ export const jsonToArrays = (content: any, dataType?: DataTypes) => {
   const contentArray = [];
   const csvString: string = Papa.unparse(content);
   const rows: string[] = dataType === 'cycles' ? (csvString.replaceAll('"', '')).split('\n') : csvString.split('\n');
-  if (dataType === 'cycles') {
-    contentArray.push(['station', 'month', 'mean', 'standard_deviation', 'percentiles'])
-    for (let i = 1; i < rows.length; i++) {
-      const annualRow = rows[i].split(',');
-      contentArray.push([...annualRow.slice(0, 4), annualRow.slice(4).join(', ')]);    // making sure the array in the last index doesn't get split
-    };
-  } else {
-    for (let i = 0; i < rows.length; i++) {
-      contentArray.push(rows[i].split(','));
-    }
+  // if (dataType === 'cycles') {
+  //   contentArray.push(['station', 'month', 'mean', 'standard_deviation', 'percentiles'])
+  //   for (let i = 1; i < rows.length; i++) {
+  //     const annualRow = rows[i].split(',');
+  //     contentArray.push([...annualRow.slice(0, 4), annualRow.slice(4).join(', ')]);    // making sure the array in the last index doesn't get split
+  //   };
+  // } else {
+  for (let i = 0; i < rows.length; i++) {
+    contentArray.push(rows[i].split(','));
   }
+  // }
   return contentArray;
 }

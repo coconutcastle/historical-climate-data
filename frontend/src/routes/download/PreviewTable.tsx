@@ -46,13 +46,11 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
     setDataSamples({
       prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, params.months.length, stationsSample) : prcpSample),
       anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomMmSample),
-      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomPercentageSample),
+      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom_pcnt', reducedFormat, params.months.length, stationsSample) : anomPercentageSample),
       cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, params.months.length, stationsSample) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });
   }, [params, format]);    // don't react to bystation - messes things up
-
-  // console.log('preview data is', dataSamples)
 
   return (
     <Tabs
@@ -73,7 +71,7 @@ export const PreviewTable = ({ params, format }: PreviewTableProps) => {
               <tbody>
                 {dataSamples[type].slice(1).map((row: any[], index: number) => (
                   <tr key={index}>
-                    {row.map((element: any, i: number) => <td key={`${index}-${i}`}>{type === 'cycles' && i === row.length ? JSON.parse(element) : element}</td>)}
+                    {row.map((element: any, i: number) => <td key={`${index}-${i}`}>{element}</td>)}
                   </tr>
                 ))}
               </tbody>

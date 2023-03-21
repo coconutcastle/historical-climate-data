@@ -5,10 +5,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LoggerMiddleware } from './common/logger.middleware';
 import { GHCNMController } from './modules/ghcnmv2/ghcnm.controller';
 import { GHCNModule } from './modules/ghcnmv2/ghcnm.module';
-import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode } from "./modules/ghcnmv2/ghcnm.entity";
+import { GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode, GHCNMAnomalyPercentageData } from "./modules/ghcnmv2/ghcnm.entity";
 
-// dotenv.config({ path: `${process.cwd()}\\.env.dev` });
-dotenv.config({ path: `${process.cwd()}\\.env.prod` });
+dotenv.config({ path: `${process.cwd()}\\.env.dev` });
+// dotenv.config({ path: `${process.cwd()}\\.env.prod` });
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ dotenv.config({ path: `${process.cwd()}\\.env.prod` });
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
-      entities: [GHCNMStationMetadata, GHCNMAnomalyData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode],
+      entities: [GHCNMStationMetadata, GHCNMAnomalyData, GHCNMAnomalyPercentageData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true'
     }),
     GHCNModule,

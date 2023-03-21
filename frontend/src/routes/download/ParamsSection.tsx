@@ -257,7 +257,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
               <div className='d-flex w-100 justify-content-start'>
                 <FieldArray name='dataTypes' render={(arrayHelpers) => (
                   ['prcp', 'anom', 'anom_pcnt', 'cycles', 'stations'].map((type: string, index: number) => (
-                    <div className='col-3 d-flex flex-row align-items-center' key={index}>
+                    <div className='d-flex flex-row align-items-center' key={index} style={{ width: "20%" }} >
                       <Checkbox
                         value={type}
                         onChange={(e: any) => {

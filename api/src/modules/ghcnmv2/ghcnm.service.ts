@@ -138,7 +138,7 @@ export class GHCNMService {
 
     return this.annualCycleRepository.createQueryBuilder()
       // .select('*')
-      .select(['station', 'month', 'mean', 'standard_deviation', 'ARRAY["2_5", "17", "50", "83", "97_5"] AS percentiles'])
+      .select(['station', 'month', 'mean', 'standard_deviation', `json_build_object('2.5', "2_5", '17', "17", '50', "50", '83', "83", '97.5', "97_5") AS percentiles`])
       .where(whereConditions.join(' AND '), whereParameters)
       .orderBy('station', 'ASC')
       .getRawMany();
