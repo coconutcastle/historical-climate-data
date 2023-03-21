@@ -32,7 +32,7 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
   useEffect(() => {     // initialize all tooltips on first render
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="param-tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl: any) {
+    tooltipTriggerList.map(function (tooltipTriggerEl: any) {
       return new Tooltip(tooltipTriggerEl, {
         placement: 'right',
         title: paramHints[tooltipTriggerEl.id as keyof typeof paramHints],
@@ -72,15 +72,15 @@ export const ParamsSection = ({ params, onParamsChanged, countries, stations, re
 
                     // theoretically I guess this could be done in a single regex but it's too complicated... believe me I tried :'(
                     years.forEach((yearRange: string) => {
-                      if ((yearRange.length == 4) && (/\d{4}/.test(yearRange))) {   // case 1: single year
+                      if ((yearRange.length === 4) && (/\d{4}/.test(yearRange))) {   // case 1: single year
                         yearRanges.push({ single: parseInt(yearRange), start: null, end: null });
-                      } else if ((yearRange.length == 5) && ((/-\d{4}/.test(yearRange)) || (/\d{4}-/.test(yearRange)))) {    // case 2: single bound year range (-year or year-)
+                      } else if ((yearRange.length === 5) && ((/-\d{4}/.test(yearRange)) || (/\d{4}-/.test(yearRange)))) {    // case 2: single bound year range (-year or year-)
                         yearRanges.push({
                           single: null,
                           start: yearRange[0] === '-' ? null : parseInt(yearRange.slice(0, 4)),   // case 2a: -year
                           end: yearRange[4] === '-' ? null : parseInt(yearRange.slice(1))         // case 2b: year-
                         });
-                      } else if ((yearRange.length == 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
+                      } else if ((yearRange.length === 9) && (/\d{4}-\d{4}/.test(yearRange))) {      // case 3: bounded yer range (year1-year2)
                         const rangeStart = parseInt(yearRange.slice(0, 4));
                         const rangeEnd = parseInt(yearRange.slice(5));
                         if (isValidRange('start', rangeStart, rangeEnd)) {

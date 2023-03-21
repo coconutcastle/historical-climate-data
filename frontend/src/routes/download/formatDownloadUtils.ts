@@ -62,6 +62,8 @@ export const formatData = (data: any[], type: DataTypes, format: FormatFields, n
     } else {    // for cycles data
       // combining dates not applicable for cycles data, as there is no year field
       // cycles data must be in spread format, so only insert metadata to be concerned about
+
+      // eslint-disable-next-line no-unused-vars
       const { station, month, mean, standard_deviation, percentiles } = data[row];
       formattedData.push({
         ...formattedStation,

@@ -4,7 +4,7 @@ import { SelectionSection } from "./SelectionSection";
 import { FormatSection } from "./FormatSection";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { downloadCSV, downloadZip, formatData } from "./formatDownloadUtils";
+import { downloadZip, formatData } from "./formatDownloadUtils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { DataTypes, FormatFields, ParamsFields, RawRegions } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys } from "../../common/constants";
@@ -67,7 +67,6 @@ export default function DownloadPage() {
       setDoDownload(false);
     }
     if (doDownload && downloadData) {
-      console.log(params, format);
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
           const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, format, params.months.length, downloadData['stations']);
@@ -75,13 +74,16 @@ export default function DownloadPage() {
             const stationNames = formattedDownload.map((stationData: any[]) => (stationData[stationData.length - 1])['station']);
             downloadZip(formattedDownload, downloadType, stationNames);
           } else {
-            downloadCSV(formattedDownload, downloadType);
+            console.log(params, format, formattedDownload)
+            // downloadCSV(formattedDownload, downloadType);
           };
         }
       });
       setDoDownload(false);
     }
-  }, [format, downloadData, errorDownloadData, doDownload]);
+  }, [params, format, downloadData, errorDownloadData, doDownload]);
+
+  //there currently seems to be a bug on multiple redownloads, where the previous params are used (not updated)
   
   return (
     <div className="data-content"

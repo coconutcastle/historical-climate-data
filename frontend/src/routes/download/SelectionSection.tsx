@@ -26,9 +26,15 @@ const formatParamNames: Record<string, string> = {
 }
 
 const renderCoordinates = (coordinate: CoordinateRange, index: number) => {
-  const rangeStrings = Object.keys(coordinate).map((bound: string) => {
+  // const rangeStrings = Object.keys(coordinate).map((bound: string) => {
+  //   if (Object.values(coordinate[bound as keyof CoordinateRange]).some(val => val !== null)) {    // if all numbers for that bound is null, don't return a string
+  //     return `${toTitleCase(bound === 'elevation' ? 'elev' : bound.slice(0, 3))}: ${getRangeString(coordinate[bound as keyof CoordinateRange])} ${coordinateUnits[bound]}`;
+  //   }
+  // });
+  const rangeStrings: string[] = []
+  Object.keys(coordinate).forEach((bound: string) => {
     if (Object.values(coordinate[bound as keyof CoordinateRange]).some(val => val !== null)) {    // if all numbers for that bound is null, don't return a string
-      return `${toTitleCase(bound === 'elevation' ? 'elev' : bound.slice(0, 3))}: ${getRangeString(coordinate[bound as keyof CoordinateRange])} ${coordinateUnits[bound]}`;
+      rangeStrings.push(`${toTitleCase(bound === 'elevation' ? 'elev' : bound.slice(0, 3))}: ${getRangeString(coordinate[bound as keyof CoordinateRange])} ${coordinateUnits[bound]}`);
     }
   });
   const validRangeStrings = rangeStrings.filter(range => range !== undefined);  // only for bounds with non-empty ranges
@@ -53,7 +59,7 @@ export const SelectionSection = ({ params, format }: SelectionSectionProps) => {
         stringArray = params.countries.map((country: CountryInfo) => toTitleCase(country.country));
         break;
       case 'regions':
-        stringArray = params.regions.map((region: string) => region.length == 2 ? region : toTitleCase(region));
+        stringArray = params.regions.map((region: string) => region.length === 2 ? region : toTitleCase(region));
         break;
       case 'stations':
         stringArray = params.stations.map((station: StationMetadataBasic) => `(${station.station})${station.name === null ? '' : ' ' + toTitleCase(station.name)}`);
