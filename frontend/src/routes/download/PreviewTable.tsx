@@ -1,24 +1,14 @@
 import { useEffect, useState } from "react";
-import { DataTypes, DataTypeText, FormatFields, ParamsFields } from "../../common/download.interface";
+import { DataTypes, DataTypeText, ParamsFields, StationMetadata } from "../../common/download.interface";
 import { Tab, Table, Tabs } from 'react-bootstrap';
 import { cyclesSample, anomMmSample, anomPercentageSample, prcpSample, stationsSample } from './samples/samples';
-import { formatData, jsonToArrays } from './formatDownloadUtils';
-import { Months, monthIndex } from "../../common/constants";
-import { toTitleCase } from "../../common/helpers";
+import { jsonToArrays } from './formatDownloadUtils';
 
 
 interface PreviewTableProps {
   params: ParamsFields;
-  format: FormatFields;
-  downloadData: any[];
+  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[]) => any[];
 }
-
-// const samples: Record<DataTypes, any[]> = {
-//   prcp: jsonToArrays(prcpSample),
-//   anom: jsonToArrays(anomSample),
-//   cycles: jsonToArrays(cyclesSample, 'cycles'),
-//   stations: jsonToArrays(stationsSample)
-// }
 
 interface DataSamples {
   prcp: any[],
@@ -36,21 +26,19 @@ const initialSamples: DataSamples = {
   stations: jsonToArrays(stationsSample)
 }
 
-export const PreviewTable = ({ params, format }: PreviewTableProps) => {
+export const PreviewTable = ({ params, formatData }: PreviewTableProps) => {
 
   const [dataSamples, setDataSamples] = useState<DataSamples>(initialSamples);
 
   useEffect(() => {
-    const reducedFormat: FormatFields = {...format};
-    reducedFormat.files = 'concat';
     setDataSamples({
-      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', reducedFormat, params.months.length, stationsSample) : prcpSample),
-      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', reducedFormat, params.months.length, stationsSample) : anomMmSample),
-      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom_pcnt', reducedFormat, params.months.length, stationsSample) : anomPercentageSample),
-      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', reducedFormat, params.months.length, stationsSample) : cyclesSample, 'cycles'),
+      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', stationsSample) : prcpSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', stationsSample) : anomMmSample),
+      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom_pcnt', stationsSample) : anomPercentageSample),
+      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', stationsSample) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });
-  }, [params, format]);    // don't react to bystation - messes things up
+  }, [params]);    // don't react to bystation - messes things up
 
   return (
     <Tabs

@@ -26,11 +26,6 @@ const formatParamNames: Record<string, string> = {
 }
 
 const renderCoordinates = (coordinate: CoordinateRange, index: number) => {
-  // const rangeStrings = Object.keys(coordinate).map((bound: string) => {
-  //   if (Object.values(coordinate[bound as keyof CoordinateRange]).some(val => val !== null)) {    // if all numbers for that bound is null, don't return a string
-  //     return `${toTitleCase(bound === 'elevation' ? 'elev' : bound.slice(0, 3))}: ${getRangeString(coordinate[bound as keyof CoordinateRange])} ${coordinateUnits[bound]}`;
-  //   }
-  // });
   const rangeStrings: string[] = []
   Object.keys(coordinate).forEach((bound: string) => {
     if (Object.values(coordinate[bound as keyof CoordinateRange]).some(val => val !== null)) {    // if all numbers for that bound is null, don't return a string

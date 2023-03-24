@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Form, Formik } from 'formik';
-import { FormatFields, ParamsFields } from '../../common/download.interface';
+import { FormatFields, ParamsFields, StationMetadata, DataTypes } from '../../common/download.interface';
 import { Radio } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { Tooltip } from 'bootstrap';
@@ -11,9 +11,10 @@ interface FormatSectionProps {
   format: FormatFields;
   onFormatChanged: (format: FormatFields) => void;
   params: ParamsFields;
+  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[]) => any[];
 }
 
-export const FormatSection = ({ format, onFormatChanged, params }: FormatSectionProps) => {
+export const FormatSection = ({ format, onFormatChanged, params, formatData }: FormatSectionProps) => {
 
   const formatFieldsChanged = (values: FormatFields) => {
     onFormatChanged(values);
@@ -21,7 +22,7 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
 
   useEffect(() => {     // initialize all tooltips on first render
     const tooltipTriggerList = [].slice.call(document.querySelectorAll('[toggle-hint="format-tooltip"]'));
-    const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl: any) {
+    tooltipTriggerList.map(function (tooltipTriggerEl: any) {
       return new Tooltip(tooltipTriggerEl, {
         placement: 'right',
         title: formatHints[tooltipTriggerEl.id as keyof typeof formatHints],
@@ -134,7 +135,7 @@ export const FormatSection = ({ format, onFormatChanged, params }: FormatSection
                 Preview
                 <i id='hint-preview' toggle-hint="format-tooltip" className='material-icons help-icon'>help_outlined</i>
               </div>
-              {params.dataTypes.length > 0 ? <PreviewTable params={params} format={values} downloadData={[]} /> : <div>
+              {params.dataTypes.length > 0 ? <PreviewTable params={params} formatData={formatData} /> : <div>
                 Preview sample data using the selected formatting options. Select the desired data types.
               </div>}
 
