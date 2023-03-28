@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import { Form, Formik, FieldArray } from 'formik';
-import { Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../common/download.interface';
-import { Months } from '../../common/constants';
-import { toTitleCase, mutateArray } from '../../common/helpers';
-import { filterOptions } from '../../MuiTheme';
+import { Range, DataTypes, DataTypeText, ParamsFields, CountryInfo, StationMetadataBasic, CoordinateRange } from '../../../common/download.interface';
+import { Months } from '../../../common/constants';
+import { toTitleCase, mutateArray } from '../../../common/helpers';
+import { filterOptions } from '../../../MuiTheme';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { CoordinatesInput } from './CoordinatesInput';
 import { Tooltip } from 'bootstrap';
-import paramHints from '../../text/download-hints.json';
+import paramHints from '../../../text/download-hints.json';
 
 interface ParamsSectionProps {
   params: ParamsFields;

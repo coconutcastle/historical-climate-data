@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 import { Form, Formik } from 'formik';
-import { FormatFields, ParamsFields, StationMetadata, DataTypes } from '../../common/download.interface';
+import { FormatFields, ParamsFields, StationMetadata, DataTypes } from '../../../common/download.interface';
 import { Radio } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
 import { Tooltip } from 'bootstrap';
 import { PreviewTable } from './PreviewTable';
-import formatHints from './../../text/format-hints.json';
+import formatHints from '../../../text/format-hints.json';
 
 interface FormatSectionProps {
   format: FormatFields;

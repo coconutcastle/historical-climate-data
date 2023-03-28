@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { DataTypes, DataTypeText, ParamsFields, StationMetadata } from "../../common/download.interface";
+import { DataTypes, DataTypeText, ParamsFields, StationMetadata } from "../../../common/download.interface";
 import { Tab, Table, Tabs } from 'react-bootstrap';
-import { cyclesSample, anomMmSample, anomPercentageSample, prcpSample, stationsSample } from './samples/samples';
-import { jsonToArrays } from './formatDownloadUtils';
+import { cyclesSample, anomMmSample, anomPercentageSample, prcpSample, stationsSample } from '../samples/samples';
+import { jsonToArrays } from '../formatDownloadUtils';
 
 
 interface PreviewTableProps {

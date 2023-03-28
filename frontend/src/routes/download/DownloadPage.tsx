@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
-import { ParamsSection } from "./ParamsSection"
-import { SelectionSection } from "./SelectionSection";
-import { FormatSection } from "./FormatSection";
+import { ParamsSection } from "./sections/ParamsSection"
+import { SelectionSection } from "./sections/SelectionSection";
+import { FormatSection } from "./sections/FormatSection";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
 import { downloadZip, downloadCSV, formatDate } from "./formatDownloadUtils";

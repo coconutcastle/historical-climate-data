@@ -301,3 +301,17 @@ i.help-icon {
   display: table;
   white-space: nowrap;
 }
+
+// ====================== Documentation Page ========================//
+
+.doc-menu {
+  color: $primary;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+
+  .selected {
+    color: $dark-link;
+  }
+}

@@ -20,7 +20,7 @@ const queryClient = new QueryClient();
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
 const DownloadPage = React.lazy(() => import('./routes/download/DownloadPage'));
 const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
-const DocumentationPage = React.lazy(() => import('./routes/DocumentationPage'));
+const DocumentationPage = React.lazy(() => import('./routes/documentation/DocumentationPage'));
 
 const App: React.FC = () => {
 

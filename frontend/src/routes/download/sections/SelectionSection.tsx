@@ -1,6 +1,6 @@
 import { useCallback } from "react";
-import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range, DataTypeText, FormatFields } from "../../common/download.interface"
-import { toTitleCase } from "../../common/helpers";
+import { CoordinateRange, CountryInfo, ParamsFields, StationMetadataBasic, Range, DataTypeText, FormatFields } from "../../../common/download.interface"
+import { toTitleCase } from "../../../common/helpers";
 
 interface SelectionSectionProps {
   params: ParamsFields;
