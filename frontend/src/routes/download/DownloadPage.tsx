@@ -64,7 +64,7 @@ export default function DownloadPage() {
   // only called when data is to be downloaded to reduce processing
   // data is entered in arrays of JSON objects (key: column heading, value: value)
   // if byStation is selected, returns an array of arrays of JSON objects - otherwise returns a single array of JSON objects
-  const formatData = useCallback((data: any[], type: DataTypes, stationMetadata?: StationMetadata[]): any[] => {
+  const formatData = useCallback((data: any[], type: DataTypes, stationMetadata?: StationMetadata[], forPreview: boolean = false): any[] => {
     if (type === 'stations') {    // no modificcations made to station metadata
       return data;
     };
@@ -137,7 +137,7 @@ export default function DownloadPage() {
 
     // separating stations is the same for all data types (excl. stations)
     // data for all stations is concatenated together by default
-    if (format.files === 'byStation') {
+    if (format.files === 'byStation' && forPreview === false) {
       const dataByStation: any[] = [];
 
       // multiply up the station breaks to account for the spread format, but only for monthly data

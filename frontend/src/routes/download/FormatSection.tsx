@@ -11,7 +11,7 @@ interface FormatSectionProps {
   format: FormatFields;
   onFormatChanged: (format: FormatFields) => void;
   params: ParamsFields;
-  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[]) => any[];
+  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[], forPreview?: boolean) => any[];
 }
 
 export const FormatSection = ({ format, onFormatChanged, params, formatData }: FormatSectionProps) => {

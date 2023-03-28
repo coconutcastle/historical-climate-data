@@ -7,7 +7,7 @@ import { jsonToArrays } from './formatDownloadUtils';
 
 interface PreviewTableProps {
   params: ParamsFields;
-  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[]) => any[];
+  formatData: (data: any[], type: DataTypes, stationMetadata?: StationMetadata[], forPreview?: boolean) => any[];
 }
 
 interface DataSamples {
@@ -17,6 +17,8 @@ interface DataSamples {
   cycles: any[],
   stations: any[]
 }
+
+// check cycles february 71706.2...
 
 const initialSamples: DataSamples = {
   prcp: jsonToArrays(prcpSample),
@@ -30,15 +32,18 @@ export const PreviewTable = ({ params, formatData }: PreviewTableProps) => {
 
   const [dataSamples, setDataSamples] = useState<DataSamples>(initialSamples);
 
+  // find a way to make it so that the selection of separate files per station doesn't affect this, now that format data is taking direct from params
   useEffect(() => {
     setDataSamples({
-      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', stationsSample) : prcpSample),
-      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', stationsSample) : anomMmSample),
-      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom_pcnt', stationsSample) : anomPercentageSample),
-      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', stationsSample) : cyclesSample, 'cycles'),
+      prcp: jsonToArrays(params.dataTypes.includes('prcp') ? formatData(prcpSample, 'prcp', stationsSample, true) : prcpSample),
+      anom: jsonToArrays(params.dataTypes.includes('anom') ? formatData(anomMmSample, 'anom', stationsSample, true) : anomMmSample),
+      anom_pcnt: jsonToArrays(params.dataTypes.includes('anom_pcnt') ? formatData(anomPercentageSample, 'anom_pcnt', stationsSample, true) : anomPercentageSample),
+      cycles: jsonToArrays(params.dataTypes.includes('cycles') ? formatData(cyclesSample, 'cycles', stationsSample, true) : cyclesSample, 'cycles'),
       stations: jsonToArrays(stationsSample)
     });
-  }, [params]);    // don't react to bystation - messes things up
+  }, [params, formatData]);    // don't react to bystation - messes things up
+
+  console.log(dataSamples);
 
   return (
     <Tabs
