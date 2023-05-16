@@ -1,4 +1,4 @@
-export function AboutDocs() {
+export default function AboutDocs() {
 
   return (
     <div className="plain-section" style={{ width: '100%' }}>

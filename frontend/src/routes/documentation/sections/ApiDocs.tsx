@@ -1,7 +1,7 @@
-export default function DownloadFormatDocs() {
+export default function ApiDocs() {
   return (
     <div className="plain-section" style={{ width: '100%' }}>
-      format
+      api
     </div>
   )
 }

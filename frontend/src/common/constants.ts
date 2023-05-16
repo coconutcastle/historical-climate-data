@@ -35,7 +35,7 @@ export type monthType =
   | 'november'
   | 'december';
 
-export type documentationSection = 'about' | 'params' | 'format';
+export type documentationSection = 'about' | 'params' | 'format' | 'api';
 
 export const monthIndex: Record<monthType, number> = {
   'january': 1,

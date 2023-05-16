@@ -1,28 +1,51 @@
-// import { useState } from 'react';
-// import { DownloadParamsDocs } from './sections/DownloadParamsDoc';
-// import { DownloadFormatDocs } from './sections/DownloadFormatDocs';
-import { AboutDocs } from './sections/AboutDocs';
-
-// import { documentationSection } from '../../common/constants';
-
-
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
+import AboutDocs from './sections/AboutDocs';
+import DownloadParamsDocs from './sections/DownloadParamsDocs';
+import DownloadFormatDocs from './sections/DownloadFormatDocs';
+import ApiDocs from './sections/ApiDocs';
+import { DocumentationMenu } from './DocumentationMenu';
+import { documentationSection } from '../../common/constants';
 
 export default function DocumentationPage() {
 
-  // const [section, setSection] = useState<documentationSection>('about');
+  const location = useLocation();
+
+  const [section, setSection] = useState<documentationSection>('about');
+
+  const renderSubPage = () => {
+    switch(section) {
+      case 'about':
+        return <AboutDocs />
+      case 'params':
+        return <DownloadParamsDocs />
+      case 'format':
+        return <DownloadFormatDocs />
+      case 'api':
+        return <ApiDocs />
+      default:
+        return <AboutDocs />
+    }
+  }
+
+  useEffect(() => {
+    const urlPieces: string[] = (location.pathname).split('/');
+    const loc = urlPieces.at(-1);
+    if (loc && ['about', 'params', 'format', 'api'].includes(loc)) {
+      setSection(loc as documentationSection);
+    };
+  }, [location])
+
 
   return (
-    <div className="data-content" style={{ height: '100vh' }} >
+    <div className="data-content">
       <div className='title'>
         Historical Precipitation Data Explorer
       </div>
       <hr style={{ width: "100%" }} />
       <div className='d-flex flex-row align-items-start' style={{ width: '100%' }}>
-        <div className='doc-menu me-auto'>
-          hi
-        </div>
-        <AboutDocs />
-
+        <DocumentationMenu />
+        { renderSubPage() }
       </div>
     </div>
   )
