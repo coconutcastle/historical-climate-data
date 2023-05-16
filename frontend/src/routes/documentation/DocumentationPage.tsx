@@ -38,7 +38,7 @@ export default function DocumentationPage() {
 
 
   return (
-    <div className="data-content">
+    <div className="data-content" style={{ height: section === 'about' ? "100vh" : "100%" }}>
       <div className='title'>
         Historical Precipitation Data Explorer
       </div>
