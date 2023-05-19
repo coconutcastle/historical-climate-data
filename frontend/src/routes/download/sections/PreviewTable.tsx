@@ -43,8 +43,6 @@ export const PreviewTable = ({ params, formatData }: PreviewTableProps) => {
     });
   }, [params, formatData]);    // don't react to bystation - messes things up
 
-  console.log(dataSamples);
-
   return (
     <Tabs
       defaultActiveKey={params.dataTypes[0]}

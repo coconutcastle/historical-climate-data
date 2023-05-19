@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat');
 @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 @import "bootstrap/scss/functions";
@@ -99,6 +100,14 @@ hr {
   font-family: "Roboto Condensed";
   font-weight: 700;
   font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+
+.heading-5 {
+  font-family: "Roboto Condensed";
+  font-weight: 700;
+  font-size: 14px;
   display: flex;
   align-items: center;
 }
@@ -330,4 +339,15 @@ i.help-icon {
   .selected {
     color: $dark-link;
   }
+}
+
+.code-block {
+  background-color: $text-field-gray;
+  padding: 2rem;
+  margin: 1rem;
+  font-family: "Source Code Pro";
+  tab-size: 4;
+  width: 50%;
+  max-height: 500px;
+  overflow-y: auto;
 }

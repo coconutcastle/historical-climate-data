@@ -31,7 +31,7 @@ export interface CoordinateRange {
 export interface CountryInfo {
   code: number;
   country: string;
-  supportedRegions: [];
+  supportedRegions: string[];
 }
 
 export interface GHCNMBasicStationMetadata {

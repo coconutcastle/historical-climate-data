@@ -160,6 +160,7 @@ export default function DownloadPage() {
       setDoDownload(false);
     }
     if (doDownload && downloadData && (!isFetchingDownloadData)) {
+      console.log(downloadData);
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
           const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, downloadData['stations']);
@@ -167,8 +168,8 @@ export default function DownloadPage() {
             const stationNames = formattedDownload.map((stationData: any[]) => (stationData[stationData.length - 1])['station']);
             downloadZip(formattedDownload, downloadType, stationNames);
           } else {
-            // console.log(isFetchingDownloadData, params, format, formattedDownload)
-            downloadCSV(formattedDownload, downloadType);
+            console.log(isFetchingDownloadData, params, format, downloadType, formattedDownload);
+            // downloadCSV(formattedDownload, downloadType);
           };
         }
       });
