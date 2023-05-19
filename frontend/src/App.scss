@@ -331,13 +331,27 @@ i.help-icon {
 
 .doc-menu {
   color: $primary;
-  padding: 2rem;
   display: flex;
+  margin-right: 2rem;
   flex-direction: column;
-  width: 25%;
+  width: 20%;
 
   .selected {
     color: $dark-link;
+  }
+
+  div {
+    color: white;
+    background-color: $primary;
+    padding: 0.5rem;
+    margin: 0.5rem 1rem 0.5rem 0;
+    padding-left: 1rem;
+    font-size: 14px;
+
+    &:hover {
+      opacity: 70%;
+      transition: opacity 0.3s ease
+    }
   }
 }
 

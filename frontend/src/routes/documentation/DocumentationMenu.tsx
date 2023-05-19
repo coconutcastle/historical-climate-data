@@ -3,26 +3,26 @@ import { NavLink } from 'react-router-dom';
 export function DocumentationMenu() {
   return (
     <div className='doc-menu me-auto'>
-      <div>
-        <NavLink to='/documentation/about'>
+      <NavLink to='/documentation/about'>
+        <div className='mt-0'>
           About
-        </NavLink>
-      </div>
-      <div>
-        <NavLink to='/documentation/params'>
+        </div>
+      </NavLink>
+      <NavLink to='/documentation/params'>
+        <div>
           Download Parameters
-        </NavLink>
-      </div>
-      <div>
-        <NavLink to='/documentation/format'>
+        </div>
+      </NavLink>
+      <NavLink to='/documentation/format'>
+        <div>
           Download Format
-        </NavLink>
-      </div>
-      <div>
-        <NavLink to='/documentation/api'>
+        </div>
+      </NavLink>
+      <NavLink to='/documentation/api'>
+        <div>
           API
-        </NavLink>
-      </div>
+        </div>
+      </NavLink>
     </div>
   )
 }
