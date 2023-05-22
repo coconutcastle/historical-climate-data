@@ -1,14 +1,25 @@
+import { yearsImg, monthsImg, coordinatesImg, countriesImg, stationsImg, datatypesImg } from '../images/images';
+import imageAlts from './text/imageAlts.json'; 
+
 export default function DownloadParamsDocs() {
   return (
     <div className="plain-section" style={{ width: '100%' }}>
       <div className='heading-1'>
         Download Parameters
       </div>
+
+
       <div className="heading-2 mt-2">
         Temporal Filters
       </div>
+
+
       <div className="heading-3 mt-2">
         Years
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={yearsImg} alt={imageAlts['years']} className='doc-img' style={{ width: "30%" }} />
+        <div className='img-caption'>{imageAlts['years']}</div>
       </div>
       <div className="mt-2">
         <b>Type: </b>Text Field
@@ -30,8 +41,14 @@ export default function DownloadParamsDocs() {
           <li><b>"1870, 2000 - " </b>will return data from the year 1870 and after 2000.</li>
         </ul>
       </div>
+
+
       <div className="heading-3 mt-2">
         Months
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={monthsImg} alt={imageAlts['months']} className='doc-img' style={{ width: "50%" }}/>
+        <div className='img-caption'>{imageAlts['months']}</div>
       </div>
       <div className="mt-2">
         <b>Type: </b>Checkbox array
@@ -39,14 +56,22 @@ export default function DownloadParamsDocs() {
           This allows the user to select the months for which they want data for. The monthly data columns in the data returned will be in the order in which the months were selected. To ensure the order is correct, refer to the list of months in the Parameters tab to the right. If no months are selected, data is returned for all the months in standard January - December order.
         </p>
       </div>
+
+
       <div className="heading-2 mt-2">
         Location Filters
       </div>
       <p>
         These filters let the user select a politically defined region and/or a coordinate range from which to retrieve station data. If either of these filters are left blank, they will not be used to filter stations. If not, then data will be returned for stations both in these countries/regions as well as in the specified coordinate ranges.
       </p>
+      
+
       <div className="heading-3 mt-2">
         Countries
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={countriesImg} alt={imageAlts['countries']} className='doc-img' style={{ width: "20%" }}/>
+        <div className='img-caption'>{imageAlts['countries']}</div>
       </div>
       <div className="mt-2">
         <b>Type: </b>Autocomplete multiselect
@@ -54,8 +79,14 @@ export default function DownloadParamsDocs() {
           This allows the user to select the countries from which they would like to retrieve station data from. Each country is indentified by a unique 3-digit code, but there are duplicates for some. There may be more than one code per country. The searchable countries using this filter are unique per code, so to ensure that you include all the stations from the desired country, search up the country by name and add all available entires.
         </p>
       </div>
+
+
       <div className="heading-3 mt-2">
         Regions
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={countriesImg} alt={imageAlts['regions']} className='doc-img' style={{ width: "20%" }}/>
+        <div className='img-caption'>{imageAlts['regions']}</div>
       </div>
       <div className="mt-2">
         <b>Type: </b>Autocomplete multiselect
@@ -69,8 +100,14 @@ export default function DownloadParamsDocs() {
           <li>Australia</li>
         </ul>
       </div>
+
+
       <div className="heading-3 mt-2">
         Coordinate Range
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={coordinatesImg} alt={imageAlts['coordinates']} className='doc-img' style={{ width: "60%" }}/>
+        <div className='img-caption'>{imageAlts['coordinates']}</div>
       </div>
       <div className="mt-2">
         Allows the user to define an area for which they want to retreive station data from. Stations can be filtered by latitude, longitude, and altitude range. 
@@ -105,6 +142,7 @@ export default function DownloadParamsDocs() {
           Remove unecessary ranges by pressing the (-) button next to the coordinate range line.
         </p>
       </div>
+
       <div className="heading-4 mt-2">
         Latitude
       </div>
@@ -113,6 +151,7 @@ export default function DownloadParamsDocs() {
         <p className="mt-2"><b>Units: </b>Degrees North, Decimal Degrees</p>
         <p className="mt-2"><b>Range: </b>-90 to +90</p>
       </div>
+
       <div className="heading-4 mt-2">
         Longitude
       </div>
@@ -121,6 +160,7 @@ export default function DownloadParamsDocs() {
         <p className="mt-2"><b>Units: </b>Degrees East, Decimal Degrees</p>
         <p className="mt-2"><b>Range: </b>-180 to +180</p>
       </div>
+
       <div className="heading-4 mt-2">
         Altitude
       </div>
@@ -132,8 +172,14 @@ export default function DownloadParamsDocs() {
           Not every station has altitude information, so using this filter may mean that some stations that were perhaps within the altitude range but did not have it listed are excluded.
         </p>
       </div>
+
+
       <div className="heading-2 mt-2">
         Stations
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={stationsImg} alt={imageAlts['stations']} className='doc-img' style={{ width: "30%" }}/>
+        <div className='img-caption'>{imageAlts['stations']}</div>
       </div>
       <div className="mt-2">
         <b>Type: </b>Autocomplete multiselect
@@ -141,8 +187,14 @@ export default function DownloadParamsDocs() {
           While not every station has a name, they are all identified by a unique 6-digit code that may or may not have additional decimal points to indicate non-trivial duplication. If the user knows the name or code, they can add specific stations to retrieve data from. If filled in in addition to other filters, data will be retrieved from the stations specified here in as well as the stations in the coordinate ranges and/or in the selected countries/regions.
         </p>
       </div>
+
+
       <div className="heading-2 mt-2">
         Data Types
+      </div>
+      <div className='d-flex flex-column'>
+        <img src={datatypesImg} alt={imageAlts['datatypes']} className='doc-img' style={{ width: "70%" }}/>
+        <div className='img-caption'>{imageAlts['datatypes']}</div>
       </div>
       <div className='mt-2'>
         <b>Type: </b>Checkbox array

@@ -355,6 +355,20 @@ i.help-icon {
   }
 }
 
+.doc-img {
+  height: auto;
+  display: flex;
+  align-self: center;
+}
+
+.img-caption {
+  font-style: italic;
+  font-size: 10px;
+  text-align: center;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .code-block {
   background-color: $text-field-gray;
   padding: 2rem;

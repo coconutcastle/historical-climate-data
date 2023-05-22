@@ -1,0 +1,16 @@
+{
+  "years": "Image of the empty years filter.",
+  "months": "Image of the months filter without seletions.",
+  "countries": "Image of the countries filter with nothing selected.",
+  "regions": "Image of the regions filter with nothing selected",
+  "coordinates": "Image of the empty coordinates filter.",
+  "stations": "Image of the stations filter with nothing selected",
+  "datatypes": "Image of the data types filter with nothing selected.",
+  "view-disabled": "Image of the disabled monthly data view options.",
+  "view-enabled": "Image of the enabled monthly data view options.",
+  "date-disabled": "Image of the disabled date formatter.",
+  "date-enabled": "Image of the enabled date formatter.",
+  "metadata": "Image of the insert metadata selector.",
+  "files": "Image of the file format options",
+  "previewtable": "Image of the preview table with Monthly Precipitation, Monthly Anomalies (mm), Statistics per Month, and Station Metadata selected as data types to download."
+}
