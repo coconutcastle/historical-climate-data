@@ -168,8 +168,8 @@ export default function DownloadPage() {
             const stationNames = formattedDownload.map((stationData: any[]) => (stationData[stationData.length - 1])['station']);
             downloadZip(formattedDownload, downloadType, stationNames);
           } else {
-            console.log(isFetchingDownloadData, params, format, downloadType, formattedDownload);
-            // downloadCSV(formattedDownload, downloadType);
+            // console.log(isFetchingDownloadData, params, format, downloadType, formattedDownload);
+            downloadCSV(formattedDownload, downloadType);
           };
         }
       });
