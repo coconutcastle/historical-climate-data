@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom"
+
 export default function AboutDocs() {
 
   return (
@@ -41,6 +43,13 @@ export default function AboutDocs() {
         <a href="https://climexp.knmi.nl/start.cgi?id=someone@somewhere">
           https://climexp.knmi.nl/start.cgi?id=someone@somewhere
         </a>
+      </div>
+      <div className="mt-2">
+        For this website, the data has been processed and reformatted and can be accessed through the following API base. More information on the endpoints is available in the <NavLink to="/documentation/api">API documentation</NavLink>, and you can play around with them on the <NavLink to='/api'>API page</NavLink>.
+      </div>
+      <div className="mt-2">
+        <b>API Base URL: </b>
+        <a href="https://historical-climate-data.onrender.com/api/ghcnmv2/">https://historical-climate-data.onrender.com/api/ghcnmv2/</a>
       </div>
     </div>
   )

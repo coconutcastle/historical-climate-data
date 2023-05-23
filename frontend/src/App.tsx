@@ -25,6 +25,7 @@ const AboutDocsSubPage = React.lazy(() => import('./routes/documentation/section
 const ParamsDocsSubPage = React.lazy(() => import('./routes/documentation/sections/DownloadParamsDocs'));
 const FormatDocsSubPage = React.lazy(() => import('./routes/documentation/sections/DownloadFormatDocs'));
 const ApiDocsSubPage = React.lazy(() => import('./routes/documentation/sections/ApiDocs'));
+const ApiPage = React.lazy(() => import('./routes/ApiPage'));
 
 const App: React.FC = () => {
 
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                   <Route path='format' element={<FormatDocsSubPage />}/>
                   <Route path='api' element={<ApiDocsSubPage />}/>
                 </Route>
+                <Route path='api' element={<ApiPage />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
             </Suspense>

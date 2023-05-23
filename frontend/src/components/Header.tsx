@@ -38,6 +38,11 @@ export const Header = () => {
             Documentation
           </NavLink>
         </Nav.Item>
+        <Nav.Item>
+          <NavLink to='/api'>
+            API
+          </NavLink>
+        </Nav.Item>
       </Navbar.Collapse>
     </Navbar>
   )
