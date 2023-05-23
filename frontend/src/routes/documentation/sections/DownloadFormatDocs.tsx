@@ -1,4 +1,4 @@
-import { viewDisabledImg, viewEnabledImg, dateDisabledImg, dateEnabledImg, metadataImg, filesImg, previewtableImg } from '../images/images';
+import { viewDisabledImg, viewEnabledImg, dateDisabledImg, dateEnabledImg, metadataImg, filesImg, previewtableImg } from '../images';
 import imageAlts from './text/imageAlts.json';
 
 export default function DownloadFormatDocs() {

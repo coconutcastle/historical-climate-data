@@ -1,4 +1,4 @@
-import { yearsImg, monthsImg, coordinatesImg, countriesImg, stationsImg, datatypesImg } from '../images/images';
+import { yearsImg, monthsImg, coordinatesImg, countriesImg, stationsImg, datatypesImg } from '../images';
 import imageAlts from './text/imageAlts.json'; 
 
 export default function DownloadParamsDocs() {
