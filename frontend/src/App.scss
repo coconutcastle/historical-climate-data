@@ -165,23 +165,53 @@ hr {
     font-weight: 700;
     transform: translateY(40%);
   }
+}
 
-  .material-icons {
+.med-button {
+  background-color: $primary;
+  width: 200px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  border: none;
+  border-radius: 3px;
+  margin-top: 15px;
+
+  div.med-button-text {
+    font-family: "Verdana";
+    font-size: 15px;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    transform: translateY(32%);
+  }
+
+  i.material-icons {
     fill: white;
     color: white;
-    height: 30px;
-    width: 30px;
-    // position: absolute;
-    // left: 59.3%;
-    transform: translateY(40%);
-  }
-
-  .heading-1.text-white {
-    display: flex;
-    align-self: center;
-    margin-left: 10px;
+    height: 20px;
+    width: 20px;
+    transform: translateY(32%);
   }
 }
+
+.material-icons {
+  fill: white;
+  color: white;
+  height: 30px;
+  width: 30px;
+  // position: absolute;
+  // left: 59.3%;
+  transform: translateY(40%);
+}
+
+.heading-1.text-white {
+  display: flex;
+  align-self: center;
+  margin-left: 10px;
+}
+
 
 button:hover {
   opacity: 80%;
@@ -378,4 +408,16 @@ i.help-icon {
   width: 50%;
   max-height: 500px;
   overflow-y: auto;
+}
+
+// ================ API section ================ //
+
+.text-area {
+  background-color: $text-field-gray;
+  border-radius: 15px;
+  padding: 2rem;
+  font-family: "Source Code Pro";
+  tab-size: 4;
+  height: 75%;
+  overflow: auto;
 }
