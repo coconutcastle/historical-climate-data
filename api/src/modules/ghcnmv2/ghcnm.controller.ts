@@ -31,7 +31,6 @@ export class GHCNMController {
 
   @Get('/download')
   public async getDownloadData(
-    @Query('byStation') byStation: boolean,
     @Query('years') years: Range[] = [],
     @Query('months') months: string[] = [],
     @Query('countries') countries: CountryInfo[] = [],
@@ -49,6 +48,6 @@ export class GHCNMController {
       stations: stations.map((station: GHCNMBasicStationMetadata) => station.station),
       dataTypes
     };
-    return this.ghcnmService.getDownloadData(byStation, params);
+    return this.ghcnmService.getDownloadData(params);
   }
 }

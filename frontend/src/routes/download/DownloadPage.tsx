@@ -57,13 +57,13 @@ export default function DownloadPage() {
     queryKey: [QueryKeys.DOWNLOAD],
     ...ReactQueryConfig,
     enabled: doDownload,
-    queryFn: () => getDownloadData(false, params)
+    queryFn: () => getDownloadData(params)
   });
 
   // Date is showing up weird right now but otherwise working
   // only called when data is to be downloaded to reduce processing
   // data is entered in arrays of JSON objects (key: column heading, value: value)
-  // if byStation is selected, returns an array of arrays of JSON objects - otherwise returns a single array of JSON objects
+  // if byStation is selected, returns an array of arrays of JSON objects - otherwise returns a single array of JSON objects <-- outdated
   const formatData = useCallback((data: any[], type: DataTypes, stationMetadata?: StationMetadata[], forPreview: boolean = false): any[] => {
     if (type === 'stations') {    // no modificcations made to station metadata
       return data;
@@ -158,7 +158,7 @@ export default function DownloadPage() {
     if (doDownload && errorDownloadData && (!isFetchingDownloadData)) {
       setDownloadError('Download failed');
       setDoDownload(false);
-    }
+    };
     if (doDownload && downloadData && (!isFetchingDownloadData)) {
       console.log(downloadData);
       Object.keys(downloadData).forEach((downloadType: string) => {
@@ -174,7 +174,7 @@ export default function DownloadPage() {
         }
       });
       setDoDownload(false);
-    }
+    };
   }, [params, format, downloadData, errorDownloadData, isFetchingDownloadData, doDownload, formatData]);
 
   return (

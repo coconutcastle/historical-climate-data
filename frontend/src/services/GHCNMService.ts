@@ -28,12 +28,9 @@ export async function getAllRegions(): Promise<RawRegions[]> {
   }).then(res => res.data);
 }
 
-export async function getDownloadData(byStation: boolean, dataParams: ParamsFields): Promise<any> {
+export async function getDownloadData(dataParams: ParamsFields): Promise<any> {
   return axios.get(`${BASE_URL}download`, {
     headers: getHeaders,
-    params: {
-      byStation,
-      ...dataParams
-    }
+    params: {...dataParams}
   }).then(res => res.data);
 }

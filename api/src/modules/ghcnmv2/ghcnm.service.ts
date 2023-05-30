@@ -146,10 +146,8 @@ export class GHCNMService {
 
   // option to return data by station (return array of full metadata + prcp, anom, and cycles cycle),
   // or to get just the raw numerical data (return object containing raw prcp, anom, and cycles daa)
-  public async getDownloadData(byStation: boolean, params: downloadParams): Promise<any> {
-    if (byStation) {
-
-    }
+  public async getDownloadData(params: downloadParams): Promise<any> {
+    
     console.log(params)
 
     // what to do if no search params are selected, or column params for monthly data? behaviour is a bit weird here
