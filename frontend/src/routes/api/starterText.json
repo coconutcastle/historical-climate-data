@@ -1,0 +1,7 @@
+{
+  "stations": "No parameters.",
+  "basic-stations": "No parameters.",
+  "countries": "No parameters.",
+  "regions": "No parameters.",
+  "download": "{\n\t years: Range[],\n\t months: [],\n\t countries: [],\n\t regions: [],\n\t coordinates: [],\n\t stations: [],\n\t dataTypes: []\n}"
+}

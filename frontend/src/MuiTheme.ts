@@ -49,10 +49,57 @@ export const MuiTheme = createTheme({
         }
       }
     },
+    MuiSelect: {
+      styleOverrides: {
+        select: {
+          fontSize: '14px',
+          backgroundColor: '#FFFFFF',
+          height: '20px',
+          padding: '0.5rem',
+          border: 'none',
+          //MuiAutocomplete-root .MuiAutocomplete-inputRoot .MuiOutlinedInput-notchedOutline
+          //MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline
+          inputBase: {
+            "&.MuiOutlinedInput-input": {
+              minHeight: '0em'
+            },
+            "&.MuiOutlinedInput-root": {
+              lineHeight: '0em'
+            },
+            root: {
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#000000"
+              },
+              "&.MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#000000"
+              }
+            }
+          },
+          "&.Mui-focused.MuiOutlinedInput-notchedOutline": {
+            borderColor: "#000000"
+          },
+          inputRoot: {
+            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+              borderColor: "#000000"
+            }
+          }
+        },
+        // outlined: {
+        //   borderColor: "#000000"
+        // }
+      }
+    },
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: '0px',
+          borderRadius: '0px'
+        }
+      }
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: {
+          fontSize: '14px'
         }
       }
     },

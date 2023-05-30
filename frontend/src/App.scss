@@ -212,7 +212,6 @@ hr {
   margin-left: 10px;
 }
 
-
 button:hover {
   opacity: 80%;
   transition: opacity 0.3s ease;
@@ -415,9 +414,25 @@ i.help-icon {
 .text-area {
   background-color: $text-field-gray;
   border-radius: 15px;
+  border: 2px solid $text-field-gray;
   padding: 2rem;
   font-family: "Source Code Pro";
   tab-size: 4;
   height: 75%;
   overflow: auto;
+  resize: none;
+
+  &:focus {
+    outline: none;
+    border: 2px solid rgba(0, 0, 0, .1)
+  }
+}
+
+select {
+  font-family: inherit;
+  font-size: 12px;
+  
+  option:hover {
+    background-color: $primary;
+  }
 }
