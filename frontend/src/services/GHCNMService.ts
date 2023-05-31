@@ -5,6 +5,7 @@ import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_API_HOST;
 
 export async function getAllStationMetadata(): Promise<StationMetadata[]> {
+  console.log('fetching');
   return axios.get(`${BASE_URL}station`, {
     headers: getHeaders
   }).then(res => res.data);

@@ -23,7 +23,8 @@ export default function ApiPage() {
   const [downloadFormat, setDownloadFormat] = useState<'csv' | 'json'>('csv');
   const [queryParams, setQueryParams] = useState<string>('No parameters.');
   const [fetchResponse, setFetchResponse] = useState<string>('');
-  const [doDownload, setDoDownload] = useState<boolean>(false);
+  const [doFetch, setDoFetch] = useState<boolean>(false);
+  const [fetchError, setFetchError] = useState<string | undefined>();
   const [downloadError, setDownloadError] = useState<string | undefined>();
 
   const getQueryFunction = () => {
@@ -41,16 +42,16 @@ export default function ApiPage() {
     };
   };
 
-  console.log(queryParams, queryParams.replace(/\s/g, ""));
+  // console.log(queryParams, queryParams.replace(/\s/g, ""));
 
-  if (endpoint === 'download' && queryParams !== 'No parameters.') {
-    console.log(JSON.parse(queryParams.replace(/\s/g, "")))
-  }
+  // if (endpoint === 'download' && queryParams !== 'No parameters.') {
+  //   console.log(JSON.parse(queryParams.replace(/\s/g, "")))
+  // }
 
   const { data: resData, error: errorRes, refetch: refetchRes, isFetching: isFetchingRes } = useQuery({
     queryKey: [endpoint],
     ...ReactQueryConfig,
-    enabled: doDownload,
+    enabled: doFetch,
     queryFn: () => (getQueryFunction())(endpoint === 'download' ? JSON.parse(queryParams.replace(/\s/g, "")) : undefined)
   });
 
@@ -59,12 +60,13 @@ export default function ApiPage() {
   }, [endpoint]);
 
   useEffect(() => {
-    if (doDownload && errorRes && (!isFetchingRes)) {
-      setDownloadError('Data fetch failed');
-      setDoDownload(false);
+    if (doFetch && errorRes && (!isFetchingRes)) {
+      setFetchError('Data fetch failed');
+      setDoFetch(false);
     };
-    if (doDownload && resData && (!isFetchingRes)) {
-      setFetchResponse(resData);
+    if (doFetch && resData && (!isFetchingRes)) {
+      setFetchResponse(JSON.stringify(resData));
+      setDoFetch(false);
     }
   });
 
@@ -98,7 +100,7 @@ export default function ApiPage() {
           />
         </div>
         <div className="d-flex flex-column w-100 ms-2">
-          <textarea readOnly id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={fetchResponse} />
+          <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={fetchResponse} onChange={() => { }} />
           <div className="d-flex flex-row align-items-center mx-auto mt-2">
             <div className="me-2">Download as</div>
             <Select
@@ -114,29 +116,43 @@ export default function ApiPage() {
         </div>
       </div>
       <div className="d-flex flex-row justify-content-evenly">
-        <button className='med-button mx-auto'
-          onClick={(e) => {
-            try {
-              JSON.parse(queryParams.replace(/\s/g, ""));
-              setDownloadError(undefined);
-              setDoDownload(true);
-              refetchRes();
-            } catch (error: any) {
-              setDownloadError(`Parameters cannot be parsed. ${error.name}: ${error.message}`);
-            };
-          }}>
-          <div className='med-button-text'>
-            DOWNLOAD
-          </div>
-          {doDownload === true ?
-            <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
-          }
-        </button>
-        <button className='med-button mx-auto'>
-          <div className='med-button-text'>
-            DOWNLOAD
-          </div>
-        </button>
+        <div className="column w-100">
+          <button className='med-button mx-auto'
+            onClick={(e) => {
+              try {
+                if (endpoint === 'download') {
+                  JSON.parse(queryParams.replace(/\s/g, ""));
+                }
+                setFetchError(undefined);
+                setDoFetch(true);
+                refetchRes();
+              } catch (error: any) {
+                setFetchError(`Parameters cannot be parsed. ${error.name}: ${error.message}`);
+              }
+            }}>
+            <div className='med-button-text'>
+              FETCH DATA
+            </div>
+            {doFetch === true ?
+              <Spinner animation="border" className="heading-1 text-white" style={{ height: '20px', width: '20px', fontSize: '20px' }}/> 
+              : <i className='material-icons'>play_arrow</i>
+            }
+          </button>
+          {fetchError && (
+            <div className="text-field-error pt-1 text-center">{fetchError}</div>
+          )}
+        </div>
+        <div className="column w-100">
+          <button className='med-button mx-auto'>
+            <div className='med-button-text'>
+              DOWNLOAD
+            </div>
+            <i className='material-icons'>download_outlined</i>
+          </button>
+          {downloadError && (
+            <div className="text-field-error pt-1 text-center">{downloadError}</div>
+          )}
+        </div>
       </div>
     </div>
   )
