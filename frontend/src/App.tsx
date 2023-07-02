@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { MuiTheme } from './MuiTheme';
+import ErrorBoundary from './components/ErrorBoundary';
 import './App.scss';
 
 import { Header } from './components/Header';
@@ -37,7 +38,7 @@ const App: React.FC = () => {
           <div className='main-content'>
             <Suspense fallback={<Skeleton />}>
               <Routes>
-                <Route path='/' element={<LandingPage />} />
+                <Route path='/' element={<LandingPage />} errorElement={<ErrorBoundary />}/>
                 <Route path='download' element={<DownloadPage />} />
                 <Route path='visualize' element={<VisualizerPage />} />
                 <Route path='documentation' element={<DocumentationPage />}>
@@ -47,8 +48,8 @@ const App: React.FC = () => {
                   <Route path='format' element={<FormatDocsSubPage />}/>
                   <Route path='api' element={<ApiDocsSubPage />}/>
                 </Route>
-                <Route path='api' element={<ApiPage />} />
-                <Route path="*" element={<Navigate to="/" />} />
+                <Route path='api' element={<ApiPage />} errorElement={<ErrorBoundary />}/>
+                <Route path="*" element={<Navigate to="/" />} errorElement={<ErrorBoundary />}/>
               </Routes>
             </Suspense>
           </div>

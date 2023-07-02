@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
 import { getAllCountries, getAllRegions, getAllStationMetadata, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { ReactQueryConfig } from "../../common/constants";
+import { whitespaceFormatter } from "../../common/utils";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import starterText from './starterText.json';
@@ -16,6 +17,8 @@ const endpointsUrls: Record<endpoints, string> = {
   'regions': '/regions',
   'download': '/download'
 }
+
+const testf: string = `[{"country":"ALGERIA","code":101,"supportedRegions":[]},{"country":"GUINEA-BISSAU","code":121,"supportedRegions":[]},{"country":"GIBRALTAR (U.K.)","code":653,"supportedRegions":[]},{"country":"MADEIRA ISLANDS (PORTUGAL)","code":654,"supportedRegions":[]},{"country":"ANTARCTICA","code":700,"supportedRegions":[]}]`
 
 export default function ApiPage() {
 
@@ -65,6 +68,7 @@ export default function ApiPage() {
       setDoFetch(false);
     };
     if (doFetch && resData && (!isFetchingRes)) {
+      // setFetchResponse(whitespaceFormatter(JSON.stringify(resData)));
       setFetchResponse(JSON.stringify(resData));
       setDoFetch(false);
     }
@@ -100,7 +104,7 @@ export default function ApiPage() {
           />
         </div>
         <div className="d-flex flex-column w-100 ms-2">
-          <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={fetchResponse} onChange={() => { }} />
+          <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={whitespaceFormatter(testf)} onChange={() => { }} />
           <div className="d-flex flex-row align-items-center mx-auto mt-2">
             <div className="me-2">Download as</div>
             <Select

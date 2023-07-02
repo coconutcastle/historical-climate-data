@@ -1,7 +1,7 @@
 import Papa from 'papaparse';
 import JSZip from 'jszip';
-import { monthIndex, monthType } from '../../common/constants';
-import { DataTypes } from '../../common/download.interface';
+import { monthIndex, monthType } from './constants';
+import { DataTypes } from './download.interface';
 
 export const formatDate = (year: number, month: monthType, dateFormat: string): string => {
   const yearIndexStart = (dateFormat.toLowerCase()).search('yyyy');
@@ -69,4 +69,77 @@ export const jsonToArrays = (content: any, dataType?: DataTypes) => {
   }
   // }
   return contentArray;
+}
+
+// use stack to format JSON style strings
+export const whitespaceFormatter = (text: string): string => {
+  const bracketPairs: Record<string, string> = {      // round brackets not relevant here
+    '[': ']', 
+    '{': '}'
+  };
+
+  console.log('formatting', text);
+
+  const stack: string[] = [];
+  var formattedString: string = '';
+  var tabnum = 0;
+  var isNewline = false;
+  var inQuote = false;    // comma doesn't create newline if in a quote
+  
+  for (var i = 0; i < text.length; i++) {
+    const char = text[i];
+    
+    // insert leading whitespce
+    if (isNewline) {
+      // console.log(formattedString);
+      formattedString = formattedString.concat('\n');
+      formattedString = formattedString.concat('\t'.repeat(tabnum));
+      // console.log(formattedString);
+      isNewline = false;
+    }
+
+    // adjust whitespace if bracket or comma for the next char
+    if ((Object.keys(bracketPairs)).includes(char)) {    // if opening bracket
+      stack.push(char);
+      
+      if (i < text.length - 1 && text[i + 1] !== bracketPairs[char]) {    // no newline for [], {} combos
+        tabnum += 1;
+        isNewline = true;
+      }
+    } 
+    else if ((Object.values(bracketPairs)).includes(char)) {   // if closing bracket
+      if (stack.at(-1) !== undefined && bracketPairs[stack.at(-1)!] === char) {
+        // stack.pop();
+        // isNewline = true;
+        // tabnum -= 1;
+        // console.log(formattedString.charAt(-1));
+
+        if ((Object.keys(bracketPairs).includes(stack.at(-1)!) && bracketPairs[stack.at(-1)!] === char)) {    // no newline for [], {} combos
+          tabnum -= 1;
+          // console.log(`${char} ${stack.at(-1)}`)
+          isNewline = true;
+        }
+        stack.pop();
+      }
+    } 
+    else if (char === '"') {    // if entering or exiting a quote
+      if (stack.at(-1) === '"') {
+        stack.pop();
+        inQuote = false;
+      } else {
+        stack.push(char);
+        inQuote = true;
+      }
+    } 
+    else if (char === ',' && !inQuote) { 
+      // newline if comma and not in a quote
+      isNewline = true;
+    };
+
+    // add character
+    formattedString = formattedString.concat(char);
+  }
+
+  // console.log('formatted', formattedString);
+  return formattedString;
 }

@@ -4,7 +4,7 @@ import { SelectionSection } from "./sections/SelectionSection";
 import { FormatSection } from "./sections/FormatSection";
 import { useQuery } from 'react-query';
 import { Spinner } from 'react-bootstrap';
-import { downloadZip, downloadCSV, formatDate } from "./formatDownloadUtils";
+import { downloadZip, downloadCSV, formatDate } from "../../common/utils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { DataTypes, FormatFields, ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys, monthType } from "../../common/constants";
