@@ -1,5 +1,5 @@
-import React, { Suspense } from 'react'
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import React, { Children, Suspense } from 'react'
+import { BrowserRouter, Navigate, Route, Routes, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { MuiTheme } from './MuiTheme';
@@ -28,16 +28,71 @@ const FormatDocsSubPage = React.lazy(() => import('./routes/documentation/sectio
 const ApiDocsSubPage = React.lazy(() => import('./routes/documentation/sections/ApiDocs'));
 const ApiPage = React.lazy(() => import('./routes/api/ApiPage'));
 
+const SiteLayout = () => (
+  <>
+    <Header />
+    <div className='main-content'>
+      <Suspense fallback={<Skeleton />}>
+        <Outlet />
+      </Suspense>
+    </div>
+  </>
+)
+
+const router = createBrowserRouter([
+  {
+    element: <SiteLayout />,
+    children: [
+      {
+        path: '/',
+        element: <LandingPage />
+      }, {
+        path: 'download',
+        element: <DownloadPage />
+      }, {
+        path: 'visualize',
+        element: <VisualizerPage />
+      }, {
+        path: 'documentation',
+        element: <DocumentationPage />,
+        children: [
+          {
+            path: 'about',
+            element: <AboutDocsSubPage />,
+            index: true
+          }, {
+            path: 'params',
+            element: <ParamsDocsSubPage />
+          }, {
+            path: 'format',
+            element: <FormatDocsSubPage />
+          }, {
+            path: 'api',
+            element: <ApiDocsSubPage />
+          }
+        ]
+      }, {
+        path: 'api',
+        element: <ApiPage />
+      }, {
+        path: '*',
+        element: <Navigate to="/" />
+      }
+    ]
+  }
+]);
+
 const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <Header />
-          <div className='main-content'>
-            <Suspense fallback={<Skeleton />}>
-              <Routes>
+        {/* <BrowserRouter> */}
+        <RouterProvider router={router} />
+        {/* <Header /> */}
+        {/* <div className='main-content'> */}
+          {/* <Suspense fallback={<Skeleton />}> */}
+            {/* <Routes>
                 <Route path='/' element={<LandingPage />} errorElement={<ErrorBoundary />}/>
                 <Route path='download' element={<DownloadPage />} />
                 <Route path='visualize' element={<VisualizerPage />} />
@@ -50,10 +105,10 @@ const App: React.FC = () => {
                 </Route>
                 <Route path='api' element={<ApiPage />} errorElement={<ErrorBoundary />}/>
                 <Route path="*" element={<Navigate to="/" />} errorElement={<ErrorBoundary />}/>
-              </Routes>
-            </Suspense>
-          </div>
-        </BrowserRouter>
+              </Routes> */}
+          {/* </Suspense> */}
+        {/* </div> */}
+        {/* </BrowserRouter> */}
       </QueryClientProvider>
     </ThemeProvider >
   )
