@@ -91,34 +91,39 @@ export const whitespaceFormatter = (text: string): string => {
     
     // insert leading whitespce
     if (isNewline) {
-      // console.log(formattedString);
       formattedString = formattedString.concat('\n');
       formattedString = formattedString.concat('\t'.repeat(tabnum));
-      // console.log(formattedString);
       isNewline = false;
     }
 
     // adjust whitespace if bracket or comma for the next char
     if ((Object.keys(bracketPairs)).includes(char)) {    // if opening bracket
       stack.push(char);
+
+      console.log(stack, char, tabnum)
       
-      if (i < text.length - 1 && text[i + 1] !== bracketPairs[char]) {    // no newline for [], {} combos
+      if (i < text.length - 1 && text[i + 1] !== bracketPairs[char]) {    // no newline for [], {} combos and if not last array element
         tabnum += 1;
         isNewline = true;
       }
     } 
     else if ((Object.values(bracketPairs)).includes(char)) {   // if closing bracket
       if (stack.at(-1) !== undefined && bracketPairs[stack.at(-1)!] === char) {
-        // stack.pop();
-        // isNewline = true;
-        // tabnum -= 1;
-        // console.log(formattedString.charAt(-1));
 
-        if ((Object.keys(bracketPairs).includes(stack.at(-1)!) && bracketPairs[stack.at(-1)!] === char)) {    // no newline for [], {} combos
+        if (text[i + 1] !== ',') {
+          isNewline = true;   //no newline if next character is a comma
+        };
+
+        // tabnum -= 1;
+
+        console.log(stack, char, tabnum)
+
+        if (bracketPairs[formattedString.charAt(formattedString.length - 1)] !== char) {    // decrement tab if not [], {} combo
           tabnum -= 1;
-          // console.log(`${char} ${stack.at(-1)}`)
-          isNewline = true;
-        }
+        };
+
+        console.log(tabnum);
+
         stack.pop();
       }
     } 
@@ -136,10 +141,14 @@ export const whitespaceFormatter = (text: string): string => {
       isNewline = true;
     };
 
+    // if the next character is a closing bracket for a block, decrement tab
+    // if (i < text.length - 1 && Object.values(bracketPairs).includes(text[i + 1]) && (i == text.length - 2 || text[i + 2] !== ',')) {
+    //   tabnum -= 1;
+    // };
+
     // add character
     formattedString = formattedString.concat(char);
   }
 
-  // console.log('formatted', formattedString);
   return formattedString;
 }

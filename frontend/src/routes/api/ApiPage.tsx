@@ -45,12 +45,6 @@ export default function ApiPage() {
     };
   };
 
-  // console.log(queryParams, queryParams.replace(/\s/g, ""));
-
-  // if (endpoint === 'download' && queryParams !== 'No parameters.') {
-  //   console.log(JSON.parse(queryParams.replace(/\s/g, "")))
-  // }
-
   const { data: resData, error: errorRes, refetch: refetchRes, isFetching: isFetchingRes } = useQuery({
     queryKey: [endpoint],
     ...ReactQueryConfig,
@@ -69,10 +63,10 @@ export default function ApiPage() {
     };
     if (doFetch && resData && (!isFetchingRes)) {
       // setFetchResponse(whitespaceFormatter(JSON.stringify(resData)));
-      setFetchResponse(JSON.stringify(resData));
+      setFetchResponse(JSON.stringify(resData, null, "\t"));
       setDoFetch(false);
     }
-  });
+  }, [doFetch, errorRes, isFetchingRes, resData]);
 
   return (
     <div className="data-content" style={{ minHeight: '100vh' }} >
@@ -104,7 +98,7 @@ export default function ApiPage() {
           />
         </div>
         <div className="d-flex flex-column w-100 ms-2">
-          <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={whitespaceFormatter(testf)} onChange={() => { }} />
+          <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={fetchResponse} onChange={() => { }} />
           <div className="d-flex flex-row align-items-center mx-auto mt-2">
             <div className="me-2">Download as</div>
             <Select
