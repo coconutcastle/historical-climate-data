@@ -18,8 +18,6 @@ const endpointsUrls: Record<endpoints, string> = {
   'download': '/download'
 }
 
-// const testf: string = `[{"country":"ALGERIA","code":101,"supportedRegions":[]},{"country":"GUINEA-BISSAU","code":121,"supportedRegions":[]},{"country":"GIBRALTAR (U.K.)","code":653,"supportedRegions":[]},{"country":"MADEIRA ISLANDS (PORTUGAL)","code":654,"supportedRegions":[]},{"country":"ANTARCTICA","code":700,"supportedRegions":[]}]`
-
 export default function ApiPage() {
 
   const [endpoint, setEndpoint] = useState<endpoints>('stations');
@@ -89,16 +87,35 @@ export default function ApiPage() {
         </Select>
       </div>
       <div className="d-flex flex-row" style={{ height: '70vh' }}>
-        <div className="d-flex flex-column w-100 me-1">
-          <textarea id='query-params-textarea' className="text-area"
+        <div className="d-flex flex-column col-6 me-1">
+          <div style={{ position: 'relative', height: '100%', width: '100%'}}>
+            <button className="textarea-button"
+              onClick={(e: any) => {
+                setQueryParams(starterText[endpoint]);
+
+                e.target.style.outline = '2px solid rgba(102, 205, 170, 1)';
+                setTimeout(() => {
+                  e.target.style.outline = '2px solid rgba(102, 205, 170, 0)';
+                }, 1800);
+              }}
+            >RESET</button>
+            <textarea id='query-params-textarea' className="text-area w-100"
+              style={{ whiteSpace: 'pre' }}
+              value={queryParams}
+              onChange={(e: any) => setQueryParams(e.target.value)}
+            />
+          </div>
+        </div>
+        {/* <div className="d-flex flex-column w-50 me-1">
+          <textarea id='query-params-textarea' className="text-area w-100"
             style={{ whiteSpace: 'pre' }}
             value={queryParams}
             onChange={(e: any) => setQueryParams(e.target.value)}
           />
-        </div>
-        <div className="d-flex flex-column w-100 ms-2">
+        </div> */}
+        <div className="d-flex flex-column col-6 ms-2">
           <div style={{ position: 'relative', height: '100%' }}>
-            <button className="copy-button"
+            <button className="textarea-button"
               onClick={(e: any) => {
                 navigator.clipboard.writeText(fetchResponse);
 
@@ -143,7 +160,7 @@ export default function ApiPage() {
               FETCH DATA
             </div>
             {doFetch === true ?
-              <Spinner animation="border" className="heading-1 text-white" style={{ height: '20px', width: '20px', fontSize: '20px' }}/> 
+              <Spinner animation="border" className="heading-1 text-white" style={{ height: '20px', width: '20px', fontSize: '20px' }} />
               : <i className='material-icons'>play_arrow</i>
             }
           </button>
@@ -153,13 +170,13 @@ export default function ApiPage() {
         </div>
         <div className="column w-100">
           <button className='med-button mx-auto'
-          onClick={() => {
-            if (downloadFormat === 'json') {
-              downloadJSON(fetchResponse, endpoint);
-            } else {
-              downloadCSV(resData, endpoint);
-            }
-          }}>
+            onClick={() => {
+              if (downloadFormat === 'json') {
+                downloadJSON(fetchResponse, endpoint);
+              } else {
+                downloadCSV(resData, endpoint);
+              }
+            }}>
             <div className='med-button-text'>
               DOWNLOAD
             </div>
