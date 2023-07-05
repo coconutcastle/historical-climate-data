@@ -242,6 +242,24 @@ button:hover {
   }
 }
 
+.copy-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 99;
+  border: none;
+  width: 60px;
+  height: 30px;
+  border-radius: 7px;
+  background-color: transparent;
+  color: rgba(0, 0, 0, .6);
+
+  &:hover {
+    background-color: rgba(0, 0, 0, .05);
+    transition: background-color 0.3s ease
+  }
+}
+
 //=================== DOWNLOADS PAGE =========================//
 
 .params-format-wrapper {
@@ -435,4 +453,8 @@ select {
   option:hover {
     background-color: $primary;
   }
+}
+
+#response-textarea {
+  width: 100%
 }

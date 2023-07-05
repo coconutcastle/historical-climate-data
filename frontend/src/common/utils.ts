@@ -36,6 +36,22 @@ export const downloadCSV = (content: any, fileName: string, fields?: string[]) =
   link.remove();
 }
 
+export const downloadJSON = (jsonString: string, fileName: string) => {
+  const link = window.document.createElement('a');
+  link.href = window.URL.createObjectURL(
+    new Blob([jsonString], {
+      type: 'application/json'
+    })
+  );
+  link.download = `${fileName}.json`;
+  link.click();
+  link.remove();
+}
+
+export const copyToClipboard = () => {
+  
+}
+
 // takes an array of the files to download
 // contentArray and list of filenames should be the same length
 export const downloadZip = (contentArray: any[], zipFilename: string, individualFilenames: string[]) => {
@@ -72,6 +88,7 @@ export const jsonToArrays = (content: any, dataType?: DataTypes) => {
 }
 
 // use stack to format JSON style strings
+// doesn't really work :(
 export const whitespaceFormatter = (text: string): string => {
   const bracketPairs: Record<string, string> = {      // round brackets not relevant here
     '[': ']', 
