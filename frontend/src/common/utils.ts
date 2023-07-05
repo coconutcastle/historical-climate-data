@@ -48,10 +48,6 @@ export const downloadJSON = (jsonString: string, fileName: string) => {
   link.remove();
 }
 
-export const copyToClipboard = () => {
-  
-}
-
 // takes an array of the files to download
 // contentArray and list of filenames should be the same length
 export const downloadZip = (contentArray: any[], zipFilename: string, individualFilenames: string[]) => {
@@ -85,87 +81,4 @@ export const jsonToArrays = (content: any, dataType?: DataTypes) => {
   }
   // }
   return contentArray;
-}
-
-// use stack to format JSON style strings
-// doesn't really work :(
-export const whitespaceFormatter = (text: string): string => {
-  const bracketPairs: Record<string, string> = {      // round brackets not relevant here
-    '[': ']', 
-    '{': '}'
-  };
-
-  console.log('formatting', text);
-
-  const stack: string[] = [];
-  var formattedString: string = '';
-  var tabnum = 0;
-  var isNewline = false;
-  var inQuote = false;    // comma doesn't create newline if in a quote
-  
-  for (var i = 0; i < text.length; i++) {
-    const char = text[i];
-    
-    // insert leading whitespce
-    if (isNewline) {
-      formattedString = formattedString.concat('\n');
-      formattedString = formattedString.concat('\t'.repeat(tabnum));
-      isNewline = false;
-    }
-
-    // adjust whitespace if bracket or comma for the next char
-    if ((Object.keys(bracketPairs)).includes(char)) {    // if opening bracket
-      stack.push(char);
-
-      console.log(stack, char, tabnum)
-      
-      if (i < text.length - 1 && text[i + 1] !== bracketPairs[char]) {    // no newline for [], {} combos and if not last array element
-        tabnum += 1;
-        isNewline = true;
-      }
-    } 
-    else if ((Object.values(bracketPairs)).includes(char)) {   // if closing bracket
-      if (stack.at(-1) !== undefined && bracketPairs[stack.at(-1)!] === char) {
-
-        if (text[i + 1] !== ',') {
-          isNewline = true;   //no newline if next character is a comma
-        };
-
-        // tabnum -= 1;
-
-        console.log(stack, char, tabnum)
-
-        if (bracketPairs[formattedString.charAt(formattedString.length - 1)] !== char) {    // decrement tab if not [], {} combo
-          tabnum -= 1;
-        };
-
-        console.log(tabnum);
-
-        stack.pop();
-      }
-    } 
-    else if (char === '"') {    // if entering or exiting a quote
-      if (stack.at(-1) === '"') {
-        stack.pop();
-        inQuote = false;
-      } else {
-        stack.push(char);
-        inQuote = true;
-      }
-    } 
-    else if (char === ',' && !inQuote) { 
-      // newline if comma and not in a quote
-      isNewline = true;
-    };
-
-    // if the next character is a closing bracket for a block, decrement tab
-    // if (i < text.length - 1 && Object.values(bracketPairs).includes(text[i + 1]) && (i == text.length - 2 || text[i + 2] !== ',')) {
-    //   tabnum -= 1;
-    // };
-
-    // add character
-    formattedString = formattedString.concat(char);
-  }
-
-  return formattedString;
 }

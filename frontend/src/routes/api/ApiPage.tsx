@@ -88,7 +88,7 @@ export default function ApiPage() {
       </div>
       <div className="d-flex flex-row" style={{ height: '70vh' }}>
         <div className="d-flex flex-column col-6 me-1">
-          <div style={{ position: 'relative', height: '100%', width: '100%'}}>
+          <div style={{ position: 'relative', height: '100%', width: '100%' }}>
             <button className="textarea-button"
               onClick={(e: any) => {
                 setQueryParams(starterText[endpoint]);
@@ -106,13 +106,6 @@ export default function ApiPage() {
             />
           </div>
         </div>
-        {/* <div className="d-flex flex-column w-50 me-1">
-          <textarea id='query-params-textarea' className="text-area w-100"
-            style={{ whiteSpace: 'pre' }}
-            value={queryParams}
-            onChange={(e: any) => setQueryParams(e.target.value)}
-          />
-        </div> */}
         <div className="d-flex flex-column col-6 ms-2">
           <div style={{ position: 'relative', height: '100%' }}>
             <button className="textarea-button"
@@ -171,10 +164,14 @@ export default function ApiPage() {
         <div className="column w-100">
           <button className='med-button mx-auto'
             onClick={() => {
-              if (downloadFormat === 'json') {
-                downloadJSON(fetchResponse, endpoint);
-              } else {
-                downloadCSV(resData, endpoint);
+              try {
+                if (downloadFormat === 'json') {
+                  downloadJSON(fetchResponse, endpoint);
+                } else {
+                  downloadCSV(resData, endpoint);
+                }
+              } catch (error: any) {
+                setDownloadError('Download failed')
               }
             }}>
             <div className='med-button-text'>

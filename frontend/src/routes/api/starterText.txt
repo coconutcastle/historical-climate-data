@@ -1,9 +1,0 @@
-{
-  years: Range[]
-  months: []
-  countries: []
-  regions: []
-  coordinates: []
-  stations: []
-  dataTypes: []
-}
