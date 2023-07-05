@@ -98,10 +98,18 @@ export default function ApiPage() {
         </div>
         <div className="d-flex flex-column w-100 ms-2">
           <div style={{ position: 'relative', height: '100%' }}>
-            <button className="copy-button">COPY</button>
+            <button className="copy-button"
+              onClick={(e: any) => {
+                navigator.clipboard.writeText(fetchResponse);
+
+                e.target.style.outline = '2px solid rgba(102, 205, 170, 1)';
+                setTimeout(() => {
+                  e.target.style.outline = '2px solid rgba(102, 205, 170, 0)';
+                }, 1800);
+              }}
+            >COPY</button>
             <textarea id='response-textarea' className="text-area" style={{ whiteSpace: 'pre' }} value={fetchResponse} onChange={() => { }} />
           </div>
-          
           <div className="d-flex flex-row align-items-center mx-auto mt-2">
             <div className="me-2">Download as</div>
             <Select

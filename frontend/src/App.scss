@@ -245,7 +245,7 @@ button:hover {
 .copy-button {
   position: absolute;
   top: 10px;
-  right: 10px;
+  right: 15px;
   z-index: 99;
   border: none;
   width: 60px;
@@ -253,6 +253,15 @@ button:hover {
   border-radius: 7px;
   background-color: transparent;
   color: rgba(0, 0, 0, .6);
+
+  // transition-property: outline;
+  // transition-duration: 0.5s;
+  // transition-timing-function: ease;
+  // transition: outline 1s ease;
+
+  transition: outline 0.5s ease;
+  -moz-transition: outline 0.5s ease;
+  -webkit-transition: outline 0.5s ease;
 
   &:hover {
     background-color: rgba(0, 0, 0, .05);
