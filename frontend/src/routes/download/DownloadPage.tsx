@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { ParamsSection } from "./sections/ParamsSection"
 import { SelectionSection } from "./sections/SelectionSection";
 import { FormatSection } from "./sections/FormatSection";
@@ -8,10 +8,15 @@ import { downloadZip, downloadCSV, formatDate } from "../../common/utils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { DataTypes, FormatFields, ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys, monthType } from "../../common/constants";
+import { DataContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
   const [doDownload, setDoDownload] = useState<boolean>(false);
+  const { data, setData } = useContext(DataContext);
+
+  const navigate = useNavigate();
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -239,7 +244,12 @@ export default function DownloadPage() {
               <div className="text-field-error pt-1 text-center">{downloadError}</div>
             )}
           </div>
-          <button className='big-button ms-3 disabled' style={{ width: '250px' }}>
+          <button className='big-button ms-3' style={{ width: '250px' }}
+            onClick={() => {
+              // make sure there is actually data - fetch data here
+              setData(downloadData);
+              navigate('/visualize');
+            }}>
             <div className='button-text'>
               VISUALIZE
             </div>

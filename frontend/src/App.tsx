@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, createContext, useState, Dispatch, SetStateAction } from 'react'
 import { Navigate, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
@@ -20,7 +20,7 @@ const queryClient = new QueryClient();
 
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
 const DownloadPage = React.lazy(() => import('./routes/download/DownloadPage'));
-const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
+const VisualizerPage = React.lazy(() => import('./routes/visualizer/VisualizerPage'));
 const DocumentationPage = React.lazy(() => import('./routes/documentation/DocumentationPage'));
 const AboutDocsSubPage = React.lazy(() => import('./routes/documentation/sections/AboutDocs'));
 const ParamsDocsSubPage = React.lazy(() => import('./routes/documentation/sections/DownloadParamsDocs'));
@@ -85,12 +85,23 @@ const router = createBrowserRouter([
   }
 ]);
 
+interface IDataContext {
+  data: any,
+  setData: Dispatch<SetStateAction<any>>;
+}
+
+export const DataContext = createContext<IDataContext>({ data: undefined, setData: () => {} });
+
 const App: React.FC = () => {
+
+  const [data, setData] = useState<any>(undefined);
 
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <DataContext.Provider value={{ data, setData }}>
+          <RouterProvider router={router} />
+        </DataContext.Provider>
       </QueryClientProvider>
     </ThemeProvider >
   )
