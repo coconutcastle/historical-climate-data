@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
   const [doDownload, setDoDownload] = useState<boolean>(false);
+  const [doFetch, setDoFetch] = useState<boolean>(false);
   const { data, setData } = useContext(DataContext);
 
   const navigate = useNavigate();
@@ -165,7 +166,7 @@ export default function DownloadPage() {
       setDoDownload(false);
     };
     if (doDownload && downloadData && (!isFetchingDownloadData)) {
-      console.log(downloadData);
+      // console.log(downloadData);
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
           const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, downloadData['stations']);
@@ -181,6 +182,19 @@ export default function DownloadPage() {
       setDoDownload(false);
     };
   }, [params, format, downloadData, errorDownloadData, isFetchingDownloadData, doDownload, formatData]);
+
+  // another useEffect just to refetch data when pressing visualize button - no formatting here
+  useEffect(() => {
+    if (doFetch && errorDownloadData && (!isFetchingDownloadData)) {
+      setDownloadError('Error fetching data.');
+      setDoFetch(false);
+    }
+    if (doFetch && downloadData && (!isFetchingDownloadData)) {
+      setData(downloadData);
+      navigate('/visualize');
+      setDoFetch(false);
+    }
+  }, [isFetchingDownloadData, errorDownloadData, doDownload])
 
   return (
     <div className="data-content"
@@ -221,41 +235,57 @@ export default function DownloadPage() {
         <SelectionSection params={params} format={format} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
-        <div className='d-flex flex-row justify-content-center pt-3 pb-5' style={{ width: '65%' }} >
-          <div className='column'>
-            <button className={`big-button ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
-              onClick={(e) => {
+        <>
+          <div className='d-flex flex-row justify-content-center pt-3 pb-1' style={{ width: '65%' }} >
+            <div className='column'>
+              <button className={`big-button ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
+                onClick={(e) => {
+                  if (params.dataTypes.length === 0) {
+                    setDownloadError('Please select data type');
+                  } else {
+                    setDownloadError(undefined);
+                    setDoDownload(true);
+                    refetchDownloadData();
+                  }
+                }}>
+                <div className='button-text'>
+                  DOWNLOAD
+                </div>
+                {doDownload === true ?
+                  <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+                }
+              </button>
+              {/* {downloadError && (
+              <div className="text-field-error pt-1 text-center">{downloadError}</div>
+            )} */}
+            </div>
+            <button className={`big-button ms-3 ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
+              onClick={() => {
+                // make sure there is actually data - fetch data here
                 if (params.dataTypes.length === 0) {
                   setDownloadError('Please select data type');
                 } else {
                   setDownloadError(undefined);
-                  setDoDownload(true);
+                  setDoFetch(true);
                   refetchDownloadData();
                 }
               }}>
               <div className='button-text'>
-                DOWNLOAD
+                VISUALIZE
               </div>
-              {doDownload === true ?
-                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+              {/* <i className='material-icons'>play_arrow</i> */}
+              {doFetch === true ?
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>play_arrow</i>
               }
             </button>
-            {downloadError && (
-              <div className="text-field-error pt-1 text-center">{downloadError}</div>
-            )}
           </div>
-          <button className='big-button ms-3' style={{ width: '250px' }}
-            onClick={() => {
-              // make sure there is actually data - fetch data here
-              setData(downloadData);
-              navigate('/visualize');
-            }}>
-            <div className='button-text'>
-              VISUALIZE
-            </div>
-            <i className='material-icons'>play_arrow</i>
-          </button>
-        </div>
+          <div className="d-flex justify-content-center  pb-5">
+            {/* {downloadError && (
+              <div className="text-field-error pt-1 text-center">{downloadError}</div>
+            )} */}
+            hi
+          </div>
+        </>
       )}
     </div>
   )
