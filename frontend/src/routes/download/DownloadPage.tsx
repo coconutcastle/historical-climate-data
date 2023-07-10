@@ -216,7 +216,7 @@ export default function DownloadPage() {
             </div>
           )}
           {(dataCountries && dataStations && dataRegions) && (
-            <>
+            <div className="d-flex flex-column">
               <ParamsSection
                 params={params}
                 onParamsChanged={(newParams: ParamsFields) => setParams(newParams)}
@@ -229,36 +229,31 @@ export default function DownloadPage() {
                 onFormatChanged={(newFormat: FormatFields) => setFormat(newFormat)}
                 params={params}
                 formatData={formatData} />
-            </>
+            </div>
           )}
         </></div>
         <SelectionSection params={params} format={format} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
-        <>
-          <div className='d-flex flex-row justify-content-center pt-3 pb-1' style={{ width: '65%' }} >
-            <div className='column'>
-              <button className={`big-button ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
-                onClick={(e) => {
-                  if (params.dataTypes.length === 0) {
-                    setDownloadError('Please select data type');
-                  } else {
-                    setDownloadError(undefined);
-                    setDoDownload(true);
-                    refetchDownloadData();
-                  }
-                }}>
-                <div className='button-text'>
-                  DOWNLOAD
-                </div>
-                {doDownload === true ?
-                  <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+        <div className="d-flex flex-column justify-content-center pb-4" style={{ width: '70%' }} >
+          <div className='d-flex flex-row justify-content-center pt-3 pb-2'>
+            <button className={`big-button ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
+              onClick={(e) => {
+                if (params.dataTypes.length === 0) {
+                  setDownloadError('Please select data type');
+                } else {
+                  setDownloadError(undefined);
+                  setDoDownload(true);
+                  refetchDownloadData();
                 }
-              </button>
-              {/* {downloadError && (
-              <div className="text-field-error pt-1 text-center">{downloadError}</div>
-            )} */}
-            </div>
+              }}>
+              <div className='button-text'>
+                DOWNLOAD
+              </div>
+              {doDownload === true ?
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+              }
+            </button>
             <button className={`big-button ms-3 ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
               onClick={() => {
                 // make sure there is actually data - fetch data here
@@ -273,19 +268,17 @@ export default function DownloadPage() {
               <div className='button-text'>
                 VISUALIZE
               </div>
-              {/* <i className='material-icons'>play_arrow</i> */}
               {doFetch === true ?
                 <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>play_arrow</i>
               }
             </button>
           </div>
-          <div className="d-flex justify-content-center  pb-5">
-            {/* {downloadError && (
+          <div className="d-flex justify-content-center">
+            {downloadError && (
               <div className="text-field-error pt-1 text-center">{downloadError}</div>
-            )} */}
-            hi
+            )}
           </div>
-        </>
+        </div>
       )}
     </div>
   )
