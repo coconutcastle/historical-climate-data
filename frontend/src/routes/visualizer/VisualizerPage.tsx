@@ -3,13 +3,7 @@ import UploadData from './UploadData';
 import DisplayData from './DisplayData';
 import Visualizer from './Visualizer';
 import { DataContext } from '../../App';
-
-interface Step {
-  title: string,
-  description: string,
-  nextStep: number,
-  prevStep: number
-}
+import { Step, Stepper } from './Stepper';
 
 const steps: Step[] = [
   {
@@ -53,6 +47,7 @@ export default function VisualizerPage() {
       {currStep.title === 'Upload' && <UploadData />}
       {currStep.title === 'Confirm' && <DisplayData />}
       {currStep.title === 'Visualize' && <Visualizer />}
+      <Stepper steps={steps} currStep={currStep} setCurrStep={setCurrStep}/>
     </div>
   )
 }

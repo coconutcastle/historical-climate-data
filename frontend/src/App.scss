@@ -269,6 +269,31 @@ button:hover {
   }
 }
 
+.transparent-button {
+  background: transparent;
+  width: 100px;
+  height: 40px;
+  border: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  // background-color: red;
+
+  .button-text {
+    font-size: 14px;
+    text-align: center;
+    color: black;
+    transform: translateY(40%);
+  }
+
+  i.material-icons {
+    color: $primary;
+    height: 40px;
+    width: 40px;
+    transform: translateY(20%);
+  }
+}
+
 //=================== DOWNLOADS PAGE =========================//
 
 .params-format-wrapper {
@@ -466,4 +491,36 @@ select {
 
 #response-textarea {
   width: 100%
+}
+
+// ======================== VISUALIZATION PAGE ======================== //
+
+.stepper-wrapper {
+  position: fixed;
+  bottom: $header-height;
+  height: 40px;
+
+  // I have to calculate width here because it doesn't like sticking in the wrapper div...
+  // pretty annoying I'll see if I can fnd another way to do this
+  
+  /* Firefox */
+  width: -moz-calc(100% - 8rem);
+  /* WebKit */
+  width: -webkit-calc(100% - 8rem);
+  /* Opera */
+  width: -o-calc(100% - 8rem);
+  /* Standard */
+  width: calc(100% - 8rem);
+
+  .stepper-title {
+    font-size: 16px;
+    font-weight: 700;
+    transform: translateY(20%);
+  }
+}
+
+.stepper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
