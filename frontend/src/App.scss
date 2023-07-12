@@ -496,21 +496,25 @@ select {
 // ======================== VISUALIZATION PAGE ======================== //
 
 .stepper-wrapper {
-  position: fixed;
+  // position: absolute;
   bottom: $header-height;
   height: 40px;
+  width: 100%;
+  margin-top: 1rem;
+  // margin-bottom: 1rem;
 
   // I have to calculate width here because it doesn't like sticking in the wrapper div...
   // pretty annoying I'll see if I can fnd another way to do this
-  
-  /* Firefox */
-  width: -moz-calc(100% - 8rem);
-  /* WebKit */
-  width: -webkit-calc(100% - 8rem);
-  /* Opera */
-  width: -o-calc(100% - 8rem);
-  /* Standard */
-  width: calc(100% - 8rem);
+  // nvm no longer relevant with new placement
+
+  // /* Firefox */
+  // width: -moz-calc(100% - 8rem);
+  // /* WebKit */
+  // width: -webkit-calc(100% - 8rem);
+  // /* Opera */
+  // width: -o-calc(100% - 8rem);
+  // /* Standard */
+  // width: calc(100% - 8rem);
 
   .stepper-title {
     font-size: 16px;
@@ -523,4 +527,14 @@ select {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.hidden-input {
+  // same height and width as the container button
+  height: 40px;
+  width: 200px;
+  opacity: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
 }

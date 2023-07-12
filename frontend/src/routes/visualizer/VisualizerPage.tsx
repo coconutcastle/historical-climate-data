@@ -31,12 +31,6 @@ export default function VisualizerPage() {
   const { data, setData } = useContext(DataContext);
   const [currStep, setCurrStep] = useState<Step>(data === undefined ? steps[0] : steps[1]);
 
-  // useEffect(() => {
-  //   if (data !== undefined) {
-  //     setCurrStep(steps[1]);
-  //   }
-  // }, [data])
-
   return (
     <div className="data-content"
       style={{ minHeight: '100vh' }} >

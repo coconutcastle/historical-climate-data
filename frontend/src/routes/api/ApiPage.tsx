@@ -154,7 +154,7 @@ export default function ApiPage() {
             </div>
             {doFetch === true ?
               <Spinner animation="border" className="heading-1 text-white" style={{ height: '20px', width: '20px', fontSize: '20px' }} />
-              : <i className='material-icons'>play_arrow</i>
+              : <i className='material-icons ms-2'>play_arrow</i>
             }
           </button>
           {fetchError && (
@@ -177,7 +177,7 @@ export default function ApiPage() {
             <div className='med-button-text'>
               DOWNLOAD
             </div>
-            <i className='material-icons'>download_outlined</i>
+            <i className='material-icons ms-2'>download_outlined</i>
           </button>
           {downloadError && (
             <div className="text-field-error pt-1 text-center">{downloadError}</div>

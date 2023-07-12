@@ -19,7 +19,7 @@ export const Stepper = ({ steps, currStep, setCurrStep }: StepperProps) => {
 
   return (
     <div className="stepper-wrapper">
-      <hr style={{ width: "100%" }} />
+      {/* <hr style={{ width: "100%" }} /> */}
       <div className="stepper">
         <button className="transparent-button" disabled={currStep.prevStep === -1}
         onClick={() => setCurrStep(steps[currStep.prevStep])}>

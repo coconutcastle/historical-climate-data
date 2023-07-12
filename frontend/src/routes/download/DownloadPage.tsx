@@ -251,7 +251,7 @@ export default function DownloadPage() {
                 DOWNLOAD
               </div>
               {doDownload === true ?
-                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons ms-2'>download_outlined</i>
               }
             </button>
             <button className={`big-button ms-3 ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
@@ -269,7 +269,7 @@ export default function DownloadPage() {
                 VISUALIZE
               </div>
               {doFetch === true ?
-                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>play_arrow</i>
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons ms-2'>play_arrow</i>
               }
             </button>
           </div>

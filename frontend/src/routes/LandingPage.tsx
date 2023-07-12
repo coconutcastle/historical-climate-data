@@ -18,13 +18,13 @@ export default function LandingPage() {
           <div className='button-text'>
             DOWNLOAD DATA
           </div>
-          <i className='material-icons'>play_arrow</i>
+          <i className='material-icons ms-2'>play_arrow</i>
         </button>
         <button className='big-button' onClick={() => navigate('/visualize')}>
           <div className='button-text'>
             VISUALIZE DATA
           </div>
-          <i className='material-icons'>play_arrow</i>
+          <i className='material-icons ms-2'>play_arrow</i>
         </button>
         <div className='w-75 text-center mt-5 mb-2'>
           This site uses data from The Global Historical Climatology Network Monthly (GHCN-M) Version 2 dataset created by the National Climatic Data Center (NCDC). 
