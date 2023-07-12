@@ -15,7 +15,7 @@ export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
   const [doDownload, setDoDownload] = useState<boolean>(false);
   const [doFetch, setDoFetch] = useState<boolean>(false);
-  const { data, setData } = useContext(DataContext);
+  const { setData, setDataFormat } = useContext(DataContext);
 
   const navigate = useNavigate();
 
@@ -191,6 +191,7 @@ export default function DownloadPage() {
     }
     if (doFetch && downloadData && (!isFetchingDownloadData)) {
       setData(downloadData);
+      setDataFormat('site');
       navigate('/visualize');
       setDoFetch(false);
     }

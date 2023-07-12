@@ -1,7 +1,7 @@
 
-interface DisplayDataProps {
-  data: any[];
-}
+// interface DisplayDataProps {
+//   data: any[];
+// }
 
 export default function DisplayData() {
   return (

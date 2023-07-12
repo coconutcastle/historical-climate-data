@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './App.scss';
 
 import { Header } from './components/Header';
+import { DataFormat } from './common/visualize.interface';
 
 const Skeleton = () => {
   return (
@@ -88,18 +89,26 @@ const router = createBrowserRouter([
 interface IDataContext {
   data: any,
   setData: Dispatch<SetStateAction<any>>;
+  dataFormat: DataFormat,
+  setDataFormat: Dispatch<SetStateAction<DataFormat>>;
 }
 
-export const DataContext = createContext<IDataContext>({ data: undefined, setData: () => {} });
+export const DataContext = createContext<IDataContext>({ 
+  data: undefined, 
+  setData: () => {},
+  dataFormat: 'none',
+  setDataFormat: () => {} 
+});
 
 const App: React.FC = () => {
 
   const [data, setData] = useState<any>(undefined);
+  const [dataFormat, setDataFormat] = useState<DataFormat>('none');
 
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>
-        <DataContext.Provider value={{ data, setData }}>
+        <DataContext.Provider value={{ data, setData, dataFormat, setDataFormat }}>
           <RouterProvider router={router} />
         </DataContext.Provider>
       </QueryClientProvider>
