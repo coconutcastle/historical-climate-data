@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 
 export interface Step {
   title: string,
@@ -14,8 +13,6 @@ interface StepperProps {
 }
 
 export const Stepper = ({ steps, currStep, setCurrStep }: StepperProps) => {
-
-  // const navigate = useNavigate();
 
   return (
     <div className="stepper-wrapper">

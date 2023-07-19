@@ -538,3 +538,20 @@ select {
   left: 0;
   top: 0;
 }
+
+.text-area-tabbed {
+  background-color: $content-container;
+  border: 2px solid $content-container;
+  padding: 2rem;
+  font-family: "Source Code Pro";
+  tab-size: 4;
+  height: 100%;
+  min-height: 300px;
+  overflow: auto;
+  resize: none;
+
+  &:focus {
+    outline: none;
+    border: 2px solid rgba(0, 0, 0, .1)
+  }
+}

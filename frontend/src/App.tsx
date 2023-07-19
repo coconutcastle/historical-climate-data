@@ -54,7 +54,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundary />
       }, {
         path: 'visualize',
-        element: <VisualizerPage />
+        element: <VisualizerPage />,
+        errorElement: <ErrorBoundary />
       }, {
         path: 'documentation',
         element: <DocumentationPage />,

@@ -82,3 +82,23 @@ export const jsonToArrays = (content: any, dataType?: DataTypes) => {
   // }
   return contentArray;
 }
+
+// sources:
+// https://stackoverflow.com/questions/11456850/split-a-string-by-commas-but-ignore-commas-within-double-quotes-using-javascript
+// https://stackoverflow.com/questions/8493195/how-can-i-parse-a-csv-string-with-javascript-which-contains-comma-in-data
+export const csvToArrays = (csv: string, delimeter?: string): string[][] => {
+  const rows = csv.replaceAll('\r', '').split('\n');   // dunno if \r is always present, so replacing it instead of splitting based on it
+  // console.log('rows are', rows)
+  // const csvArray: string[][] = rows.map((row: string) => row.split(','));   // fix this to make sure commas in quotes aren't included
+  const csvArray: string[][] = rows.map((row: string) => {
+    if (row.includes('"') || row.includes("'")) {
+      const elements = row.match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g);
+      // console.log('elements are', elements);
+      return elements ?? [];
+    } else {
+      return row.split(delimeter ?? ',');
+    }
+  })
+  // console.log('arrays are', csvArray);
+  return csvArray;
+}

@@ -175,7 +175,8 @@ export default function DownloadPage() {
             downloadZip(formattedDownload, downloadType, stationNames);
           } else {
             // console.log(isFetchingDownloadData, params, format, downloadType, formattedDownload);
-            downloadCSV(formattedDownload, downloadType);
+            console.log(downloadData);
+            // downloadCSV(formattedDownload, downloadType);
           };
         }
       });
