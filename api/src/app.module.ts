@@ -24,6 +24,7 @@ dotenv.config({ path: `${process.cwd()}\\.env.dev` });
       username: process.env.DATABASE_USER,
       password: process.env.DATABASE_PASSWORD,
       database: process.env.DATABASE_NAME,
+      ssl: process.env.SSL_SUPPORTED === 'true' ? true : undefined,    // here because it was causing problems on render
       entities: [GHCNMStationMetadata, GHCNMAnomalyData, GHCNMAnomalyPercentageData, GHCNMPrecipitationData, GHCNMAnnualCycleData, GHCNMCountryCode],
       synchronize: process.env.DATABASE_SYNCHRONIZE === 'true'
     }),

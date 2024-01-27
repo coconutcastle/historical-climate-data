@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useContext } from "react";
 import { ParamsSection } from "./sections/ParamsSection"
 import { SelectionSection } from "./sections/SelectionSection";
 import { FormatSection } from "./sections/FormatSection";
@@ -8,10 +8,16 @@ import { downloadZip, downloadCSV, formatDate } from "../../common/utils";
 import { getAllCountries, getAllRegions, getAllBasicStationMetadata, getDownloadData } from '../../services/GHCNMService';
 import { DataTypes, FormatFields, ParamsFields, RawRegions, StationMetadata } from "../../common/download.interface";
 import { ReactQueryConfig, QueryKeys, monthType } from "../../common/constants";
+import { DataContext } from "../../App";
+import { useNavigate } from "react-router-dom";
 
 export default function DownloadPage() {
   const [downloadError, setDownloadError] = useState<string | undefined>();
   const [doDownload, setDoDownload] = useState<boolean>(false);
+  const [doFetch, setDoFetch] = useState<boolean>(false);
+  const { setData, setDataFormat } = useContext(DataContext);
+
+  const navigate = useNavigate();
 
   const [params, setParams] = useState<ParamsFields>({
     years: [],
@@ -160,7 +166,7 @@ export default function DownloadPage() {
       setDoDownload(false);
     };
     if (doDownload && downloadData && (!isFetchingDownloadData)) {
-      console.log(downloadData);
+      // console.log(downloadData);
       Object.keys(downloadData).forEach((downloadType: string) => {
         if (downloadData[downloadType].length > 0) {
           const formattedDownload: any[] = formatData(downloadData[downloadType], downloadType as DataTypes, downloadData['stations']);
@@ -169,6 +175,7 @@ export default function DownloadPage() {
             downloadZip(formattedDownload, downloadType, stationNames);
           } else {
             // console.log(isFetchingDownloadData, params, format, downloadType, formattedDownload);
+            // console.log(downloadData);
             downloadCSV(formattedDownload, downloadType);
           };
         }
@@ -176,6 +183,20 @@ export default function DownloadPage() {
       setDoDownload(false);
     };
   }, [params, format, downloadData, errorDownloadData, isFetchingDownloadData, doDownload, formatData]);
+
+  // another useEffect just to refetch data when pressing visualize button - no formatting here
+  useEffect(() => {
+    if (doFetch && errorDownloadData && (!isFetchingDownloadData)) {
+      setDownloadError('Error fetching data.');
+      setDoFetch(false);
+    }
+    if (doFetch && downloadData && (!isFetchingDownloadData)) {
+      setData(downloadData);
+      setDataFormat('site');
+      navigate('/visualize');
+      setDoFetch(false);
+    }
+  }, [isFetchingDownloadData, errorDownloadData, doDownload])
 
   return (
     <div className="data-content"
@@ -197,7 +218,7 @@ export default function DownloadPage() {
             </div>
           )}
           {(dataCountries && dataStations && dataRegions) && (
-            <>
+            <div className="d-flex flex-column">
               <ParamsSection
                 params={params}
                 onParamsChanged={(newParams: ParamsFields) => setParams(newParams)}
@@ -210,14 +231,14 @@ export default function DownloadPage() {
                 onFormatChanged={(newFormat: FormatFields) => setFormat(newFormat)}
                 params={params}
                 formatData={formatData} />
-            </>
+            </div>
           )}
         </></div>
         <SelectionSection params={params} format={format} />
       </div>
       {(dataCountries && dataStations && dataRegions) && (
-        <div className='d-flex flex-row justify-content-center pt-3 pb-5' style={{ width: '65%' }} >
-          <div className='column'>
+        <div className="d-flex flex-column justify-content-center pb-4" style={{ width: '70%' }} >
+          <div className='d-flex flex-row justify-content-center pt-3 pb-2'>
             <button className={`big-button ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
               onClick={(e) => {
                 if (params.dataTypes.length === 0) {
@@ -232,19 +253,33 @@ export default function DownloadPage() {
                 DOWNLOAD
               </div>
               {doDownload === true ?
-                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons'>download_outlined</i>
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons ms-2'>download_outlined</i>
               }
             </button>
+            <button className={`big-button ms-3 ${isFetchingDownloadData === true ? 'disabled' : ''}`} style={{ width: '250px' }}
+              onClick={() => {
+                // make sure there is actually data - fetch data here
+                if (params.dataTypes.length === 0) {
+                  setDownloadError('Please select data type');
+                } else {
+                  setDownloadError(undefined);
+                  setDoFetch(true);
+                  refetchDownloadData();
+                }
+              }}>
+              <div className='button-text'>
+                VISUALIZE
+              </div>
+              {doFetch === true ?
+                <Spinner animation="border" className="heading-1 text-white" /> : <i className='material-icons ms-2'>play_arrow</i>
+              }
+            </button>
+          </div>
+          <div className="d-flex justify-content-center">
             {downloadError && (
               <div className="text-field-error pt-1 text-center">{downloadError}</div>
             )}
           </div>
-          <button className='big-button ms-3 disabled' style={{ width: '250px' }}>
-            <div className='button-text'>
-              VISUALIZE
-            </div>
-            <i className='material-icons'>play_arrow</i>
-          </button>
         </div>
       )}
     </div>

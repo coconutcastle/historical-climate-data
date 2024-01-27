@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react'
+import React, { Suspense, createContext, useState, Dispatch, SetStateAction } from 'react'
 import { Navigate, createBrowserRouter, RouterProvider, Outlet } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
@@ -7,6 +7,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import './App.scss';
 
 import { Header } from './components/Header';
+import { DataFormat } from './common/visualize.interface';
 
 const Skeleton = () => {
   return (
@@ -20,7 +21,7 @@ const queryClient = new QueryClient();
 
 const LandingPage = React.lazy(() => import('./routes/LandingPage'));
 const DownloadPage = React.lazy(() => import('./routes/download/DownloadPage'));
-const VisualizerPage = React.lazy(() => import('./routes/VisualizerPage'));
+const VisualizerPage = React.lazy(() => import('./routes/visualizer/VisualizerPage'));
 const DocumentationPage = React.lazy(() => import('./routes/documentation/DocumentationPage'));
 const AboutDocsSubPage = React.lazy(() => import('./routes/documentation/sections/AboutDocs'));
 const ParamsDocsSubPage = React.lazy(() => import('./routes/documentation/sections/DownloadParamsDocs'));
@@ -53,7 +54,8 @@ const router = createBrowserRouter([
         errorElement: <ErrorBoundary />
       }, {
         path: 'visualize',
-        element: <VisualizerPage />
+        element: <VisualizerPage />,
+        errorElement: <ErrorBoundary />
       }, {
         path: 'documentation',
         element: <DocumentationPage />,
@@ -85,12 +87,31 @@ const router = createBrowserRouter([
   }
 ]);
 
+interface IDataContext {
+  data: any,
+  setData: Dispatch<SetStateAction<any>>;
+  dataFormat: DataFormat,
+  setDataFormat: Dispatch<SetStateAction<DataFormat>>;
+}
+
+export const DataContext = createContext<IDataContext>({ 
+  data: undefined, 
+  setData: () => {},
+  dataFormat: 'none',
+  setDataFormat: () => {} 
+});
+
 const App: React.FC = () => {
+
+  const [data, setData] = useState<any>(undefined);
+  const [dataFormat, setDataFormat] = useState<DataFormat>('none');
 
   return (
     <ThemeProvider theme={MuiTheme}>
       <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
+        <DataContext.Provider value={{ data, setData, dataFormat, setDataFormat }}>
+          <RouterProvider router={router} />
+        </DataContext.Provider>
       </QueryClientProvider>
     </ThemeProvider >
   )
